@@ -53,7 +53,7 @@
 	    	</div>
 	    	<div class="lb-r">
 	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ...">
-	    		<i class="fa fa-search" aria-hidden="true"></i>
+	    		<i class="fa fa-search" aria-hidden="true" @click="SearchCusto"></i>
 	    	</div>
 	    	<div class="lb-l">
 	    		ชื่อลูกค้า
@@ -65,7 +65,48 @@
 	    <hr style="clear:both; margin: 0% 2% 0.5% 2%;" />
 	    <div class="QT-body">
 	    	<div id="web-view">
-	    		
+	    		 <table class="tableSection">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px; text-align: center;"></th>
+                                <th style="width: 200px; text-align: center;">รหัสสินค้า</th>
+                                <th style="width: 290px; text-align: center;">ชื่อสินค้า</th>
+                                <th style="width: 150px; text-align: center;">หน่วยนับ</th>
+                                <th style="width: 145px; text-align: center;" class="text">จำนวน</th>
+                                <th style="width: 150px; text-align: center;" class="text">ราคา/หน่วย</th>
+                                <th style="width: 150px; text-align: center;" class="text">ส่วนลด % ,บาท</th>
+                                <th style="width: 150px; text-align: center;" class="text">จำนวนเงิน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            	<td style="width: 50px; text-align:center;">1</td>
+                            	<td style="width: 200px; text-align:left;">2120250</td>
+                            	<td style="width: 290px; text-align:left;">น้ำยาเชื่อมท่อ</td>
+                            	<td style="width: 150px; padding:0 0.5%;">
+                            		<select>
+                            			<option>กระป๋อง</option>
+                            			<option>กล่อง</option>
+                            		</select>
+                            	</td>
+                            	<td style="padding:0;">
+                            		<input type="text" placeholder="0.00">
+                            	</td>
+                            	<td style="padding:0;">
+                            		<input type="text" placeholder="0.00">
+                            	</td>
+                            	<td style="padding:0;">
+                            		<input type="text" placeholder="0%, 0.00">
+                            	</td>
+                            	<td style="padding:0;">
+                            		<input type="text" placeholder="0.00">
+                            	</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="button is-medium" style="width:100%; border:0;" @click="SearchItem">
+                       <i class="fa fa-plus-circle is-large" aria-hidden="true"></i>
+                    </button>
 	    	</div>
 	    </div>
 	    <div class="Dstock">
@@ -83,7 +124,7 @@
 		    	</div>
 		    	<div class="lb-r">
 		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน...">
-		    		<i class="fa fa-search" aria-hidden="true"></i>
+		    		<i class="fa fa-search" aria-hidden="true" @click="SearchEmplo"></i>
 		    	</div>
 		    	<div class="lb-l">
 		    		ชื่อพนักงาน
@@ -197,6 +238,161 @@
 	    	</div>
 	    </div>
     </div>
+
+<!-- modal item -->
+    <div class="modal" id="SItem">
+	  <div class="modal-background"></div>
+	  <div class="modal-content">
+	    <header class="modal-card-head">
+	      <p class="modal-card-title">ค้นหาสินค้า</p>
+	      <button class="delete" aria-label="close" @click="CSItem"></button>
+	    </header>
+	    <section class="modal-card-body">
+	      <div class="S-l">
+	      	ค้นหา :
+	      </div>
+	      <div class="S-c">
+	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดสินค้า">
+	      </div>
+	      <div class="S-r">
+	      	<button class="button is-info">
+		      	<span class="icon">
+				  <i class="fa fa-search"></i>
+				</span>&nbsp;
+				ค้นหา
+			</button>
+	      </div>
+	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
+	      <div class="mo-list">
+	      	<div class="mo-list-img">
+	      		<img src="../assets/logo.png">
+	      	</div>
+	      	<div class="mo-list-detail">
+	      		<p class="mo-list-title">รหัส : ชื่อ</p>
+	      		<p>คลัง : </p>
+	      		<p>ยอดค้างส่ง | ยอดค้างรับ | ยอดจองสินค้า</p>
+	      		<p>ราคา : </p>
+	      		<p>My Grade </p>
+	      	</div>
+	      </div>
+	       <div class="mo-list">
+	      	<div class="mo-list-img">
+	      		<img src="../assets/logo.png">
+	      	</div>
+	      	<div class="mo-list-detail">
+	      		<p class="mo-list-title">รหัส : ชื่อ</p>
+	      		<p>คลัง : </p>
+	      		<p>ยอดค้างส่ง | ยอดค้างรับ | ยอดจองสินค้า</p>
+	      		<p>ราคา : </p>
+	      		<p>My Grade </p>
+	      	</div>
+	      </div>
+	    </section>
+	  </div>
+	</div>
+<!-- modal item -->
+
+<!-- modal Custo -->
+    <div class="modal" id="SCusto">
+	  <div class="modal-background"></div>
+	  <div class="modal-content">
+	    <header class="modal-card-head">
+	      <p class="modal-card-title">ค้นหาลูกค้า</p>
+	      <button class="delete" aria-label="close" @click="CSCusto"></button>
+	    </header>
+	    <section class="modal-card-body">
+	      <div class="S-l">
+	      	ค้นหา :
+	      </div>
+	      <div class="S-c">
+	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดลูกค้า">
+	      </div>
+	      <div class="S-r">
+	      	<button class="button is-info">
+		      	<span class="icon">
+				  <i class="fa fa-search"></i>
+				</span>&nbsp;
+				ค้นหา
+			</button>
+	      </div>
+	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
+	      <div class="mo-list">
+	      	<div class="mo-list-img">
+	      		<img src="../assets/logo.png">
+	      	</div>
+	      	<div class="mo-list-detail">
+	      		<p class="mo-list-title">รหัส : ชื่อ</p>
+	      		<p>รหัสสมาชิก : </p>
+	      		<p>แต้ม : </p>
+	      		<p>ที่อยู่ : </p>
+	      		<p>โทร. </p>
+	      	</div>
+	      </div>
+	       <div class="mo-list">
+	      	<div class="mo-list-img">
+	      		<img src="../assets/logo.png">
+	      	</div>
+	      	<div class="mo-list-detail">
+	      		<p class="mo-list-title">รหัส : ชื่อ</p>
+	      		<p>รหัสสมาชิก : </p>
+	      		<p>แต้ม : </p>
+	      		<p>ที่อยู่ : </p>
+	      		<p>โทร. </p>
+	      	</div>
+	      </div>
+	    </section>
+	  </div>
+	</div>
+<!-- modal Custo -->
+
+<!-- modal Emplo -->
+    <div class="modal" id="SEmplo">
+	  <div class="modal-background"></div>
+	  <div class="modal-content">
+	    <header class="modal-card-head">
+	      <p class="modal-card-title">ค้นหาพนักงาน</p>
+	      <button class="delete" aria-label="close" @click="CSEmplo"></button>
+	    </header>
+	    <section class="modal-card-body">
+	      <div class="S-l">
+	      	ค้นหา :
+	      </div>
+	      <div class="S-c">
+	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดพนักงาน">
+	      </div>
+	      <div class="S-r">
+	      	<button class="button is-info">
+		      	<span class="icon">
+				  <i class="fa fa-search"></i>
+				</span>&nbsp;
+				ค้นหา
+			</button>
+	      </div>
+	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
+	      <div class="mo-list" style="height:120px;">
+	      	<div class="mo-list-img" style="height:120px; width: 120px;">
+	      		<img src="../assets/logo.png">
+	      	</div>
+	      	<div class="mo-list-detail">
+	      		<p class="mo-list-title">รหัส : ชื่อ</p>
+	      		<p>commition : </p>
+	      		<p>team : </p>
+	      	</div>
+	      </div>
+	       <div class="mo-list" style="height:120px;">
+	      	<div class="mo-list-img" style="height:120px; width: 120px;">
+	      		<img src="../assets/logo.png">
+	      	</div>
+	      	<div class="mo-list-detail">
+	      		<p class="mo-list-title">รหัส : ชื่อ</p>
+	      		<p>commition : </p>
+	      		<p>team : </p>
+	      	</div>
+	      </div>
+	    </section>
+	  </div>
+	</div>
+<!-- modal item -->
   </div>
 </template>
 

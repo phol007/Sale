@@ -1,0 +1,59 @@
+table.tableSection {
+    display: table;
+    width: 100%;
+}
+
+table.tableSection thead,
+table.tableSection tbody {
+    width: 100%;
+}
+
+table.tableSection thead {
+    overflow-y: scroll;
+    display: table;
+    table-layout: fixed;
+    width: calc(100% - 0px);
+    background: #e8e1e1;    
+    border-bottom: 1px solid gray;
+    /* assuming scrollbar width as 16px */
+}
+
+table.tableSection thead tr {
+    height: 25px;
+    margin-top: 0.5%;
+}
+
+table.tableSection tbody {
+    overflow: auto;
+    height: 120px;
+    display: block;
+}
+
+table.tableSection tr {
+    width: 100%;
+    text-align: left;
+    display: table;
+    table-layout: fixed;
+}
+
+table.tableSection td {    
+    padding: 0.5% 2%;
+    /*border: 1px solid black;*/
+}
+
+    table.tableSection td input {    
+        width: 100%;
+        height: 32px;
+        padding-right: 2%;
+        text-align: right;
+        border: 0;
+    } 
+
+    table.tableSection td select {
+        width: 100%;
+        height: 30px;
+        background: #fff;
+        border:0;
+        text-align: right;
+        border: 0;
+    }  
