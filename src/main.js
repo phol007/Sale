@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import '../node_modules/font-awesome/css/font-awesome.css'
+import 'font-awesome/css/font-awesome.css'
 import 'bulma/css/bulma.css'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
