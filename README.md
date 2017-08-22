@@ -2,6 +2,35 @@
 
 > A Vue.js project
 
+## framework css
+```
+# font awesome
+npm install font-awesome --save
+import '../node_modules/font-awesome/css/font-awesome.css'
+
+# bulma
+npm install bulma --save
+import 'bulma/css/bulma.css'
+
+# JQuery
+npm install jquery --save-dev
+import $ from 'jquery'
+
+# numeral
+npm install numeral --save
+import numeral from 'numeral'
+
+# material
+npm install vue-material --save
+import VueMaterial from 'vue-material'
+Vue.use(VueMaterial)
+
+# material icons
+npm install material-icons
+import '../node_modules/material-icons/css/material-icons.css'
+
+```
+
 ## Build Setup
 
 ``` bash
