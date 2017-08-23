@@ -17,5 +17,7 @@ export default {
   mounted () {
     var title = document.getElementById('titleProgram')
     title.innerHTML = 'Quotation'
+
+    console.log(JSON.parse(localStorage.DataUser))
   }
 }

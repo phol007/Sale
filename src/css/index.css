@@ -10,6 +10,7 @@
 		width: 70px;
 		/*border: 1px yellow solid;*/
 		padding-left: 1%;
+		float: left;
 	}
 		.navleft img{
 			width: 50px;
@@ -18,10 +19,38 @@
 		}
 	.navright {
 		/*border: 1px red solid;*/
+		width: 75%;
 		font-size: 45px;
 		color: #fff;
 		line-height: 45px;
+		float: left;
 	}
+
+	.profile {
+		float: right;
+		padding-top: 0.25%;
+		/*border:1px solid #fff;*/
+		width: 20%;
+	}
+		.profile .img-pro {
+			width: 50px;
+			height: 50px;
+			float: left;
+			padding-right: 1%;
+		}
+			.profile .img-pro img {
+				width: 100%;
+				border-radius:50%;
+				padding: 2%;
+			}
+		.profile .detail-pro {
+			width: 70%;
+			color: #fff;
+			float: left;
+			padding-left: 3%;
+			/*border:1px yellow solid;*/
+			height: 100%;
+		}
 
 .Cont {
 	/*background: yellow;*/
@@ -297,6 +326,22 @@
 	nav.pagination {
 		width: 100%;
 		padding-left: 40%;
+	}
+
+	.L-logo {
+		width: 350px;
+		height: 350px;
+		margin: auto;
+	}
+		.L-logo img {
+			padding: 1%;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+	.L-form {
+		width: 80%;
+		margin: auto;
 	}
 
 /* modal */
