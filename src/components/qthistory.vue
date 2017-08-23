@@ -21,10 +21,9 @@
 		padding-top: 2.5%;">
 					    ประเภทเอกสาร :
 					</div>
-					<div style="width:60%; float:left;">
-						<select>
-							<option>ใบเสนอราคา</option>
-							<option>ใบสั่งขาย</option>
+					<div style="width:60%; float:left; text-align:right;">
+						<select v-model="menu" style="text-align:right;">
+							<option v-for="menus in menu_lists" :value="menus.menuid" style="text-align:right;">{{ menus.menuname }}</option>
 						</select>
 					</div>
 				</div>
