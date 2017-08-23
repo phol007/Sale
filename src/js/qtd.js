@@ -24,6 +24,9 @@ export default {
     },
     CSEmplo () {
       $('#SEmplo').removeClass('is-active')
+    },
+    goTo (page) {
+      this.$router.push(page)
     }
   }
 }

@@ -20,7 +20,7 @@
 		/*border: 1px red solid;*/
 		font-size: 45px;
 		color: #fff;
-		line-height: 40px;
+		line-height: 45px;
 	}
 
 .Cont {
@@ -196,6 +196,107 @@
 		height: 100%;
 		padding: 0.5% 2%;
 		float: left;
+	}
+
+	.Hsearch {
+		height: 60px;
+		width: 100%;
+		position: static;
+	}
+
+	.H-list {
+		width: 95%;
+		border: 1px solid #ced9dd;
+		height: 100px;
+		clear: both;
+		position: static;
+		margin: 0 2.5%;
+		cursor: pointer;
+	}
+		.H-list * {
+			position: static;
+		}
+
+		.H-list:active {
+			background: #ced9dd;
+		}
+
+		.H-list-img {
+			width: 100px;
+			height: 100px;
+			overflow: hidden;
+			padding: 1%;
+			float: left;
+		}
+
+		.H-list-detail {
+			padding: 0.5%;
+			float: left;
+			font-size: 14px;
+			word-wrap: break-word;
+			color: gray;
+		}
+
+		.H-list-dtitle {
+			font-weight: bold;
+			color: #000;
+		}
+
+	.Hsearch .HS-l {
+		width: 15%;
+		text-align: right;
+		padding-right: 3%;
+		float: left;
+		/*border: 1px solid black;*/
+		font-size: 20px;
+		padding: 1%;
+		position: static;
+	}
+
+	.Hsearch .HS-c {
+		width: 40%;
+		text-align: left;
+		padding-left: 3%;
+		float: left;
+		/*border: 1px solid black;*/
+		padding: 0.2% 0;
+		position: static;
+	}
+		.Hsearch .HS-c .input { position: static; }
+
+	.Hsearch .HS-r {
+		width: 10%;
+		text-align: left;
+		float: left;
+		/*border: 1px solid black;*/
+		padding: 0.2% 0;
+		margin-bottom: 0.5%;
+		position: static;
+	}
+		.Hsearch .HS-r .button {
+				width: 100%;
+				margin: 0 5%;
+				position: static;
+			}
+	.Hsearch .HS-select {
+		width: 30%;
+		text-align:right;
+		float: left;
+		/*border: 1px solid red;
+		height: 100%;*/
+	}
+
+		.Hsearch .HS-select select {
+			width:95%; 
+			height:35px; 
+			margin-top:0.5%; 
+			background:#fff; 
+			cursor:pointer;
+		}
+
+	nav.pagination {
+		width: 100%;
+		padding-left: 40%;
 	}
 
 /* modal */
