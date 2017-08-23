@@ -30,6 +30,36 @@ npm install material-icons
 import '../node_modules/material-icons/css/material-icons.css'
 
 ```
+## Set config after build project
+# set path index
+```
+ลบ '/' ในไฟล์ config/index.js
+ตัวอย่าง
+========
+  build: {
+    env: require('./prod.env'),
+    index: path.resolve(__dirname, '../dist/index.html'),
+    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsSubDirectory: 'static',
+    assetsPublicPath: '',
+    
+```
+# Set static Fonts in Project
+```
+เพิ่ม คำสั่ง  publicPath: '../../' ในไฟล์ build/utils.js 
+ตัวอย่าง 
+========
+	if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader',
+        publicPath: '../../'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+
+```
 
 ## Build Setup
 
