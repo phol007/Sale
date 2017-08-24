@@ -10,6 +10,7 @@ import 'vue-material/dist/vue-material.css'
 import 'vue-material/dist/components/mdIcon/index.css'
 import './css/index.css'
 import './css/table.css'
+import './css/loading.css'
 
 Vue.config.productionTip = false
 

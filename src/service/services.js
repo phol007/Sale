@@ -13,5 +13,21 @@ export default {
       (response) => {
         error(response)
       })
+  },
+  historyAX (keyword, doctype, success, error) {
+    var url = ''
+    switch (doctype) {
+      case 1 : url = 'http://venus:3000/quotations/search?access_token=&doc_type=' + doctype + '&keyword=' + keyword
+        break
+      case 2 : url = 'http://venus:3000/saleorders/search?access_token=&doc_type=' + doctype + '&keyword=' + keyword
+        break
+    }
+    Vue.axios.get(url).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      })
   }
 }

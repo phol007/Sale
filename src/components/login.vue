@@ -1,6 +1,6 @@
 <template>
-	<div class="login">
-		<div class="Cont">
+	<div class="login" style="overflow:hidden">
+		<div class="Cont" style="overflow:hidden">
 			<div class="L-logo">
 				<img src="../assets/nopadol-logo.png">
 			</div>

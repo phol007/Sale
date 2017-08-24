@@ -6,10 +6,10 @@
 					ค้นหา :
 				</div>
 				<div class="HS-c">
-					<input type="text" class="input" placeholder="กรอกรายละเอียดที่ต้องการค้นหา">
+					<input type="text" class="input" placeholder="กรอกรายละเอียดที่ต้องการค้นหา" v-model="keyword" @enter="history(keyword)">
 				</div>
 				<div class="HS-r">
-					<button class="button is-info">
+					<button class="button is-info" @click="history(keyword)">
 			      	<span class="icon">
 					  <i class="fa fa-search"></i>
 					</span>&nbsp;
@@ -22,67 +22,28 @@
 					    ประเภทเอกสาร :
 					</div>
 					<div style="width:60%; float:left; text-align:right;">
-						<select v-model="menu" style="text-align:right;">
+						<select v-model="menu" style="text-align:right;" @change="selectMenu(menu)">
 							<option v-for="menus in menu_lists" :value="menus.menuid" style="text-align:right;">{{ menus.menuname }}</option>
 						</select>
 					</div>
 				</div>
 			</div>
-			<div class="H-list" @click="goTo('/Qtd/status')">
+			<div class="H-list" @click="goTo('/Qtd/status')" v-for="lists in history_lists">
 				<div class="H-list-img">
 					<img src="../assets/logo.png">
 				</div>
 				<div class="H-list-detail">
-					<p class="H-list-dtitle">เลขที่เอกสาร</p>
-					<p>รหัสลูกค้า | ชื่อลูกค้า</p>
-					<p>ยอดเงินสุทธิ</p>
-					<p>พนง.ขาย</p>
-				</div>
-			</div>
-			<div class="H-list" @click="goTo('/Qtd/status')">
-				<div class="H-list-img">
-					<img src="../assets/logo.png">
-				</div>
-				<div class="H-list-detail">
-					<p class="H-list-dtitle">เลขที่เอกสาร</p>
-					<p>รหัสลูกค้า | ชื่อลูกค้า</p>
-					<p>ยอดเงินสุทธิ</p>
-					<p>พนง.ขาย</p>
-				</div>
-			</div>
-			<div class="H-list" @click="goTo('/Qtd/status')">
-				<div class="H-list-img">
-					<img src="../assets/logo.png">
-				</div>
-				<div class="H-list-detail">
-					<p class="H-list-dtitle">เลขที่เอกสาร</p>
-					<p>รหัสลูกค้า | ชื่อลูกค้า</p>
-					<p>ยอดเงินสุทธิ</p>
-					<p>พนง.ขาย</p>
-				</div>
-			</div>
-			<div class="H-list" @click="goTo('/Qtd/status')">
-				<div class="H-list-img">
-					<img src="../assets/logo.png">
-				</div>
-				<div class="H-list-detail">
-					<p class="H-list-dtitle">เลขที่เอกสาร</p>
-					<p>รหัสลูกค้า | ชื่อลูกค้า</p>
-					<p>ยอดเงินสุทธิ</p>
-					<p>พนง.ขาย</p>
+					<p class="H-list-dtitle">{{ lists.doc_no }}</p>
+					<p>{{ lists.ar_code }} | {{ lists.ar_name }}</p>
+					<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>
+					<p>พนง.ขาย {{ lists.sale_code }} | {{ lists.sale_name }}</p>
 				</div>
 			</div>
 			<nav class="pagination" role="navigation" aria-label="pagination">
 			  <ul class="pagination-list">
-			    <li>
-			      <a class="pagination-link" aria-label="Page 1">1</a>
-			    </li>
-			    <li>
-			      <a class="pagination-link" aria-label="Goto page 2">2</a>
-			    </li>
-			    <li>
-			      <a class="pagination-link" aria-label="Goto page 3">3</a>
-			    </li>
+			    <li v-for="(pages, index) in pageIndex" @click="page_detail(pages.limit, pages.Line)">
+	            	<a class="pagination-link" :class="{ 'is-current': pages.isActive }">{{  pages.Line }}</a>
+	          	</li>
 			  </ul>
 			</nav>
 			<md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;">
