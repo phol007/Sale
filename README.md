@@ -29,6 +29,9 @@ Vue.use(VueMaterial)
 npm install material-icons
 import '../node_modules/material-icons/css/material-icons.css'
 
+# datepicker
+https://www.npmjs.com/package/vuejs-datepicker
+
 ```
 ## Set config after build project
 # set path index

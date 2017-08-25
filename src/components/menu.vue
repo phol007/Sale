@@ -5,14 +5,8 @@
 			{{ msg }}
 		</h1>
 
-		<button class="button is-dark is-large" style="width: 90%; margin: 0.5%;" @click="goTo('/Qtd/status')">
-			ใบเสนอราคา
-		</button>
-		<button class="button is-dark is-large" style="width: 90%; margin: 0.5%;" @click="goTo('/Qtd/status')">
-			ใบสั่งขาย
-		</button>
-		<button class="button is-dark is-large" style="width: 90%; margin: 0.5%;" @click="goTo('/Qtd/status')">
-			ใบสั่งจอง
+		<button class="button is-dark is-large" style="width: 90%; margin: 0.5%;" @click="goTo('Qtd', menu)" v-for="menu in menu_lists" v-show="menu.is_create==1">
+			{{ menu.menuname }}
 		</button>
 
 			<md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;">

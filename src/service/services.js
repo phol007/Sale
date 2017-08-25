@@ -29,5 +29,15 @@ export default {
       (response) => {
         error(response)
       })
+  },
+  gen_docNOAX (tablecode, billtype, success, error) {
+    Vue.axios.get('http://venus:3000/docno?table_code=' + tablecode + '&bill_type=' + billtype).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }

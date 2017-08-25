@@ -7,7 +7,6 @@ import 'font-awesome/css/font-awesome.css'
 import 'bulma/css/bulma.css'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
-import 'vue-material/dist/components/mdIcon/index.css'
 import './css/index.css'
 import './css/table.css'
 import './css/loading.css'
@@ -26,5 +25,7 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })

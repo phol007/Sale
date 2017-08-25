@@ -19,7 +19,7 @@
 	    		เลขที่เอกสาร 
 	    	</div>
 	    	<div class="lb-r">
-	    		<input type="text" class="input" placeholder="เลขที่เอกสาร ...">
+	    		<input type="text" class="input" placeholder="เลขที่เอกสาร ..." :value="DocNo" readonly>
 	    	</div>
 	    	<div class="lb-l">
 	    		ประเภทภาษี
@@ -46,7 +46,7 @@
 	    		วันที่เอกสาร 
 	    	</div>
 	    	<div class="lb-r">
-	    		<input type="date" class="input">
+	    		<datepicker format="dd/MM/yyyy" input-class="input date" :value="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
 	    	</div>
 	    	<div class="lb-l">
 	    		รหัสลูกค้า
