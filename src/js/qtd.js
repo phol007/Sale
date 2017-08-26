@@ -11,7 +11,15 @@ export default {
       DocNo: '',
       DocDate: '',
       nowDate: {},
-      disabled: false
+      disabled: false,
+      toDate: '',
+      ExpDate: '',
+      deliveryDate: '',
+      sendpriceDay: 7,
+      reciveDay: 7,
+      expDay: 7,
+      sendDay: 7,
+      creditDay: 0
     }
   },
   components: {    
@@ -39,19 +47,27 @@ export default {
     goTo (page) {
       this.$router.push(page)
     },
+    toDay () {
+      var day = new Date()
+      var d = day.getDate()
+      var m = day.getMonth()
+      var y = day.getFullYear()
+      this.toDate = new Date(y, m, d)
+    },
     GenDocNo (tableName, billType) {
       $("#loading").addClass('is-active')
       api.gen_docNOAX(tableName, billType,
         (result) => {          
           $("#loading").removeClass('is-active')
           this.DocNo = result.data.new_doc_no
-          var date = moment(new Date()).format('DD-MM')+'-'+(parseInt(moment(new Date()).get('year')) + 543)
-          date= date.split("-")
-          this.DocDate = moment(new Date(date[2], date[1]-1, date[0])).format('MM/DD/YYYY')
+          this.DocDate = moment(this.toDate).format('MM/DD/YYYY')
+          this.ExpDate = moment(this.calDay(this.expDay)).format('MM/DD/YYYY')
+          this.deliveryDate = moment(this.calDay(this.sendDay)).format('MM/DD/YYYY')
           this.nowDate = {
-              to: new Date(date[2], date[1]-1, date[0])
+              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
           }
           console.log(JSON.stringify(result))
+          console.log(this.calDay(7))
         },
         (error) => {
           $("#loading").removeClass('is-active')
@@ -59,11 +75,19 @@ export default {
           console.log(error)
         }
       )
+    },
+    calDay (Nday) {
+      var day = new Date()
+      var d = day.getDate()+Nday
+      var m = day.getMonth()
+      var y = day.getFullYear()
+      return new Date(y, m, d)
     }
   },
   mounted () {
     this.params = this.$route.params.status
     this.GenDocNo('QT',0)
+    this.toDay()
     moment.locale()
   }
 }

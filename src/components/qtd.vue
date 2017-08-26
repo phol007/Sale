@@ -1,5 +1,5 @@
 <template>
-  <div class="Qtd">
+  <div class="Qtd" style="overflow:hidden">
   	<div class="Cont">
 	    <div class="T-r">
 	    	<div class="Tr-l">
@@ -150,31 +150,31 @@
 		    		ยืนราคา
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ยืนราคา...">
+		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ลูกค้าต้องรับภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ลูกค้าต้องรับภายใน...">
+		    		<input type="number" class="input" placeholder="ลูกค้าต้องรับภายใน..." v-model="reciveDay">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เอกสารหมดอายุภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน...">
+		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ส่งมอบภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ส่งมอบภายใน...">
+		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เครดิต | วัน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เครดิต...">
+		    		<input type="number" class="input" placeholder="เครดิต..." v-model="creditDay">
 		    	</div>
 	    	</div>
 	    	<div class="btt-block">
@@ -201,13 +201,13 @@
 		    		วันที่หมดอายุ
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="date" class="input">
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" :value="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ลงวันที่
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="date" class="input">
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" :value="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
 		    	</div>
 	    	</div>
 	    	<div class="btt-block" style="border:0;">

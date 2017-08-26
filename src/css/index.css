@@ -57,6 +57,7 @@
 	margin-top: 55px;
 	padding: 0.5%;
 	position: static;
+	overflow: auto;
 }
 
 .T-r {
@@ -170,7 +171,7 @@
 		.lb-r .date {
 			height: 35px;
 			margin-top: 0.6%;
-			width: 80%;
+			width: 70%;
 			text-align: right;
 			padding-right: 10%;
 			cursor: pointer;
