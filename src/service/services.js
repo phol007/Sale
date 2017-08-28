@@ -39,5 +39,35 @@ export default {
         error(response)
       }
     )
+  },
+  searchArAX (keyword, success, error) {
+    Vue.axios.get('http://venus:3000/customers?access_token=&keyword=' + keyword).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  searchEmpAX (keyword, success, error) {
+    Vue.axios.get('http://venus:3000/employees?access_token=&keyword=' + keyword).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  searchItemAX (keyword, billtype, isCon, arCode, success, error) {
+    Vue.axios.get('http://venus:8000/items?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&keyword=' + keyword).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }

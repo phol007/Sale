@@ -6,7 +6,7 @@
 					ค้นหา :
 				</div>
 				<div class="HS-c">
-					<input type="text" class="input" placeholder="กรอกรายละเอียดที่ต้องการค้นหา" v-model="keyword" @enter="history(keyword)">
+					<input type="text" class="input" placeholder="กรอกรายละเอียดที่ต้องการค้นหา" v-model="keyword" @keyup.enter="history(keyword)">
 				</div>
 				<div class="HS-r">
 					<button class="button is-info" @click="history(keyword)">

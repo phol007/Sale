@@ -221,6 +221,7 @@
 				width: 90%;
 				margin-left: 5%;
 				margin-right: 5%;
+				padding: 1%;
 			}
 
 	.Dstock {
@@ -409,6 +410,7 @@
 			border: 1px solid #ced9dd;
 			height: 150px;
 			clear: both;
+			cursor: pointer;
 		}
 
 			.mo-list-img {

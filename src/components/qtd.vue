@@ -25,19 +25,19 @@
 	    		ประเภทภาษี
 	    	</div>
 	    	<div class="lb-r">
-	    		<select>
-	    			<option>แยกนอก</option>
-	    			<option>รวมใน</option>
-	    			<option>อัตราศูนย์</option>
+	    		<select v-model="vatType">
+	    			<option value="1">แยกนอก</option>
+	    			<option value="2">รวมใน</option>
+	    			<option value="3">อัตราศูนย์</option>
 	    		</select>
 	    	</div>
 	    	<div class="lb-l">
 	    		ประเภทราคา
 	    	</div>
 	    	<div class="lb-r">
-	    		<select>
-	    			<option>ขายสด</option>
-	    			<option>ขายเชื่อ</option>
+	    		<select v-model="billType">
+	    			<option value="1">ขายสด</option>
+	    			<option value="2">ขายเชื่อ</option>
 	    		</select>
 	    	</div>
 	    </div>
@@ -46,20 +46,20 @@
 	    		วันที่เอกสาร 
 	    	</div>
 	    	<div class="lb-r">
-	    		<datepicker format="dd/MM/yyyy" input-class="input date" :value="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
+	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
 	    	</div>
 	    	<div class="lb-l">
 	    		รหัสลูกค้า
 	    	</div>
 	    	<div class="lb-r">
-	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ...">
+	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ..." v-model="ArID" readonly @click="SearchCusto">
 	    		<i class="fa fa-search" aria-hidden="true" @click="SearchCusto"></i>
 	    	</div>
 	    	<div class="lb-l">
 	    		ชื่อลูกค้า
 	    	</div>
 	    	<div class="lb-r">
-	    		<input type="text" class="input" placeholder="ชื่อลูกค้า...">
+	    		<input type="text" class="input" placeholder="ชื่อลูกค้า..." v-model="ArName" readonly @click="SearchCusto">
 	    	</div>
 	    </div>
 	    <hr style="clear:both; margin: 0% 2% 0.5% 2%;" />
@@ -123,14 +123,14 @@
 	    		รหัสพนักงาน
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน...">
+		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน..." readonly v-model="EmpID">
 		    		<i class="fa fa-search" aria-hidden="true" @click="SearchEmplo"></i>
 		    	</div>
 		    	<div class="lb-l">
 		    		ชื่อพนักงาน
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ชื่อพนักงาน..." style="text-align:left;">
+		    		<input type="text" class="input" placeholder="ชื่อพนักงาน..." style="text-align:left;" v-model="EmpName" readonly>
 		    	</div>		    	
 		    	<div class="tarea">
 		    		หมายเหตุ 1
@@ -162,13 +162,13 @@
 		    		เอกสารหมดอายุภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay">
+		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ส่งมอบภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay">
+		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เครดิต | วัน
@@ -182,9 +182,9 @@
 		    		เงื่อนไขขนส่ง
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<select>
-		    			<option>รับเอง</option>
-		    			<option>ส่งให้</option>
+		    		<select v-model="isConditionSend">
+		    			<option value="1">รับเอง</option>
+		    			<option value="2">ส่งให้</option>
 		    		</select>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
@@ -201,13 +201,13 @@
 		    		วันที่หมดอายุ
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" :value="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" @input="calExpDay(ExpDate)"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ลงวันที่
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" :value="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" v-on:input="calDeliDay(deliveryDate)"></datepicker>
 		    	</div>
 	    	</div>
 	    	<div class="btt-block" style="border:0;">
@@ -215,19 +215,19 @@
 		    		รวมมูลค่าสินค้า
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า...">
+		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า..." readonly>
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		อัตราภาษีมูลค้าเพิ่ม
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="7 % ">
+		    		<input type="text" class="input" placeholder="7" readonly style="width:70%" v-model="taxRage"><span style="margin-left:5%; line-height:40px; font-weight:bold;"> % </span>
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		ภาษีมูลค่าเพิ่ม
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="ภาษีมูลค่าเพิ่ม..">
+		    		<input type="text" class="input" placeholder="ภาษีมูลค่าเพิ่ม.." readonly>
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		ส่วนลด %, บาท
@@ -263,7 +263,7 @@
     </div>
 
 <!-- modal item -->
-    <div class="modal" id="SItem">
+    <div class="modal" id="SItem" style="overflow:hidden">
 	  <div class="modal-background"></div>
 	  <div class="modal-content">
 	    <header class="modal-card-head">
@@ -271,14 +271,15 @@
 	      <button class="delete" aria-label="close" @click="CSItem"></button>
 	    </header>
 	    <section class="modal-card-body">
+
 	      <div class="S-l">
 	      	ค้นหา :
 	      </div>
 	      <div class="S-c">
-	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดสินค้า">
+	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดสินค้า" v-model="moSitem" @keyup.enter="searchItems(moSitem)">
 	      </div>
 	      <div class="S-r">
-	      	<button class="button is-info">
+	      	<button class="button is-info" @click="searchItems(moSitem)">
 		      	<span class="icon">
 				  <i class="fa fa-search"></i>
 				</span>&nbsp;
@@ -286,30 +287,20 @@
 			</button>
 	      </div>
 	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
-	      <div class="mo-list">
-	      	<div class="mo-list-img">
-	      		<img src="../assets/logo.png">
-	      	</div>
-	      	<div class="mo-list-detail">
-	      		<p class="mo-list-title">รหัส : ชื่อ</p>
-	      		<p>คลัง : </p>
-	      		<p>ยอดค้างส่ง | ยอดค้างรับ | ยอดจองสินค้า</p>
-	      		<p>ราคา : </p>
-	      		<p>My Grade </p>
-	      	</div>
-	      </div>
-	       <div class="mo-list">
-	      	<div class="mo-list-img">
-	      		<img src="../assets/logo.png">
-	      	</div>
-	      	<div class="mo-list-detail">
-	      		<p class="mo-list-title">รหัส : ชื่อ</p>
-	      		<p>คลัง : </p>
-	      		<p>ยอดค้างส่ง | ยอดค้างรับ | ยอดจองสินค้า</p>
-	      		<p>ราคา : </p>
-	      		<p>My Grade </p>
-	      	</div>
-	      </div>
+	      <div style="overflow:auto; height:450px;">
+		    <div class="mo-list" v-for="items in item_lists" @click="selectItem(items)">
+		      <div class="mo-list-img">
+		      	<img :src="items.img_profile">
+		      </div>
+		      <div class="mo-list-detail">
+		      	<p class="mo-list-title">{{ items.item_code }} : {{ items.item_name }}</p>
+		      	<p><span v-for="(stock, index) in items.stock_list"> <span v-show="index%2==1"> | </span><b>คลัง :</b>{{ stock.wh_code }} จำนวน {{ stock.qty }} {{ stock.unit_code }} </span></p>
+		      	<p>ยอดค้างส่ง | ยอดค้างรับ | ยอดจองสินค้า</p>
+		      	<p>ราคา : </p>
+		      	<p>My Grade </p>
+		     </div>
+		    </div>
+		  </div>
 	    </section>
 	  </div>
 	</div>
@@ -328,10 +319,10 @@
 	      	ค้นหา :
 	      </div>
 	      <div class="S-c">
-	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดลูกค้า">
+	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดลูกค้า" v-model="moScus" @keyup.enter="searchCus(moScus)">
 	      </div>
 	      <div class="S-r">
-	      	<button class="button is-info">
+	      	<button class="button is-info" @click="searchCus(moScus)">
 		      	<span class="icon">
 				  <i class="fa fa-search"></i>
 				</span>&nbsp;
@@ -339,29 +330,19 @@
 			</button>
 	      </div>
 	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
-	      <div class="mo-list">
-	      	<div class="mo-list-img">
-	      		<img src="../assets/logo.png">
-	      	</div>
-	      	<div class="mo-list-detail">
-	      		<p class="mo-list-title">รหัส : ชื่อ</p>
-	      		<p>รหัสสมาชิก : </p>
-	      		<p>แต้ม : </p>
-	      		<p>ที่อยู่ : </p>
-	      		<p>โทร. </p>
-	      	</div>
-	      </div>
-	       <div class="mo-list">
-	      	<div class="mo-list-img">
-	      		<img src="../assets/logo.png">
-	      	</div>
-	      	<div class="mo-list-detail">
-	      		<p class="mo-list-title">รหัส : ชื่อ</p>
-	      		<p>รหัสสมาชิก : </p>
-	      		<p>แต้ม : </p>
-	      		<p>ที่อยู่ : </p>
-	      		<p>โทร. </p>
-	      	</div>
+	      <div style="overflow:auto; height:450px;">
+		      <div class="mo-list" v-for="cus in customer_lists" @click="selectCus(cus)">
+		      	<div class="mo-list-img">
+		      		<img src="../assets/logo.png">
+		      	</div>
+		      	<div class="mo-list-detail">
+		      		<p class="mo-list-title">{{ cus.ar_code }} : {{ cus.ar_name }}</p>
+		      		<p>รหัสสมาชิก : {{ cus.id }}</p>
+		      		<p>แต้ม : </p>
+		      		<p>ที่อยู่ : {{ cus.address }}</p>
+		      		<p>โทร. {{ cus.ar_telephone }}</p>
+		      	</div>
+		      </div>
 	      </div>
 	    </section>
 	  </div>
@@ -381,7 +362,7 @@
 	      	ค้นหา :
 	      </div>
 	      <div class="S-c">
-	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดพนักงาน">
+	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดพนักงาน" @keyup.enter="searchEmp(moSemp)" v-model="moSemp">
 	      </div>
 	      <div class="S-r">
 	      	<button class="button is-info">
@@ -392,25 +373,17 @@
 			</button>
 	      </div>
 	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
-	      <div class="mo-list" style="height:120px;">
-	      	<div class="mo-list-img" style="height:120px; width: 120px;">
-	      		<img src="../assets/logo.png">
-	      	</div>
-	      	<div class="mo-list-detail">
-	      		<p class="mo-list-title">รหัส : ชื่อ</p>
-	      		<p>commition : </p>
-	      		<p>team : </p>
-	      	</div>
-	      </div>
-	       <div class="mo-list" style="height:120px;">
-	      	<div class="mo-list-img" style="height:120px; width: 120px;">
-	      		<img src="../assets/logo.png">
-	      	</div>
-	      	<div class="mo-list-detail">
-	      		<p class="mo-list-title">รหัส : ชื่อ</p>
-	      		<p>commition : </p>
-	      		<p>team : </p>
-	      	</div>
+	      <div style="overflow:auto; height:450px;">
+		      <div class="mo-list" style="height:120px;" v-for="emp in employee_lists" @click="selectEmp(emp)">
+		      	<div class="mo-list-img" style="height:120px; width: 120px;">
+		      		<img src="../assets/logo.png">
+		      	</div>
+		      	<div class="mo-list-detail">
+		      		<p class="mo-list-title">{{ emp.sale_code }} : {{ emp.sale_name }}</p>
+		      		<p>commition : </p>
+		      		<p>team : {{ emp.profit_center }}</p>
+		      	</div>
+		      </div>
 	      </div>
 	    </section>
 	  </div>
