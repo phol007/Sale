@@ -15,7 +15,7 @@ export default {
       (result) => {
         if(result.status == 'success'){
           localStorage.DataUser = JSON.stringify(result.data)
-          this.$router.push('/Qth')
+          this.$router.push('/Saleh')
           $("#loading").removeClass('is-active')
           alert('Login สำเร็จ')
         }

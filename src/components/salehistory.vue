@@ -71,4 +71,4 @@
 	</div>
 </template>
 
-<script src="../js/qth.js"></script>
+<script src="../js/salehis.js"></script>

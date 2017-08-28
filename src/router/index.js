@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Qtd from '@/components/qtd'
-import Qth from '@/components/qthistory'
+import SaleHistory from '@/components/salehistory'
 import Menu from '@/components/menu'
 import Login from '@/components/login'
 
@@ -20,9 +20,9 @@ export default new Router({
       component: Qtd
     },
     {
-      path: '/Qth',
-      name: 'Qth',
-      component: Qth
+      path: '/Saleh',
+      name: 'Saleh',
+      component: SaleHistory
     },
     {
       path: '/menuDoc',

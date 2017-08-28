@@ -244,12 +244,12 @@
 			    <md-icon><i class="fa fa-th" aria-hidden="true"></i></md-icon>
 			  </md-button>
 
-			  <md-button class="md-fab md-mini md-clean" @click="goTo('/Qth')">
+			  <md-button class="md-fab md-mini md-clean" @click="goTo('/Saleh')">
 			    <md-icon><i class="fa fa-chevron-left" aria-hidden="true"></i></md-icon>
 			  	<md-tooltip md-direction="left" style="font-size:14px;">ย้อนกลับ</md-tooltip>
 			  </md-button>			  
 
-			  <md-button class="md-fab md-mini md-clean" @click="goTo('/Qth')">
+			  <md-button class="md-fab md-mini md-clean" @click="goTo('/Saleh')">
 			    <md-icon><i class="fa fa-pencil-square-o" aria-hidden="true"></i></md-icon>
 			    <md-tooltip md-direction="left" style="font-size:14px;">บันทึกเอกสาร</md-tooltip>
 			  </md-button>
