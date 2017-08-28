@@ -79,27 +79,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            	<td style="width: 50px; text-align:center;">1</td>
-                            	<td style="width: 200px; text-align:left;">2120250</td>
-                            	<td style="width: 290px; text-align:left;">น้ำยาเชื่อมท่อ</td>
+                            <tr v-for="item_list in detail_itemlists">
+                            	<td style="width: 50px; text-align:center;">{{ item_list.no }}</td>
+                            	<td style="width: 200px; text-align:left;">{{ item_list.item_code }}</td>
+                            	<td style="width: 290px; text-align:left;">{{ item_list.item_name }}</td>
                             	<td style="width: 150px; padding:0 0.5%;">
-                            		<select>
-                            			<option>กระป๋อง</option>
-                            			<option>กล่อง</option>
+                            		<select v-bind="unit_list">
+                            			<option v-for="unit in item_list.units" :value="unit.price" :selected="unit.price == item_list.price ? 'selected' : ''" style="cursor: pointer;">{{ unit.unit_name }}</option>
                             		</select>
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00">
+                            		<input type="text" placeholder="0.00" :value="formatMoney(item_list.qty)">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00">
+                            		<input type="text" placeholder="0.00" :value="formatMoney(item_list.price)">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0%, 0.00">
+                            		<input type="text" placeholder="0%, 0.00" :value="formatMoney(item_list.discount)">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00">
+                            		<input type="text" placeholder="0.00" :value="formatMoney(item_list.netAmountItem)">
                             	</td>
                             </tr>
                         </tbody>

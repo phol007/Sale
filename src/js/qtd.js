@@ -1,5 +1,6 @@
 import api from '../service/services.js'
 import moment from 'moment'
+import numeral from 'numeral'
 import $ from 'jquery'
 import Datepicker from 'vuejs-datepicker'
 
@@ -34,7 +35,8 @@ export default {
       EmpName: '',
       item_lists: [],
       moSitem: '',
-      detail_itemlists: []
+      detail_itemlists: [],
+      unit_list: ''
     }
   },
   components: {    
@@ -187,6 +189,9 @@ export default {
       var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
       this.sendDay = diffDays
     },
+    formatMoney (int) {
+      return numeral(int).format('0,0.00')
+    },
     GenDocNo (tableName, billType) {
       $("#loading").addClass('is-active')
       api.gen_docNOAX(tableName, billType,
@@ -209,7 +214,19 @@ export default {
     },
     detailItemlist (item) {
       console.log(item)
-      this.detail_itemlists = []
+      this.detail_itemlists.push(
+      {
+        no: this.detail_itemlists.length + 1,
+        item_code: item.item_code,
+        item_name: item.item_name,
+        units: item.units,
+        qty: 1,
+        price: item.units[0].price,
+        discount: 0,
+        netAmountItem: 1*item.units[0].price,
+        stock_list: item.stock_list
+      }
+      )
     }
   },
   mounted () {
