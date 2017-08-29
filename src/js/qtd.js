@@ -324,24 +324,37 @@ export default {
       }.bind(this), 700)     
     },
     calVatnetAmount () {
+     // console.log(this.vatType)
       var sumTotal = 0
       for(var i = 0; i < this.detail_itemlists.length; i++){
         sumTotal += this.numberInt(this.detail_itemlists[i].netAmountItem)
       }
-      switch (this.vatType) {
+      switch (parseInt(this.vatType)) {
         case 1 : // แยกนอก
                 console.log("แยกนอก " + sumTotal)
-                this.netVatAmount = this.formatMoney((sumTotal-this.numberInt(this.billDiscount))+(sumTotal * (this.taxRage/100)))
+                this.taxRage = 7
+                this.netVatAmount = this.formatMoney((sumTotal-this.numberInt(this.billDiscount)) * (this.taxRage/100))
                 this.totalItemAmount = this.formatMoney(sumTotal-this.numberInt(this.billDiscount))
-                this.billnetAmount = this.numberInt(this.netVatAmount)
+                this.billnetAmount = this.numberInt(this.netVatAmount)+(sumTotal-this.numberInt(this.billDiscount))
                 this.billDiscount = this.formatMoney(this.billDiscount)
           break
         case 2 : // รวมใน
                 console.log("รวมใน " + sumTotal)
+                this.taxRage = 7
+                this.netVatAmount = this.formatMoney((sumTotal-this.numberInt(this.billDiscount))-(((sumTotal-this.numberInt(this.billDiscount)) * 100)/(this.taxRage+100)))
+                this.totalItemAmount = this.formatMoney(sumTotal-this.numberInt(this.billDiscount))
+                this.billnetAmount = this.numberInt(sumTotal-this.numberInt(this.billDiscount))
+                this.billDiscount = this.formatMoney(this.billDiscount)
           break
         case 3 : // อัตราศูนย์
                 console.log("อัตราศูนย์ " + sumTotal)
+                this.netVatAmount = this.formatMoney(0)
+                this.totalItemAmount = this.formatMoney(sumTotal-this.numberInt(this.billDiscount))
+                this.billnetAmount = this.numberInt(sumTotal-this.numberInt(this.billDiscount))
+                this.billDiscount = this.formatMoney(this.billDiscount)
+                this.taxRage = 0
           break
+        default : console.log(this.vatType)
       }
     }
   },
