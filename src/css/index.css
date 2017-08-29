@@ -70,23 +70,25 @@
 .Tr-l {
 	/*border: 1px solid blue;*/
 	height: 60%;
-	width: 40%;
+	width: 35%;
 	float: left;
-	padding: 2%;
+	padding: 1%;
 	text-align: center;
-	font-size: 30px;
+	font-size: 25px;
 	font-weight: bold;
 	word-wrap: break-word;
 	color: #dedfe0;
 }
 	.Tr-l i{
 		font-size: 40px;
+		margin-top: 2%;
+		line-height: 50px;
 	}
 
 .Tr-r {
 	border-left: 2px solid #dedfe0;
 	height: 60%;
-	width: 60%;
+	width: 65%;
 	float: left;
 	padding: 2%;
 	padding-left: 0;

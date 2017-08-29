@@ -36,7 +36,13 @@ export default {
       item_lists: [],
       moSitem: '',
       detail_itemlists: [],
-      unit_list: ''
+      unit_list: '',
+      qty: '',
+      hold: 0,
+      billDiscount: this.formatMoney(0),
+      netVatAmount: this.formatMoney(0),
+      totalItemAmount: this.formatMoney(0),
+      billnetAmount: 0
     }
   },
   components: {    
@@ -49,7 +55,7 @@ export default {
         this.moSitem = ''
         this.searchItems(this.moSitem)
       }else{
-        alert("กรุณาเลือกเจ้าหนี้ให้เรียบร้อย")
+        alert("กรุณาเลือกลูกหนี้ให้เรียบร้อย")
       }
   	},
   	CSItem () {
@@ -139,9 +145,20 @@ export default {
         }
       )
     },
+    return_price (units) {
+      if(units==null){
+        return 'ไม่ได้ผูกราคา'
+      }else{
+        return units[0].price
+      }
+    },
     selectItem (item) {
-      this.CSItem()
-      this.detailItemlist(item)
+      if(item.units == null){
+        alert('ไม่มีหน่วยนับ')
+      }else{
+        this.CSItem()
+        this.detailItemlist(item)  
+      }      
     },
     calExpDate (addDay) {
       var d = new Date()
@@ -192,6 +209,67 @@ export default {
     formatMoney (int) {
       return numeral(int).format('0,0.00')
     },
+    numberInt (str) {
+      return numeral(str).value()
+    },
+    return_Int_Discount (str){
+      this.billDiscount = this.numberInt(str)
+    },
+    return_FM_Discount (int) {
+      this.billDiscount = this.formatMoney(int)
+    },
+    return_Int_Item (lineNumber, cnt, price, discount) {
+      for(var i = 0; i < this.detail_itemlists.length; i++){
+        if(i==lineNumber){
+          if(cnt!=''){
+            this.detail_itemlists[i].qty = this.numberInt(cnt)
+          }
+          if(price!=''){
+            this.detail_itemlists[i].price = this.numberInt(price)
+          }
+          if(discount!=''){
+            this.detail_itemlists[i].discount = this.numberInt(discount)
+          }
+        }
+      }
+    },
+    return_FM_Item (lineNumber, cnt, price, discount) {
+      for(var i = 0; i < this.detail_itemlists.length; i++){
+        if(i==lineNumber){
+          if(cnt!=''){
+            this.detail_itemlists[i].qty = this.formatMoney(cnt)
+          }
+          if(price!=''){
+            this.detail_itemlists[i].price = this.formatMoney(price)
+          }
+          if(discount!=''){
+            this.detail_itemlists[i].discount = this.formatMoney(discount)
+          }
+        }
+      }
+    },
+    calNetAmount (lineNumber, unit, cnt, price, discount, itemAmount) {
+      //alert('lineNumber = '+lineNumber+', unit = '+unit+', cnt = '+cnt+', price = '+price+', discount = '+discount)
+      if(price==''){
+        price = unit.price
+      }
+      if(this.numberInt(discount) <= this.numberInt(itemAmount)){
+        var data = this.detail_itemlists
+        for (var i = 0; i < this.detail_itemlists.length; i++) {
+          if(i==lineNumber-1){
+            data[i].unit = unit
+            data[i].qty = this.formatMoney(this.numberInt(cnt))
+            data[i].price = this.formatMoney(this.numberInt(price))
+            data[i].discount = this.formatMoney(discount)
+            data[i].netAmountItem = this.formatMoney((this.numberInt(cnt)*this.numberInt(price))-this.numberInt(discount))
+          }
+        }
+        this.calVatnetAmount()
+      }else{
+        alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
+        this.detail_itemlists[lineNumber-1].discount = this.formatMoney(0)
+      }
+    },
     GenDocNo (tableName, billType) {
       $("#loading").addClass('is-active')
       api.gen_docNOAX(tableName, billType,
@@ -204,6 +282,7 @@ export default {
           this.nowDate = {
               to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
           }
+          this.calVatnetAmount()
         },
         (error) => {
           $("#loading").removeClass('is-active')
@@ -213,20 +292,57 @@ export default {
       )
     },
     detailItemlist (item) {
-      console.log(item)
+      
       this.detail_itemlists.push(
       {
         no: this.detail_itemlists.length + 1,
         item_code: item.item_code,
         item_name: item.item_name,
         units: item.units,
-        qty: 1,
-        price: item.units[0].price,
-        discount: 0,
-        netAmountItem: 1*item.units[0].price,
+        unit_select: item.units[0],
+        qty: this.formatMoney(1),
+        price: this.formatMoney(item.units[0].price),
+        discount: this.formatMoney(0),
+        netAmountItem: this.formatMoney(1*item.units[0].price),
         stock_list: item.stock_list
       }
       )
+      this.calVatnetAmount()
+    },
+    delete_item (index) {
+      this.hold++
+      if(this.hold===2){
+        this.detail_itemlists.splice(index, 1)
+        for(var i = 0; i < this.detail_itemlists.length; i++){
+          this.detail_itemlists[i].no = i+1
+        }
+        this.hold=0
+        this.calVatnetAmount()
+      }
+      setTimeout(function() {
+        this.hold=0
+      }.bind(this), 700)     
+    },
+    calVatnetAmount () {
+      var sumTotal = 0
+      for(var i = 0; i < this.detail_itemlists.length; i++){
+        sumTotal += this.numberInt(this.detail_itemlists[i].netAmountItem)
+      }
+      switch (this.vatType) {
+        case 1 : // แยกนอก
+                console.log("แยกนอก " + sumTotal)
+                this.netVatAmount = this.formatMoney((sumTotal-this.numberInt(this.billDiscount))+(sumTotal * (this.taxRage/100)))
+                this.totalItemAmount = this.formatMoney(sumTotal-this.numberInt(this.billDiscount))
+                this.billnetAmount = this.numberInt(this.netVatAmount)
+                this.billDiscount = this.formatMoney(this.billDiscount)
+          break
+        case 2 : // รวมใน
+                console.log("รวมใน " + sumTotal)
+          break
+        case 3 : // อัตราศูนย์
+                console.log("อัตราศูนย์ " + sumTotal)
+          break
+      }
     }
   },
   mounted () {
