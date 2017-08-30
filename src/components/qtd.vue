@@ -51,7 +51,7 @@
 	    		รหัสลูกค้า
 	    	</div>
 	    	<div class="lb-r">
-	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ..." v-model="ArID" readonly @click="SearchCusto">
+	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ..." v-model="ArCode" readonly @click="SearchCusto">
 	    		<i class="fa fa-search" aria-hidden="true" @click="SearchCusto"></i>
 	    	</div>
 	    	<div class="lb-l">
@@ -88,16 +88,16 @@
                             		</select>
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, '', '')">
+                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, '', item_list.price, '')">
+                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, '', '', item_list.discount)">
+                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00" v-model="item_list.netAmountItem" readonly>
+                            		<input type="text" placeholder="0.00" v-model="item_list.amount" readonly>
                             	</td>
                             </tr>
                         </tbody>
@@ -133,13 +133,13 @@
 		    	<div class="tarea">
 		    		หมายเหตุ 1
 		    	</div>
-		    	<textarea rows="3">
+		    	<textarea rows="3" v-model="discription1">
 		    		
 		    	</textarea>
 		    	<div class="tarea">
 		    		หมายเหตุ 2
 		    	</div>
-		    	<textarea rows="3">
+		    	<textarea rows="3" v-model="discription2">
 		    		
 		    	</textarea>
 	    	</div>
@@ -172,7 +172,7 @@
 		    		เครดิต | วัน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เครดิต..." v-model="creditDay">
+		    		<input type="number" class="input" placeholder="เครดิต..." v-model="creditDay" readonly>
 		    	</div>
 	    	</div>
 	    	<div class="btt-block">
@@ -189,10 +189,10 @@
 		    		คำตอบจากลูกค้า
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<select>
-		    			<option>รอตอบกลับ</option>
-		    			<option>ตอบกลับแล้ว</option>
-		    			<option>ไม่รับราคา</option>
+		    		<select v-model="custo_assert">
+		    			<option value="1">รอตอบกลับ</option>
+		    			<option value="2">ตอบกลับแล้ว</option>
+		    			<option value="3">ไม่รับราคา</option>
 		    		</select>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
@@ -206,6 +206,12 @@
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
 		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" v-on:input="calDeliDay(deliveryDate)"></datepicker>
+		    	</div>
+		    	<div class="lb-l" style="width:50%">
+		    		วันที่ครบกำหนด
+		    	</div>
+		    	<div class="lb-r" style="width:50%">
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" v-on:input="calcreditDay(dueDate)"></datepicker>
 		    	</div>
 	    	</div>
 	    	<div class="btt-block" style="border:0;">
@@ -247,7 +253,7 @@
 			  	<md-tooltip md-direction="left" style="font-size:14px;">ย้อนกลับ</md-tooltip>
 			  </md-button>			  
 
-			  <md-button class="md-fab md-mini md-clean" @click="goTo('/Saleh')">
+			  <md-button class="md-fab md-mini md-clean" @click="insert_QT">
 			    <md-icon><i class="fa fa-pencil-square-o" aria-hidden="true"></i></md-icon>
 			    <md-tooltip md-direction="left" style="font-size:14px;">บันทึกเอกสาร</md-tooltip>
 			  </md-button>
@@ -363,7 +369,7 @@
 	      	<input type="text" class="input" placeholder="กรุณากรอกรายละเอียดพนักงาน" @keyup.enter="searchEmp(moSemp)" v-model="moSemp">
 	      </div>
 	      <div class="S-r">
-	      	<button class="button is-info">
+	      	<button class="button is-info" @click="searchEmp(moSemp)">
 		      	<span class="icon">
 				  <i class="fa fa-search"></i>
 				</span>&nbsp;

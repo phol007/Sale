@@ -69,5 +69,15 @@ export default {
         error(response)
       }
     )
+  },
+  insertQTAX (obj, success, error) {
+    Vue.axios.post('http://venus:3000/quotation', JSON.stringify(obj)).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }
