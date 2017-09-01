@@ -60,8 +60,8 @@ export default {
       }
     )
   },
-  searchItemAX (keyword, billtype, isCon, arCode, success, error) {
-    Vue.axios.get('http://venus:8000/items?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&keyword=' + keyword).then(
+  searchItemAX (keyword, billtype, isCon, arCode, vatType, success, error) {
+    Vue.axios.get('http://venus:8000/items?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&vatType='+ vatType +'&keyword=' + keyword).then(
       (response) => {
         success(response.data)
       },

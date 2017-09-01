@@ -173,7 +173,7 @@ export default {
       // console.log (this.ArID)
       // console.log (this.isConditionSend)
       $("#loading").addClass('is-active')
-      api.searchItemAX(keyword, this.billType, this.ArID, this.isConditionSend,
+      api.searchItemAX(keyword, this.billType, this.ArID, this.isConditionSend, this.vatType,
         (result) => {
           $("#loading").removeClass('is-active')
           if (result.status == "success") {
