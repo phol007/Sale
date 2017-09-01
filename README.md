@@ -32,6 +32,11 @@ import '../node_modules/material-icons/css/material-icons.css'
 # datepicker
 https://www.npmjs.com/package/vuejs-datepicker
 
+# alert 
+npm install sweetalert --save
+import VueSweetAlert from 'sweetalert'
+import 'sweetalert/dist/sweetalert.css'
+
 ```
 ## Set config after build project
 # set path index

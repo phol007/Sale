@@ -59,11 +59,28 @@ export default {
   methods: {
     SearchItem() {
       if (this.ArName) {
-        $('#SItem').addClass('is-active')
-        this.moSitem = ''
-        this.searchItems(this.moSitem)
+        if(this.detail_itemlists.length==0){
+          swal({
+            title: "แจ้งเตือน !",
+            text: "กรุณาตรวจสอบประเภทภาษี, ประเภทการขาย, ประเภทการขนส่งและลูกหนี้ให้เรียบร้อย เมื่อเพิ่มจำนวนสินค้าแล้วจะไม่สามารถเปลี่ยนแปลงข้อมูลขั้นต้นได้ ท่านต้องการดำเนินการต่อหรือไม่ >-<! ",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            showLoaderOnConfirm: true,
+          },
+          function(){
+            $('#SItem').addClass('is-active')
+            this.moSitem = ''
+            this.searchItems(this.moSitem)
+          }.bind(this))
+
+        }else{
+          $('#SItem').addClass('is-active')
+          this.moSitem = ''
+          this.searchItems(this.moSitem)
+        }
       } else {
-        alert("กรุณาเลือกลูกหนี้ให้เรียบร้อย")
+       swal("แจ้งเตือน", "กรุณาเลือกลูกหนี้ให้เรียบร้อย")
       }
     },
     CSItem() {
@@ -413,12 +430,30 @@ export default {
     delete_item(index) {
       this.hold++
         if (this.hold === 2) {
-          this.detail_itemlists.splice(index, 1)
-          for (var i = 0; i < this.detail_itemlists.length; i++) {
-            this.detail_itemlists[i].no = i + 1
-          }
-          this.hold = 0
-          this.calVatnetAmount()
+          swal({
+            title: "ลบรายการสินค้า",
+            text: "ท่านต้องการลบรายการสินค้าที่เลือกหรือไม่",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "ตกลง",
+            cancelButtonText: "ยกเลิก",
+            closeOnConfirm: false,
+            closeOnCancel: false
+          },
+          function(isConfirm){
+            if (isConfirm) {              
+              this.detail_itemlists.splice(index, 1)
+              for (var i = 0; i < this.detail_itemlists.length; i++) {
+                this.detail_itemlists[i].no = i + 1
+              }
+              this.hold = 0
+              this.calVatnetAmount()
+              swal("Deleted!", "ลบสินค้าเรียบร้อยแล้ว", "success",{ Timer: 2000});
+            } else {
+              
+            }
+          }.bind(this))
         }
       setTimeout(function() {
         this.hold = 0
@@ -551,17 +586,39 @@ export default {
       }
       // console.log(item_Sub)
       console.log(obj)
-      api.insertQTAX(obj,
-        (result) => {
-          alert("บันทึกเรียบร้อยเอกสารเลขที่ "+ this.DocNo + " เรียบร้อยแล้ว")
-          this.$router.push('/Saleh')
-        },
-        (error) => {
+      if(this.EmpID!='' && this.detail_itemlists.length != 0){
+        api.insertQTAX(obj,
+          (result) => {
+            alert("บันทึกเรียบร้อยเอกสารเลขที่ "+ this.DocNo + " เรียบร้อยแล้ว")
+            this.$router.push('/Saleh')
+          },
+          (error) => {
+            $("#loading").removeClass('is-active')
+            alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
+            console.log(error)
+          }
+        )
+      }else{
+        if(this.EmpID==0){
+          swal("กรุณาเลือกพนักงานขาย")
           $("#loading").removeClass('is-active')
-          alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
-          console.log(error)
+          this.SearchEmplo()         
+        }else{
+          $("#loading").removeClass('is-active')
+          swal({
+            title: "แจ้งเตือน",
+            text: "เอกสารนี้ ไม่มีรายการสินค้า",
+            type: "warning",
+            showCancelButton: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: false
+          },
+          function(){
+            this.SearchItem()
+          }.bind(this))
         }
-      )
+      }
     }
   },
   mounted() {

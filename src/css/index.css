@@ -6,6 +6,10 @@
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
 }
+
+input[type="text"]:disabled {
+	background: #fff;
+}
 	.navleft {
 		width: 70px;
 		/*border: 1px yellow solid;*/

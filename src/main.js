@@ -10,6 +10,8 @@ import 'vue-material/dist/vue-material.css'
 import './css/index.css'
 import './css/table.css'
 import './css/loading.css'
+import VueSweetAlert from 'sweetalert'
+import 'sweetalert/dist/sweetalert.css'
 
 Vue.config.productionTip = false
 
@@ -19,6 +21,7 @@ Vue.use(VueMaterial.MdIcon)
 Vue.use(VueMaterial.MdSidenav)
 Vue.use(VueMaterial.MdToolbar)
 Vue.use(VueMaterial)
+Vue.use(VueSweetAlert)
 
 /* eslint-disable no-new */
 new Vue({

@@ -24,7 +24,7 @@
 	    		ประเภทภาษี
 	    	</div>
 	    	<div class="lb-r">
-	    		<select v-model="vatType" @change="calVatnetAmount()">
+	    		<select v-model="vatType" @change="calVatnetAmount()" :disabled="detail_itemlists.length!=0">
 	    			<option value="1">แยกนอก</option>
 	    			<option value="2">รวมใน</option>
 	    			<option value="3">อัตราศูนย์</option>
@@ -34,7 +34,7 @@
 	    		ประเภทราคา
 	    	</div>
 	    	<div class="lb-r">
-	    		<select v-model="billType" @change="GenDocNo('QT', billType-1)">
+	    		<select v-model="billType" @change="GenDocNo('QT', billType-1)" :disabled="detail_itemlists.length!=0">
 	    			<option value="1">ขายสด</option>
 	    			<option value="2">ขายเชื่อ</option>
 	    		</select>
@@ -51,14 +51,14 @@
 	    		รหัสลูกค้า
 	    	</div>
 	    	<div class="lb-r">
-	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ..." v-model="ArCode" readonly @click="SearchCusto">
-	    		<i class="fa fa-search" aria-hidden="true" @click="SearchCusto"></i>
+	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ..." v-model="ArCode" readonly @click="SearchCusto" :disabled="detail_itemlists.length!=0">
+	    		<i class="fa fa-search" aria-hidden="true" @click="SearchCusto" :disabled="detail_itemlists.length!=0"></i>
 	    	</div>
 	    	<div class="lb-l">
 	    		ชื่อลูกค้า
 	    	</div>
 	    	<div class="lb-r">
-	    		<input type="text" class="input" placeholder="ชื่อลูกค้า..." v-model="ArName" readonly @click="SearchCusto">
+	    		<input type="text" class="input" placeholder="ชื่อลูกค้า..." v-model="ArName" readonly @click="SearchCusto" :disabled="detail_itemlists.length!=0">
 	    	</div>
 	    </div>
 	    <hr style="clear:both; margin: 0% 2% 0.5% 2%;" />
@@ -180,7 +180,7 @@
 		    		เงื่อนไขขนส่ง
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<select v-model="isConditionSend">
+		    		<select v-model="isConditionSend" :disabled="detail_itemlists.length!=0">
 		    			<option value="1">รับเอง</option>
 		    			<option value="2">ส่งให้</option>
 		    		</select>
