@@ -181,6 +181,7 @@ input[type="text"]:disabled {
 			text-align: right;
 			padding-right: 10%;
 			cursor: pointer;
+			position: static;
 		}
 
 	.QT-body {

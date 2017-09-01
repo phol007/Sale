@@ -17,7 +17,13 @@ export default {
           localStorage.DataUser = JSON.stringify(result.data)
           this.$router.push('/Saleh')
           $("#loading").removeClass('is-active')
-          alert('Login สำเร็จ')
+          swal({
+            title: "ยินดีต้อนรับ",
+            text: "ผู้ใช้งาน "+result.data.username+" เข้าสู่ระบบสำเร็จ !",
+            timer: 2000,
+            image: '../assets/success.gif',
+            showConfirmButton: false
+          });
         }
       },
       (error) => {

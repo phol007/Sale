@@ -45,7 +45,7 @@
 	    		วันที่เอกสาร 
 	    	</div>
 	    	<div class="lb-r">
-	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
+	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" style="position: static;"></datepicker>
 	    	</div>
 	    	<div class="lb-l">
 	    		รหัสลูกค้า
@@ -222,23 +222,18 @@
 		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า..." readonly v-model="totalItemAmount">
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
-		    		อัตราภาษีมูลค้าเพิ่ม
-		    	</div>
-		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="7" readonly style="width:85%" v-model="taxRage"><span style="margin-left:3%; line-height:40px; font-weight:bold;"> % </span>
-		    	</div>
-		    	<div class="lb-l" style="width:45%">
-		    		ภาษีมูลค่าเพิ่ม
-		    	</div>
-		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="ภาษีมูลค่าเพิ่ม.." readonly v-model="netVatAmount">
-		    	</div>
-		    	<div class="lb-l" style="width:45%">
 		    		ส่วนลด %, บาท
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
 		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calVatnetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)">
 		    	</div>
+		    	<div class="lb-l" style="width:45%">
+		    		อัตราภาษีมูลค้าเพิ่ม
+		    	</div>
+		    	<div class="lb-r" style="width:55%">
+		    		<input type="text" class="input" placeholder="7" readonly style="width:20%" v-model="taxRage"><span style="margin-left:3%; line-height:40px; font-weight:bold;"> % &nbsp;= &nbsp;</span>
+		    		<input type="text" class="input" placeholder="ภาษีมูลค่าเพิ่ม.." readonly v-model="netVatAmount" style="width:50%">
+		    	</div>	    	
 	    	</div>
 	    </div>
 

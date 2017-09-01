@@ -113,7 +113,7 @@ export default {
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "OK",
-            closeOnConfirm: false
+            closeOnConfirm: true
           },
           function(){
             this.$router.push(page)
