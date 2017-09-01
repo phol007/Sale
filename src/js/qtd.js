@@ -103,7 +103,22 @@ export default {
       $('#SEmplo').removeClass('is-active')
     },
     goTo(page) {
-      this.$router.push(page)
+      if(this.detail_itemlists.length==0){
+        this.$router.push(page)
+      }else{
+         swal({
+            title: "แจ้งเตือน",
+            text: "เอกสารนี้มีสินค้าอยู่ ท่านต้องการดำเนินการต่อหรือไม่",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: false
+          },
+          function(){
+            this.$router.push(page)
+          }.bind(this))
+      }
     },
     toDay() {
       var day = new Date()
