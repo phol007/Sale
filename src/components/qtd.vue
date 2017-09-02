@@ -78,9 +78,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item_list, index) in detail_itemlists">
+                            <tr v-for="(item_list, index) in detail_itemlists" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">
                             	<td style="width: 50px; text-align:center;">{{ item_list.no }}</td>
-                            	<td style="width: 200px; text-align:left;" v-on:click="delete_item(index, $event)">{{ item_list.item_code }}</td>
+                            	<td style="width: 200px; text-align:left;">{{ item_list.item_code }}</td>
                             	<td style="width: 290px; text-align:left;">{{ item_list.item_name }}</td>
                             	<td style="width: 150px; padding:0 0.5%;">
                             		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calNetAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem)">

@@ -24,9 +24,7 @@ export default {
       return numeral(int).format('0,0.00')
     },
   	goTo (page) {
-    //   console.log(page)
-  		// this.$router.push(page)
-      alert(page)
+  		this.$router.push(page)
   	},
     show_tool () {
       this.hold = 0
@@ -78,7 +76,7 @@ export default {
         },
         (error) => {
           $("#loading").removeClass('is-active')
-          alert('กรุณาตรวจสอบเซิร์ฟเวอร์ '+ error)
+          swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
           console.log(error)
         })
       }else{
@@ -146,20 +144,38 @@ export default {
         cancel_date_time: ''
       }
       //console.log(JSON.stringify(body))
-      api.cancelQTAX(body, 
-        (result) => {
-          //console.log(result.data)
-          $('#loading').removeClass('is-active')
-          swal("cancel Quotation", "ยกเลิกใบเสนอราคาเรียบร้อย", "success")
-          this.tool = false          
-          this.history('')
-        },
-        (error) => {
-          this.tool = false
-          $('#loading').removeClass('is-active')
-          console.log(error)
-        }
-      )
+      swal({
+        title: "ยกเลิกเอกสาร",
+        text: "ท่านต้องการยกเลิกเอาสารใบนี้หรือไม่ ?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ปิด",
+        closeOnConfirm: false
+      },
+      function(){        
+        api.cancelQTAX(body, 
+          (result) => {
+            //console.log(result.data)
+            $('#loading').removeClass('is-active')
+             swal({
+              title: "cancel Quotation",
+              text: "ยกเลิกใบเสนอราคาเรียบร้อย",
+              timer: 1000,
+              type: "success",
+              showConfirmButton: false
+            })                       
+            this.tool = false          
+            this.history('')
+          },
+          (error) => {
+            this.tool = false
+            $('#loading').removeClass('is-active')
+            console.log(error)
+          }
+        )
+      }.bind(this))
     }
   },
   mounted () {

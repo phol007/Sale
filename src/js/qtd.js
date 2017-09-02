@@ -50,37 +50,51 @@ export default {
       discription2: '',
       custo_assert: 1,
       dueDate: '',
-      beforeNetAmount: 0
+      beforeNetAmount: 0,
+      test: ''
     }
   },
   components: {
     Datepicker
   },
   methods: {
+    taphold(index) {
+      this.hold = 0
+      this.test = setInterval(function() {
+        this.hold += 1
+        if (this.hold == 3) {
+          this.delete_item(index)
+          this.holdover()
+        }
+      }.bind(this), 500);
+    },
+    holdover() {
+      clearInterval(this.test)
+    },
     SearchItem() {
       if (this.ArName) {
-        if(this.detail_itemlists.length==0){
+        if (this.detail_itemlists.length == 0) {
           swal({
-            title: "แจ้งเตือน !",
-            text: "กรุณาตรวจสอบประเภทภาษี, ประเภทการขาย, ประเภทการขนส่งและลูกหนี้ให้เรียบร้อย เมื่อเพิ่มจำนวนสินค้าแล้วจะไม่สามารถเปลี่ยนแปลงข้อมูลขั้นต้นได้ ท่านต้องการดำเนินการต่อหรือไม่ >-<! ",
-            type: "info",
-            showCancelButton: true,
-            closeOnConfirm: true,
-            showLoaderOnConfirm: true,
-          },
-          function(){
-            $('#SItem').addClass('is-active')
-            this.moSitem = ''
-            this.searchItems(this.moSitem)
-          }.bind(this))
+              title: "แจ้งเตือน !",
+              text: "กรุณาตรวจสอบประเภทภาษี, ประเภทการขาย, ประเภทการขนส่งและลูกหนี้ให้เรียบร้อย เมื่อเพิ่มจำนวนสินค้าแล้วจะไม่สามารถเปลี่ยนแปลงข้อมูลขั้นต้นได้ ท่านต้องการดำเนินการต่อหรือไม่ >-<! ",
+              type: "info",
+              showCancelButton: true,
+              closeOnConfirm: true,
+              showLoaderOnConfirm: true,
+            },
+            function() {
+              $('#SItem').addClass('is-active')
+              this.moSitem = ''
+              this.searchItems(this.moSitem)
+            }.bind(this))
 
-        }else{
+        } else {
           $('#SItem').addClass('is-active')
           this.moSitem = ''
           this.searchItems(this.moSitem)
         }
       } else {
-       swal("แจ้งเตือน", "กรุณาเลือกลูกหนี้ให้เรียบร้อย")
+        swal("แจ้งเตือน", "กรุณาเลือกลูกหนี้ให้เรียบร้อย")
       }
     },
     CSItem() {
@@ -103,10 +117,10 @@ export default {
       $('#SEmplo').removeClass('is-active')
     },
     goTo(page) {
-      if(this.detail_itemlists.length==0){
+      if (this.detail_itemlists.length == 0) {
         this.$router.push(page)
-      }else{
-         swal({
+      } else {
+        swal({
             title: "แจ้งเตือน",
             text: "เอกสารนี้มีสินค้าอยู่ ท่านต้องการดำเนินการต่อหรือไม่",
             type: "warning",
@@ -115,7 +129,7 @@ export default {
             confirmButtonText: "OK",
             closeOnConfirm: true
           },
-          function(){
+          function() {
             this.$router.push(page)
           }.bind(this))
       }
@@ -183,7 +197,7 @@ export default {
         },
         (error) => {
           $("#loading").removeClass('is-active')
-          alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
+          swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
           console.log(error)
         }
       )
@@ -197,7 +211,7 @@ export default {
     },
     selectItem(item) {
       if (item.units == null) {
-        alert('ไม่มีหน่วยนับ')
+        swal("แจ้งเตือน", "ไม่มีหน่วยนับ !!")
       } else {
         this.CSItem()
         this.detailItemlist(item)
@@ -347,19 +361,19 @@ export default {
         }
       }
     },
-    return_date (str) {
+    return_date(str) {
       var date = str.split("/")
       var m = date[0]
       var d = date[1]
       var y = date[2]
-      return y+'/'+m+'/'+d
+      return y + '/' + m + '/' + d
     },
     calNetAmount(lineNumber, unit, cnt, price, discount, itemAmount) {
       //alert ('lineNumber = '+lineNumber+', unit = '+unit+', cnt = '+cnt+', price = '+price+', discount = '+discount)
       if (price == '') {
         price = unit.price
       }
-      console.log(this.numberInt(discount)+", "+this.numberInt(itemAmount))
+      console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
       if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
         var data = this.detail_itemlists
         if (discount.includes("%") === true) {
@@ -367,12 +381,12 @@ export default {
         } else {
           discount = this.formatMoney(discount)
         }
-        if(parseInt(this.vatType)==2){
+        if (parseInt(this.vatType) == 2) {
           this.taxRage = 7
           // console.log(true)
           var netAmountItem = ((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
-          netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price) -netAmountItem)
-        }else{
+          netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price) - netAmountItem)
+        } else {
           var netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price))
         }
 
@@ -390,7 +404,8 @@ export default {
         console.log(this.detail_itemlists)
         this.calVatnetAmount()
       } else {
-        alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
+        // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
+        swal("แจ้งเตือน", "ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
         this.detail_itemlists[lineNumber - 1].discount = this.formatMoney(0)
       }
     },
@@ -411,16 +426,16 @@ export default {
         },
         (error) => {
           $("#loading").removeClass('is-active')
-          alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
+          swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
           console.log(error)
         }
       )
     },
     detailItemlist(item) {
-      if(parseInt(this.vatType)==2){
+      if (parseInt(this.vatType) == 2) {
         this.taxRage = 7
         var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
-      }else{
+      } else {
         var netAmountItem = this.formatMoney(1 * item.units[0].price)
       }
       this.detail_itemlists.push({
@@ -434,7 +449,7 @@ export default {
         qty: this.formatMoney(1),
         price: this.formatMoney(item.units[0].price),
         discount: this.formatMoney(0),
-        amount: this.formatMoney(1* item.units[0].price),
+        amount: this.formatMoney(1 * item.units[0].price),
         netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
         home_amount: this.formatMoney(1 * item.units[0].price),
         stock_list: item.stock_list,
@@ -443,36 +458,30 @@ export default {
       this.calVatnetAmount()
     },
     delete_item(index) {
-      this.hold++
-        if (this.hold === 2) {
-          swal({
-            title: "ลบรายการสินค้า",
-            text: "ท่านต้องการลบรายการสินค้าที่เลือกหรือไม่",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "ตกลง",
-            cancelButtonText: "ยกเลิก",
-            closeOnConfirm: false,
-            closeOnCancel: false
-          },
-          function(isConfirm){
-            if (isConfirm) {              
-              this.detail_itemlists.splice(index, 1)
-              for (var i = 0; i < this.detail_itemlists.length; i++) {
-                this.detail_itemlists[i].no = i + 1
-              }
-              this.hold = 0
-              this.calVatnetAmount()
-              swal("Deleted!", "ลบสินค้าเรียบร้อยแล้ว", "success",{ Timer: 2000});
-            } else {
-              
+      swal({
+          title: "ลบรายการสินค้า",
+          text: "ท่านต้องการลบรายการสินค้าที่เลือกหรือไม่",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "ตกลง",
+          cancelButtonText: "ยกเลิก",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            this.detail_itemlists.splice(index, 1)
+            for (var i = 0; i < this.detail_itemlists.length; i++) {
+              this.detail_itemlists[i].no = i + 1
             }
-          }.bind(this))
-        }
-      setTimeout(function() {
-        this.hold = 0
-      }.bind(this), 700)
+            this.hold = 0
+            this.calVatnetAmount()
+            swal("Deleted!", "ลบสินค้าเรียบร้อยแล้ว", "success", { Timer: 2000 });
+          } else {
+
+          }
+        }.bind(this))
     },
     calVatnetAmount() {
       // console.log (this.vatType)
@@ -492,7 +501,7 @@ export default {
           } else {
             this.billDiscount = this.formatMoney(this.billDiscount)
           }
-          this.beforeNetAmount = this.totalItemAmount-this.billDiscount
+          this.beforeNetAmount = this.totalItemAmount - this.billDiscount
           break
         case 2: // รวมใน
           console.log("รวมใน " + sumTotal)
@@ -505,7 +514,7 @@ export default {
           } else {
             this.billDiscount = this.formatMoney(this.billDiscount)
           }
-          this.beforeNetAmount = this.numberInt(this.billnetAmount)-this.numberInt(this.netVatAmount)
+          this.beforeNetAmount = this.numberInt(this.billnetAmount) - this.numberInt(this.netVatAmount)
           break
         case 3: // อัตราศูนย์
           console.log("อัตราศูนย์ " + sumTotal)
@@ -518,7 +527,7 @@ export default {
             this.billDiscount = this.formatMoney(this.billDiscount)
           }
           this.taxRage = 0
-          this.beforeNetAmount = this.totalItemAmount-this.billDiscount
+          this.beforeNetAmount = this.totalItemAmount - this.billDiscount
           break
         default:
           console.log(this.vatType)
@@ -585,7 +594,7 @@ export default {
         sum_item_amount: sumTotal,
         dis_count_word: this.billDiscount,
         dis_count_amount: this.numberInt(this.billDiscount),
-        after_discount_amount: this.numberInt(this.totalItemAmount)-this.numberInt(this.billDiscount), // ลบส่วนลดท้ายบิล
+        after_discount_amount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount), // ลบส่วนลดท้ายบิล
         before_tax_amount: this.beforeNetAmount, // ถอด vat 7% รวมใน
         tax_amount: this.numberInt(this.netVatAmount),
         total_amount: this.billnetAmount,
@@ -601,37 +610,38 @@ export default {
       }
       // console.log(item_Sub)
       console.log(obj)
-      if(this.EmpID!='' && this.detail_itemlists.length != 0){
+      if (this.EmpID != '' && this.detail_itemlists.length != 0) {
         api.insertQTAX(obj,
           (result) => {
-            alert("บันทึกเรียบร้อยเอกสารเลขที่ "+ this.DocNo + " เรียบร้อยแล้ว")
+            // alert("บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว")
+            swal("แจ้งเตือน", "บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว", "success")
             this.$router.push('/Saleh')
           },
           (error) => {
             $("#loading").removeClass('is-active')
-            alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
+            swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
             console.log(error)
           }
         )
-      }else{
-        if(this.EmpID==0){
+      } else {
+        if (this.EmpID == 0) {
           swal("กรุณาเลือกพนักงานขาย")
           $("#loading").removeClass('is-active')
-          this.SearchEmplo()         
-        }else{
+          this.SearchEmplo()
+        } else {
           $("#loading").removeClass('is-active')
           swal({
-            title: "แจ้งเตือน",
-            text: "เอกสารนี้ ไม่มีรายการสินค้า",
-            type: "warning",
-            showCancelButton: false,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "OK",
-            closeOnConfirm: false
-          },
-          function(){
-            this.SearchItem()
-          }.bind(this))
+              title: "แจ้งเตือน",
+              text: "เอกสารนี้ ไม่มีรายการสินค้า",
+              type: "warning",
+              showCancelButton: false,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "OK",
+              closeOnConfirm: false
+            },
+            function() {
+              this.SearchItem()
+            }.bind(this))
         }
       }
     }

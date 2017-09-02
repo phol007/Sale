@@ -38,11 +38,13 @@
 					<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>
 					<p>พนง.ขาย {{ lists.sale_code }} | {{ lists.sale_name }}</p>
 				</div>
-				<div class="del" v-show="tool == true" @click="cancel(lists)">
-					<i class="fa fa-trash" aria-hidden="true"></i>
-				</div>
-				<div class="appp" v-show="tool == true" @click="approve(lists)">
-					<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+				<div v-show="tool == true" style="height: 100%;">
+					<div class="del" v-show="tool == true && lists.is_cancel == 0 && lists.is_confirm == 0" @click="cancel(lists)">
+						<i class="fa fa-trash" aria-hidden="true"></i>
+					</div>
+					<div class="appp" v-show="tool == true && lists.is_confirm == 0 && lists.is_cancel==0" @click="approve(lists)">
+						<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+					</div>
 				</div>
 			</div>
 			<div class="H-list" v-show="history_lists==0" style="width:95% text-align:center; border:0; padding-left:40%; padding-top: 5%;">

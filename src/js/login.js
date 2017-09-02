@@ -15,20 +15,22 @@ export default {
       (result) => {
         if(result.status == 'success'){
           localStorage.DataUser = JSON.stringify(result.data)
-          this.$router.push('/Saleh')
           $("#loading").removeClass('is-active')
           swal({
             title: "ยินดีต้อนรับ",
             text: "ผู้ใช้งาน "+result.data.username+" เข้าสู่ระบบสำเร็จ !",
             timer: 2000,
-            image: '../assets/success.gif',
+            type: "success",
             showConfirmButton: false
-          });
+          })
+          setTimeout(function () {              
+            this.$router.push('/Saleh')
+          }.bind(this), 1000)        
         }
       },
       (error) => {
         $("#loading").removeClass('is-active')
-        alert('กรุณาตรวจสอบเซิร์ฟเวอร์ '+ error)
+        swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
         console.log(error)
       })
     }
