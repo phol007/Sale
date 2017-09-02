@@ -6,7 +6,7 @@
 					ค้นหา :
 				</div>
 				<div class="HS-c">
-					<input type="text" class="input" placeholder="กรอกรายละเอียดที่ต้องการค้นหา" v-model="keyword" @keyup.enter="history(keyword)">
+					<input type="text" class="input" placeholder="กรอกรายละเอียดที่ต้องการค้นหา" v-model="keyword" @keyup.enter="history(keyword)" @keyup.delete="checkDelete(keyword)">
 				</div>
 				<div class="HS-r">
 					<button class="button is-info" @click="history(keyword)">
@@ -28,16 +28,25 @@
 					</div>
 				</div>
 			</div>
-			<div class="H-list" @click="goTo('/Qtd/status')" v-for="lists in history_lists">
+			<div class="H-list" v-for="lists in history_lists" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0">
 				<div class="H-list-img">
 					<img src="../assets/logo.png">
 				</div>
-				<div class="H-list-detail">
-					<p class="H-list-dtitle">{{ lists.doc_no }}</p>
+				<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel}">
+					<p class="H-list-dtitle" :class="{'cancel_doc': lists.is_cancel}">{{ lists.doc_no }}</p>
 					<p>{{ lists.ar_code }} | {{ lists.ar_name }}</p>
 					<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>
 					<p>พนง.ขาย {{ lists.sale_code }} | {{ lists.sale_name }}</p>
 				</div>
+				<div class="del" v-show="tool == true" @click="cancel(lists)">
+					<i class="fa fa-trash" aria-hidden="true"></i>
+				</div>
+				<div class="appp" v-show="tool == true" @click="approve(lists)">
+					<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+				</div>
+			</div>
+			<div class="H-list" v-show="history_lists==0" style="width:95% text-align:center; border:0; padding-left:40%; padding-top: 5%;">
+				<span style="font-size:40px; color:red;">ไม่มีข้อมูล</span>
 			</div>
 			<nav class="pagination" role="navigation" aria-label="pagination">
 			  <ul class="pagination-list">
@@ -46,7 +55,10 @@
 	          	</li>
 			  </ul>
 			</nav>
-			<md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;">
+			<md-button class="md-fab md-fab-bottom-right" v-show="tool==true" @click="hide_tool">
+			  <i class="fa fa-times icon is-large" aria-hidden="true"></i>
+			</md-button>
+			<md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;" v-show="tool==false">
 			  <md-button class="md-fab" md-fab-trigger>
 			    <md-icon md-icon-morph><i class="fa fa-times" aria-hidden="true"></i></md-icon>
 			    <md-icon><i class="fa fa-th" aria-hidden="true"></i></md-icon>

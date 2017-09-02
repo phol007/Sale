@@ -259,6 +259,14 @@ input[type="text"]:disabled {
 		position: static;
 		margin: 0 2.5%;
 		cursor: pointer;
+		-webkit-touch-callout: none;
+	    -webkit-user-select: none;
+	    -khtml-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
+	    -webkit-user-drag: none;
+	    user-drag: none;
 	}
 		.H-list * {
 			position: static;
@@ -282,11 +290,41 @@ input[type="text"]:disabled {
 			font-size: 14px;
 			word-wrap: break-word;
 			color: gray;
+			width: 70%;
 		}
 
 		.H-list-dtitle {
 			font-weight: bold;
 			color: #000;
+		}
+
+		.H-list .appp {
+			width: 5%;
+			height: 100%;
+			background: #31aa01;
+			float: right;
+			text-align: center;
+			color: #fff;
+		}
+		.H-list .del {
+			width: 5%;
+			height: 100%;
+			background: red;
+			float: right;
+			color: #fff;
+			text-align: center;
+		}
+			.H-list .del i, .H-list .appp i{
+				font-size: 40px;
+				margin-top: 40%;
+			}
+
+		.H-list .del:active {
+			background: #d62000;
+		}
+
+		.H-list .appp:active {
+			background: #269604;
 		}
 
 	.Hsearch .HS-l {
@@ -360,6 +398,10 @@ input[type="text"]:disabled {
 	.L-form {
 		width: 80%;
 		margin: auto;
+	}
+
+	.cancel_doc {
+		color: red
 	}
 
 /* modal */

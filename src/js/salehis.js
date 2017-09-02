@@ -11,7 +11,12 @@ export default {
       keyword: '',
       history_lists: [],
       data_arr: [],
-      pageIndex: []
+      pageIndex: [],
+      tool: false,
+      hold: 0,
+      test: '',
+      user: JSON.parse(localStorage.DataUser),
+      dsearch: 0
     }
   },
   methods: {
@@ -19,9 +24,27 @@ export default {
       return numeral(int).format('0,0.00')
     },
   	goTo (page) {
-      console.log(page)
-  		this.$router.push(page)
+    //   console.log(page)
+  		// this.$router.push(page)
+      alert(page)
   	},
+    show_tool () {
+      this.hold = 0
+      this.test = setInterval(function() {
+        this.hold +=1
+        if(this.hold==3){
+          this.tool = true
+          this.holdover()
+        }
+      }.bind(this),500); 
+    },
+    holdover () {
+      clearInterval(this.test)
+    },
+    hide_tool () {
+      clearInterval(this.test)
+      this.tool = false
+    },
   	logout () {
       localStorage.clear()
   		this.$router.push('/')
@@ -35,14 +58,21 @@ export default {
       this.history ('')
     },
     history (keyword) {
-      $("#loading").addClass('is-active')
+      $("#loading").addClass('is-active')      
+      this.dsearch = 0
+      this.pageIndex = []
+      this.history_lists = []
       // console.log(keyword+', '+this.menu)
       if(this.menu==1 || this.menu == 2){
         api.historyAX(keyword, this.menu,
         (result) => {
           if(result.status == 'success'){
-            this.data_arr = result.data          
-            this.page_detail(0, 1)
+            if(result.data == null){
+              this.data_arr = []
+            }else{              
+              this.data_arr = result.data
+              this.page_detail(0, 1)
+            }
             $("#loading").removeClass('is-active')
           }
         },
@@ -55,6 +85,14 @@ export default {
         alert('ระบบยังไม่เปิดให้บริการ')
         this.menu = 1
         this.history('')
+      }
+    },
+    checkDelete (keyword) {
+      if(keyword==""){
+        if(this.dsearch==0){
+          this.history('')
+          this.dsearch = 1
+        }
       }
     },
     page_detail (start, active) {
@@ -73,18 +111,14 @@ export default {
         }
 
         // console.log("active "+ active + " start " + start)
-
-        if(this.pageIndex!=0){                    
-          this.pageActive(active)
-        }else{          
           this.pageLine(pageall)          
           this.pageActive(active)
-        }
       }else{
         this.history()
       }
     },
     pageLine (size) {
+      this.pageIndex = []
       for(var i = 0; i < size; i++){
         this.pageIndex.push({ Index: i, Line: i+1, limit: i*5, isActive: false})
       }
@@ -98,6 +132,34 @@ export default {
           this.pageIndex[r].isActive = false
         }
       }
+    },
+    approve (data) {
+      alert(data)
+    },
+    cancel (data) {
+      $('#loading').addClass('is-active')
+      var body = {
+        id: data.id,
+        is_cancel: 1,
+        cancel_id: this.user.id,
+        cancel_code: this.user.usercode,
+        cancel_date_time: ''
+      }
+      //console.log(JSON.stringify(body))
+      api.cancelQTAX(body, 
+        (result) => {
+          //console.log(result.data)
+          $('#loading').removeClass('is-active')
+          swal("cancel Quotation", "ยกเลิกใบเสนอราคาเรียบร้อย", "success")
+          this.tool = false          
+          this.history('')
+        },
+        (error) => {
+          this.tool = false
+          $('#loading').removeClass('is-active')
+          console.log(error)
+        }
+      )
     }
   },
   mounted () {
