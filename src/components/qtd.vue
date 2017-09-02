@@ -148,25 +148,25 @@
 		    		ยืนราคา
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay">
+		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ลูกค้าต้องรับภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ลูกค้าต้องรับภายใน..." v-model="reciveDay">
+		    		<input type="number" class="input" placeholder="ลูกค้าต้องรับภายใน..." v-model="reciveDay" min="1">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เอกสารหมดอายุภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)">
+		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)" min="1">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ส่งมอบภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)">
+		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)" min="1">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เครดิต | วัน

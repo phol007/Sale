@@ -94,7 +94,13 @@ export default {
           this.searchItems(this.moSitem)
         }
       } else {
-        swal("แจ้งเตือน", "กรุณาเลือกลูกหนี้ให้เรียบร้อย")
+        swal({
+            title: "แจ้งเตือน",
+            text: "กรุณาเลือกลูกหนี้ให้เรียบร้อย",
+            timer: 1000,
+            type: "warning",
+            showConfirmButton: false
+          })
       }
     },
     CSItem() {
@@ -211,7 +217,13 @@ export default {
     },
     selectItem(item) {
       if (item.units == null) {
-        swal("แจ้งเตือน", "ไม่มีหน่วยนับ !!")
+        swal({
+            title: "แจ้งเตือน",
+            text: "ไม่มีหน่วยนับ !!",
+            timer: 1000,
+            type: "warning",
+            showConfirmButton: false
+          })
       } else {
         this.CSItem()
         this.detailItemlist(item)
@@ -269,22 +281,27 @@ export default {
       var oneDay = 24 * 60 * 60 * 1000
       var firstDate = new Date()
       var secondDate = date
-      var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
-      this.expDay = diffDays
+      var difference = firstDate.getTime() - secondDate.getTime()
+      var daysDifference = Math.floor(difference/1000/60/60/24)
+      this.expDay = Math.abs(daysDifference)
     },
     calDeliDay(date) {
       var oneDay = 24 * 60 * 60 * 1000
       var firstDate = new Date()
-      var secondDate = date
-      var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
-      this.sendDay = diffDays
+      var secondDate = date 
+      var difference = firstDate.getTime() - secondDate.getTime()
+      var daysDifference = Math.floor(difference/1000/60/60/24)
+      this.sendDay = Math.abs(daysDifference)
     },
     calcreditDay(date) {
       var oneDay = 24 * 60 * 60 * 1000
       var firstDate = new Date()
       var secondDate = date
-      var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
-      this.creditDay = diffDays
+      // var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
+      var difference = firstDate.getTime() - secondDate.getTime()
+      // แปลงเป็นวัน ชม. นาที วินาที
+      var daysDifference = Math.floor(difference/1000/60/60/24)
+      this.creditDay = Math.abs(daysDifference)
     },
     formatMoney(int) {
       return numeral(int).format('0,0.00')
@@ -405,7 +422,7 @@ export default {
         this.calVatnetAmount()
       } else {
         // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
-        swal("แจ้งเตือน", "ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
+        swal("แจ้งเตือน", "ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า", "warning")
         this.detail_itemlists[lineNumber - 1].discount = this.formatMoney(0)
       }
     },
@@ -477,7 +494,13 @@ export default {
             }
             this.hold = 0
             this.calVatnetAmount()
-            swal("Deleted!", "ลบสินค้าเรียบร้อยแล้ว", "success", { Timer: 2000 });
+            swal({
+              title: "Deleted!",
+              text: "ลบสินค้าเรียบร้อยแล้ว",
+              timer: 1000,
+              type: "success",
+              showConfirmButton: false
+            })
           } else {
 
           }
@@ -625,7 +648,13 @@ export default {
         )
       } else {
         if (this.EmpID == 0) {
-          swal("กรุณาเลือกพนักงานขาย")
+          swal({
+            title: "แจ้งเตือน",
+            text: "กรุณาเลือกพนักงานขาย",
+            timer: 1000,
+            type: "warning",
+            showConfirmButton: false
+          })
           $("#loading").removeClass('is-active')
           this.SearchEmplo()
         } else {
