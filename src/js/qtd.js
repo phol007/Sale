@@ -636,7 +636,7 @@ export default {
         subs: item_Sub
       }
       // console.log(item_Sub)
-      console.log(obj)
+      console.log(JSON.stringify(obj))
       if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
         api.insertQTAX(obj,
           (result) => {
@@ -818,7 +818,7 @@ export default {
 
           var discript = result.data.my_description
           if (discript != "") {
-            var dis = discript.split('/')
+            var dis = discript.split('|')
             this.discription1 = dis[0]
             this.discription2 = dis[1]
           }
