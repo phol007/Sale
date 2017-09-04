@@ -803,8 +803,8 @@ export default {
           console.log(result.data)
           $("#loading").removeClass('is-active')
           this.DocNo = result.data.doc_no
-          this.vatType = result.data.tax_type
-          this.billType = result.data.bill_type
+          this.vatType = result.data.tax_type+1
+          this.billType = result.data.bill_type+1
           this.ArCode = result.data.ar_code
           this.ArName = result.data.ar_name
           this.DocDate = new Date(result.data.doc_date)
