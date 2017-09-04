@@ -95,12 +95,12 @@ export default {
         }
       } else {
         swal({
-            title: "แจ้งเตือน",
-            text: "กรุณาเลือกลูกหนี้ให้เรียบร้อย",
-            timer: 1000,
-            type: "warning",
-            showConfirmButton: false
-          })
+          title: "แจ้งเตือน",
+          text: "กรุณาเลือกลูกหนี้ให้เรียบร้อย",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })
       }
     },
     CSItem() {
@@ -184,8 +184,8 @@ export default {
     },
     selectEmp(EmpD) {
       this.CSEmplo()
-      this.EmpCode = EmpD.id
-      this.EmpID = EmpD.sale_code
+      this.EmpID = EmpD.id
+      this.EmpCode = EmpD.sale_code
       this.EmpName = EmpD.sale_name
     },
     searchItems(keyword) {
@@ -218,12 +218,12 @@ export default {
     selectItem(item) {
       if (item.units == null) {
         swal({
-            title: "แจ้งเตือน",
-            text: "ไม่มีหน่วยนับ !!",
-            timer: 1000,
-            type: "warning",
-            showConfirmButton: false
-          })
+          title: "แจ้งเตือน",
+          text: "ไม่มีหน่วยนับ !!",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })
       } else {
         this.CSItem()
         this.detailItemlist(item)
@@ -282,15 +282,15 @@ export default {
       var firstDate = new Date()
       var secondDate = date
       var difference = firstDate.getTime() - secondDate.getTime()
-      var daysDifference = Math.floor(difference/1000/60/60/24)
+      var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
       this.expDay = Math.abs(daysDifference)
     },
     calDeliDay(date) {
       var oneDay = 24 * 60 * 60 * 1000
       var firstDate = new Date()
-      var secondDate = date 
+      var secondDate = date
       var difference = firstDate.getTime() - secondDate.getTime()
-      var daysDifference = Math.floor(difference/1000/60/60/24)
+      var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
       this.sendDay = Math.abs(daysDifference)
     },
     calcreditDay(date) {
@@ -300,7 +300,7 @@ export default {
       // var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
       var difference = firstDate.getTime() - secondDate.getTime()
       // แปลงเป็นวัน ชม. นาที วินาที
-      var daysDifference = Math.floor(difference/1000/60/60/24)
+      var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
       this.creditDay = Math.abs(daysDifference)
     },
     formatMoney(int) {
@@ -362,7 +362,8 @@ export default {
           if (price != '') {
             this.detail_itemlists[i].price = this.formatMoney(price)
           }
-          if (discount != '') {
+
+          if (discount != '' || discount != '0') {
             // console.log(this.numberInt(discount))
             if (typeof discount == 'string') {
               if (discount.includes("%") === true) {
@@ -373,6 +374,9 @@ export default {
             } else {
               discount = this.formatMoney(discount)
             }
+            this.detail_itemlists[i].discount = discount
+          } else {
+            discount = this.formatMoney(discount)
             this.detail_itemlists[i].discount = discount
           }
         }
@@ -418,7 +422,6 @@ export default {
             data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
           }
         }
-        console.log(this.detail_itemlists)
         this.calVatnetAmount()
       } else {
         // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
@@ -437,7 +440,7 @@ export default {
           this.calDeliDate(this.sendDay)
           this.calDueDate(0)
           this.nowDate = {
-            to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            // to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
           }
           this.calVatnetAmount()
         },
@@ -484,7 +487,7 @@ export default {
           confirmButtonText: "ตกลง",
           cancelButtonText: "ยกเลิก",
           closeOnConfirm: false,
-          closeOnCancel: false
+          closeOnCancel: true
         },
         function(isConfirm) {
           if (isConfirm) {
@@ -633,7 +636,7 @@ export default {
       }
       // console.log(item_Sub)
       console.log(obj)
-      if (this.EmpID != '' && this.detail_itemlists.length != 0) {
+      if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
         api.insertQTAX(obj,
           (result) => {
             // alert("บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว")
@@ -647,7 +650,7 @@ export default {
           }
         )
       } else {
-        if (this.EmpID == 0) {
+        if (this.EmpCode == '') {
           swal({
             title: "แจ้งเตือน",
             text: "กรุณาเลือกพนักงานขาย",
@@ -673,15 +676,125 @@ export default {
             }.bind(this))
         }
       }
+    },
+    showDetail_QT(doc_no) {
+      $("#loading").addClass('is-active')
+      api.detailQTAX(doc_no,
+        (result) => {
+          $("#loading").removeClass('is-active')
+          this.DocNo = result.data.doc_no
+          this.vatType = result.data.tax_type
+          this.billType = result.data.bill_type
+          this.ArCode = result.data.ar_code
+          this.ArName = result.data.ar_name
+          this.DocDate = new Date(result.data.doc_date)
+          this.nowDate = {
+            to: new Date(result.data.doc_date)
+          }
+
+          this.EmpCode = result.data.sale_code
+          this.EmpName = result.data.sale_name
+
+          var discript = result.data.my_description
+          if (discript != "") {
+            var dis = discript.split('/')
+            this.discription1 = dis[0]
+            this.discription2 = dis[1]
+          }
+
+          this.sendpriceDay = result.data.validity
+         // this.reciveDay = ''
+          this.expDay = result.data.expire_day
+          this.sendDay = result.data.delivery_day
+          this.creditDay = result.data.credit_day
+          this.isConditionSend = result.data.is_condition_send
+          this.custo_assert = result.data.customer_assert
+
+          this.ExpDate = new Date(result.data.expire_date)
+          this.deliveryDate = new Date(result.data.delivery_date)
+          this.dueDate = new Date(result.data.due_date)
+
+          this.totalItemAmount = this.formatMoney(result.data.sum_item_amount)
+          this.billDiscount = this.formatMoney(result.data.dis_count_word)
+          this.netVatAmount = this.formatMoney(result.data.tax_amount)
+
+          result.data.subs.forEach(function(val, key) {
+            if (parseInt(this.vatType) == 2) {
+              this.taxRage = 7
+              var netAmountItem = this.formatMoney(((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) - ((((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) * 100) / (this.taxRage + 100)))
+            } else {
+              var netAmountItem = this.formatMoney(1 * val['price'])
+            }
+
+            var units = []
+            var unit_select = 0
+            var stock = []
+
+            api.searchUnitAX(val['item_code'], this.billType, this.ArID, this.isConditionSend, this.vatType,
+              (result) => {
+                units = result.units
+                stock = result.stock_list
+                for (var r = 0; r < units.length; r++) {
+                  if (units[r].unit_code == val['unit_code']) {
+                    unit_select = units[r]
+                  }
+                }
+
+                this.detail_itemlists.push({
+                  no: val['line_number'],
+                  item_id: val['item_id'],
+                  item_code: val['item_code'],
+                  item_name: val['item_name'],
+                  units: units,
+                  unit_select: unit_select,
+                  stock_select: '',
+                  qty: this.formatMoney(val['qty']),
+                  price: this.formatMoney(val['price']),
+                  discount: val['dis_count_word_sub'],
+                  amount: this.formatMoney(val['item_amount']),
+                  netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
+                  home_amount: val['item_amount'],
+                  stock_list: stock,
+                  ref_no: this.DocNo
+                })
+              },
+              (error) => {
+                $("#loading").removeClass('is-active')
+                swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+                console.log(error)
+              }
+            )
+          }.bind(this))
+          setTimeout(function() {
+            this.calVatnetAmount()
+          }.bind(this), 1000)
+        },
+        (error) => {
+          $("#loading").removeClass('is-active')
+          swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+          console.log(error)
+        }
+      )
+    }
+  },
+  computed: {
+    sortedList() {
+      return this.detail_itemlists.sort((a, b) => a.no < b.no ? -1 : a.no > b.no ? 1 : 0)
     }
   },
   mounted() {
-    this.params = this.$route.params.status
+    this.params = this.$route.params
     var userDetail = JSON.parse(localStorage.DataUser)
     this.usercode = userDetail.usercode
-    console.log(this.usercode)
-    this.GenDocNo('QT', 0)
-    this.toDay()
     moment.locale()
+
+    if (this.params.status == 0) {
+      this.GenDocNo('QT', 0)
+      this.toDay()
+    } else if (this.params.status == 1) {
+      this.showDetail_QT(this.params.docno)
+    } else {
+      this.$router.push('/Saleh')
+    }
   }
 }

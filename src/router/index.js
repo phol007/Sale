@@ -15,7 +15,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/Qtd/status',
+      path: '/Qtd/status/docno',
       name: 'Qtd',
       component: Qtd
     },

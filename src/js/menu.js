@@ -8,7 +8,7 @@ export default {
   },
   methods: {
   	goTo (page, menu) {
-  		this.$router.push({ name: page, params: { status: menu }})
+  		this.$router.push({ name: page, params: { status: 0, docno: '' }})
   	},
     menu_add () {
       var user = JSON.parse(localStorage.DataUser)

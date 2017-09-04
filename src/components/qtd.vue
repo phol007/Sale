@@ -78,10 +78,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item_list, index) in detail_itemlists" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">
-                            	<td style="width: 50px; text-align:center;">{{ item_list.no }}</td>
-                            	<td style="width: 200px; text-align:left;">{{ item_list.item_code }}</td>
-                            	<td style="width: 290px; text-align:left;">{{ item_list.item_name }}</td>
+                            <tr v-for="(item_list, index) in sortedList">
+                            	<td style="width: 50px; text-align:center;" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">{{ item_list.no }}</td>
+                            	<td style="width: 200px; text-align:left;" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">{{ item_list.item_code }}</td>
+                            	<td style="width: 290px; text-align:left;" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">{{ item_list.item_name }}</td>
                             	<td style="width: 150px; padding:0 0.5%;">
                             		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calNetAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem)">
                             			<option v-for="unit in item_list.units" :value="unit">{{ unit.unit_name }}</option>
@@ -121,7 +121,7 @@
 	    		รหัสพนักงาน
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน..." readonly v-model="EmpID">
+		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน..." readonly v-model="EmpCode">
 		    		<i class="fa fa-search" aria-hidden="true" @click="SearchEmplo"></i>
 		    	</div>
 		    	<div class="lb-l">
@@ -150,12 +150,12 @@
 		    	<div class="lb-r" style="width:50%">
 		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1">
 		    	</div>
-		    	<div class="lb-l" style="width:50%">
+		    	<!-- <div class="lb-l" style="width:50%">
 		    		ลูกค้าต้องรับภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
 		    		<input type="number" class="input" placeholder="ลูกค้าต้องรับภายใน..." v-model="reciveDay" min="1">
-		    	</div>
+		    	</div> -->
 		    	<div class="lb-l" style="width:50%">
 		    		เอกสารหมดอายุภายใน
 		    	</div>
@@ -174,17 +174,6 @@
 		    	<div class="lb-r" style="width:50%">
 		    		<input type="number" class="input" placeholder="เครดิต..." v-model="creditDay" readonly>
 		    	</div>
-	    	</div>
-	    	<div class="btt-block">
-	    		<div class="lb-l" style="width:50%">
-		    		เงื่อนไขขนส่ง
-		    	</div>
-		    	<div class="lb-r" style="width:50%">
-		    		<select v-model="isConditionSend" :disabled="detail_itemlists.length!=0">
-		    			<option value="1">รับเอง</option>
-		    			<option value="2">ส่งให้</option>
-		    		</select>
-		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		คำตอบจากลูกค้า
 		    	</div>
@@ -193,6 +182,17 @@
 		    			<option value="1">รอตอบกลับ</option>
 		    			<option value="2">ตอบกลับแล้ว</option>
 		    			<option value="3">ไม่รับราคา</option>
+		    		</select>
+		    	</div>
+	    	</div>
+	    	<div class="btt-block">
+	    		<div class="lb-l" style="width:50%">
+		    		เงื่อนไขขนส่ง
+		    	</div>
+		    	<div class="lb-r" style="width:50%">
+		    		<select v-model="isConditionSend" :disabled="detail_itemlists.length!=0">
+		    			<option value="0">รับเอง</option>
+		    			<option value="1">ส่งให้</option>
 		    		</select>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">

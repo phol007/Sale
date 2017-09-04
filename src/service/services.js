@@ -91,5 +91,25 @@ export default {
         error(response)
       }
     )
+  },
+  detailQTAX (docno, success, error) {
+    Vue.axios.get('http://venus:3000/quotation?access_token=&doc_no=' + docno).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
+  searchUnitAX (items, billtype, isCon, arCode, vatType, success, error) {
+    Vue.axios.get('http://venus:8000/item?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&vatType=' + vatType + '&keyword=' + items).then(
+      (response) => {
+        success(response.data.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }

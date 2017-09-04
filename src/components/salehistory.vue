@@ -28,35 +28,37 @@
 					</div>
 				</div>
 			</div>
-			<div class="H-list" v-for="lists in history_lists" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0">
-				<div class="H-list-img">
-					<img src="../assets/logo.png">
-				</div>
-				<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel}">
-					<p class="H-list-dtitle" :class="{'cancel_doc': lists.is_cancel}">{{ lists.doc_no }}</p>
-					<p>{{ lists.ar_code }} | {{ lists.ar_name }}</p>
-					<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>
-					<p>พนง.ขาย {{ lists.sale_code }} | {{ lists.sale_name }}</p>
-				</div>
-				<div v-show="tool == true" style="height: 100%;">
-					<div class="del" v-show="tool == true && lists.is_cancel == 0 && lists.is_confirm == 0" @click="cancel(lists)">
-						<i class="fa fa-trash" aria-hidden="true"></i>
+			<div style="width:100%; height: 510px; overflow:auto;">
+				<div class="H-list" v-for="lists in history_lists" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0" @click="goTo('Qtd', lists.doc_no)">
+					<div class="H-list-img">
+						<img src="../assets/logo.png">
 					</div>
-					<div class="appp" v-show="tool == true && lists.is_confirm == 0 && lists.is_cancel==0" @click="approve(lists)">
-						<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+					<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel}">
+						<p class="H-list-dtitle" :class="{'cancel_doc': lists.is_cancel}">{{ lists.doc_no }}</p>
+						<p>{{ lists.ar_code }} | {{ lists.ar_name }}</p>
+						<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>
+						<p>พนง.ขาย {{ lists.sale_code }} | {{ lists.sale_name }}</p>
 					</div>
+					<div v-show="tool == true" style="height: 100%;">
+						<div class="del" v-show="tool == true && lists.is_cancel == 0 && lists.is_confirm == 0" @click="cancel(lists)">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</div>
+						<div class="appp" v-show="tool == true && lists.is_confirm == 0 && lists.is_cancel==0" @click="approve(lists)">
+							<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+						</div>
+					</div>
+				</div>
+				<div class="H-list" v-show="history_lists==0" style="width:95% text-align:center; border:0; padding-left:40%; padding-top: 5%;">
+					<span style="font-size:40px; color:red;">ไม่มีข้อมูล</span>
 				</div>
 			</div>
-			<div class="H-list" v-show="history_lists==0" style="width:95% text-align:center; border:0; padding-left:40%; padding-top: 5%;">
-				<span style="font-size:40px; color:red;">ไม่มีข้อมูล</span>
-			</div>
-			<nav class="pagination" role="navigation" aria-label="pagination">
+			<!-- <nav class="pagination" role="navigation" aria-label="pagination">
 			  <ul class="pagination-list">
 			    <li v-for="(pages, index) in pageIndex" @click="page_detail(pages.limit, pages.Line)">
 	            	<a class="pagination-link" :class="{ 'is-current': pages.isActive }">{{  pages.Line }}</a>
 	          	</li>
 			  </ul>
-			</nav>
+			</nav> -->
 			<md-button class="md-fab md-fab-bottom-right" v-show="tool==true" @click="hide_tool">
 			  <i class="fa fa-times icon is-large" aria-hidden="true"></i>
 			</md-button>

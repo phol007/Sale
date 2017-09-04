@@ -23,8 +23,8 @@ export default {
     money_format (int) {
       return numeral(int).format('0,0.00')
     },
-  	goTo (page) {
-  		this.$router.push(page)
+  	goTo (page, docno) {
+  		this.$router.push({ name: page, params: { status: 1, docno: docno }})
   	},
     show_tool () {
       this.hold = 0
@@ -94,26 +94,26 @@ export default {
       }
     },
     page_detail (start, active) {
-      this.history_lists = []
-      if(this.data_arr.length!=0){
-        var listpage = 5
-        var pageall = Math.ceil(this.data_arr.length/listpage)
-        var userInpage = start+listpage
+      this.history_lists = this.data_arr
+      // if(this.data_arr.length!=0){
+      //   var listpage = 5
+      //   var pageall = Math.ceil(this.data_arr.length/listpage)
+      //   var userInpage = start+listpage
 
-        if(userInpage>this.data_arr.length){
-          userInpage = this.data_arr.length
-        }
+      //   if(userInpage>this.data_arr.length){
+      //     userInpage = this.data_arr.length
+      //   }
 
-        for(var i = start; i < userInpage; i++){
-          this.history_lists.push(this.data_arr[i])
-        }
+      // //   for(var i = start; i < userInpage; i++){
+      //     this.history_lists.push(this.data_arr)
+        // }
 
-        // console.log("active "+ active + " start " + start)
-          this.pageLine(pageall)          
-          this.pageActive(active)
-      }else{
-        this.history()
-      }
+        // // console.log("active "+ active + " start " + start)
+        //   this.pageLine(pageall)          
+        //   this.pageActive(active)
+      // }else{
+      //   this.history()
+      // }
     },
     pageLine (size) {
       this.pageIndex = []
