@@ -23,7 +23,10 @@ export default {
     money_format (int) {
       return numeral(int).format('0,0.00')
     },
-  	goTo (page, docno) {
+    goTo (page) {
+      this.$router.push(page)
+    },
+  	toDo (page, docno) {
   		this.$router.push({ name: page, params: { status: 1, docno: docno }})
   	},
     show_tool () {

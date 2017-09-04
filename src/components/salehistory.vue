@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div style="width:100%; height: 510px; overflow:auto;">
-				<div class="H-list" v-for="lists in history_lists" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0" @click="goTo('Qtd', lists.doc_no)">
+				<div class="H-list" v-for="lists in history_lists" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0" @click="toDo('Qtd', lists.doc_no)">
 					<div class="H-list-img">
 						<img src="../assets/logo.png">
 					</div>

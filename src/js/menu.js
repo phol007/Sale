@@ -7,7 +7,10 @@ export default {
     }
   },
   methods: {
-  	goTo (page, menu) {
+    goTo (page) {
+      this.$router.push(page)
+    },
+  	toDo (page, menu) {
   		this.$router.push({ name: page, params: { status: 0, docno: '' }})
   	},
     menu_add () {

@@ -5,7 +5,7 @@
 			{{ msg }}
 		</h1>
 
-		<button class="button is-dark is-large" style="width: 90%; margin: 0.5%;" @click="goTo('Qtd', menu)" v-for="menu in menu_lists" v-show="menu.is_create==1">
+		<button class="button is-dark is-large" style="width: 90%; margin: 0.5%;" @click="toDo('Qtd', menu)" v-for="menu in menu_lists" v-show="menu.is_create==1">
 			{{ menu.menuname }}
 		</button>
 

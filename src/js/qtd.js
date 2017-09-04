@@ -51,7 +51,8 @@ export default {
       custo_assert: 1,
       dueDate: '',
       beforeNetAmount: 0,
-      test: ''
+      test: '',
+      tool_menu: []
     }
   },
   components: {
@@ -677,10 +678,129 @@ export default {
         }
       }
     },
+    update_QT() {
+      $("#loading").addClass('is-active')
+      var sumTotal = 0
+      for (var i = 0; i < this.detail_itemlists.length; i++) {
+        sumTotal += this.numberInt(this.detail_itemlists[i].amount)
+      }
+      var item_Sub = []
+      var DocNo = this.DocNo
+
+      this.detail_itemlists.forEach(function(val, key) {
+        item_Sub.push({
+          item_id: val['item_id'],
+          item_code: val['item_code'],
+          bar_code: '',
+          item_name: val['item_name'],
+          wh_code: val['stock_select']['wh_code'],
+          shelf_code: val['stock_select']['shelf_code'],
+          qty: numeral(val['qty']).value(),
+          remain_qty: numeral(val['qty']).value(),
+          unit_code: val['unit_select']['unit_code'],
+          price: numeral(val['price']).value(),
+          discount_word_sub: val['discount'],
+          discount_amount_sub: numeral(val['discount']).value(),
+          amount: numeral(val['amount']).value(),
+          net_amount: numeral(val['netAmountItem']).value(),
+          home_amount: numeral(val['home_amount']).value(),
+          my_description: '',
+          ref_no: val['ref_no'],
+          is_cancel: 0,
+          packing_rate1: val['unit_select']['packing_rate'],
+          packing_rate2: val['unit_select']['packing_rate'],
+          ref_line_number: 0,
+          line_number: val['no']
+        })
+      })
+
+      var obj = {
+        doc_no: this.DocNo,
+        doc_date: '',
+        ar_id: this.ArDetail.id,
+        ar_code: this.ArCode,
+        ar_name: this.ArName,
+        ar_bill_address: this.ArDetail.address,
+        ar_telephone: this.ArDetail.ar_telephone,
+        sale_id: parseInt(this.EmpID),
+        sale_code: this.EmpCode.toString(),
+        sale_name: this.EmpName,
+        ref_no: '',
+        tax_type: this.vatType,
+        credit_day: this.creditDay,
+        due_date: moment(this.dueDate).format("YYYY/MM/DD"),
+        delivery_day: this.sendDay,
+        delivery_date: moment(this.deliveryDate).format("YYYY/MM/DD"),
+        expire_day: this.expDay,
+        expire_date: moment(this.ExpDate).format("YYYY/MM/DD"),
+        contract_id: 0,
+        is_condition_send: this.isConditionSend,
+        my_description: this.discription1 + '|' + this.discription2,
+        sum_item_amount: sumTotal,
+        dis_count_word: this.billDiscount,
+        dis_count_amount: this.numberInt(this.billDiscount),
+        after_discount_amount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount), // ลบส่วนลดท้ายบิล
+        before_tax_amount: this.beforeNetAmount, // ถอด vat 7% รวมใน
+        tax_amount: this.numberInt(this.netVatAmount),
+        total_amount: this.billnetAmount,
+        approve_id: 0,
+        project_id: 0,
+        allocate_id: 0,
+        creator_code: this.usercode,
+        create_date_time: '',
+        bill_type: this.billType,
+        validity: this.sendpriceDay,
+        customer_assert: this.numberInt(this.custo_assert),
+        subs: item_Sub
+      }
+      // console.log(item_Sub)
+      console.log(JSON.stringify(obj))
+      if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
+        api.updateQTAX(obj,
+          (result) => {
+            // alert("บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว")
+            swal("แจ้งเตือน", "บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว", "success")
+            this.$router.push('/Saleh')
+          },
+          (error) => {
+            $("#loading").removeClass('is-active')
+            swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+            console.log(error)
+          }
+        )
+      } else {
+        if (this.EmpCode == '') {
+          swal({
+            title: "แจ้งเตือน",
+            text: "กรุณาเลือกพนักงานขาย",
+            timer: 1000,
+            type: "warning",
+            showConfirmButton: false
+          })
+          $("#loading").removeClass('is-active')
+          this.SearchEmplo()
+        } else {
+          $("#loading").removeClass('is-active')
+          swal({
+              title: "แจ้งเตือน",
+              text: "เอกสารนี้ ไม่มีรายการสินค้า",
+              type: "warning",
+              showCancelButton: false,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "OK",
+              closeOnConfirm: false
+            },
+            function() {
+              this.SearchItem()
+            }.bind(this))
+        }
+      }
+    },
     showDetail_QT(doc_no) {
       $("#loading").addClass('is-active')
       api.detailQTAX(doc_no,
         (result) => {
+          console.log(result.data)
           $("#loading").removeClass('is-active')
           this.DocNo = result.data.doc_no
           this.vatType = result.data.tax_type
@@ -692,6 +812,7 @@ export default {
             to: new Date(result.data.doc_date)
           }
 
+          this.EmpID = result.data.sale_id
           this.EmpCode = result.data.sale_code
           this.EmpName = result.data.sale_name
 
@@ -775,6 +896,57 @@ export default {
           console.log(error)
         }
       )
+    },
+    setMenuTool (status) {
+      if(status==0){
+        this.tool_menu = [
+                        {
+                          text: 'ย้อนกลับ',
+                          icon: 'fa fa-chevron-left',
+                          func: 1
+                        },
+                        {
+                          text: 'บันทึกเอกสาร',
+                          icon: 'fa fa-pencil-square-o',
+                          func: 3
+                        },
+                        {
+                          text: 'คู่มือใช้',
+                          icon: 'fa fa-question',
+                          func: 2
+                        }
+                        ]
+      }else{
+        this.tool_menu = [
+                        {
+                          text: 'ย้อนกลับ',
+                          icon: 'fa fa-chevron-left',
+                          func: 1
+                        },
+                        {
+                          text: 'บันทึกการแก้ไขเอกสาร',
+                          icon: 'fa fa-pencil-square-o',
+                          func: 4
+                        },
+                        {
+                          text: 'คู่มือใช้งาน',
+                          icon: 'fa fa-question',
+                          func: 2
+                        }
+                        ]
+      }
+    },
+    funcMenu (type) {
+      switch (type) {
+        case 1: this.goTo("/Saleh")
+          break
+        case 2: alert("คู่มือใช้งานยังไม่ได้ทำครับ")
+          break
+        case 3: this.insert_QT()
+          break
+        case 4: this.update_QT()
+          break
+      }
     }
   },
   computed: {
@@ -790,9 +962,11 @@ export default {
 
     if (this.params.status == 0) {
       this.GenDocNo('QT', 0)
+      this.setMenuTool(0)
       this.toDay()
     } else if (this.params.status == 1) {
       this.showDetail_QT(this.params.docno)
+      this.setMenuTool(1)
     } else {
       this.$router.push('/Saleh')
     }

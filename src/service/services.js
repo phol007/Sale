@@ -82,6 +82,16 @@ export default {
       }
     )
   },
+  updateQTAX (obj, success, error) {
+    Vue.axios.put('http://venus:3000/quotation', JSON.stringify(obj)).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
   cancelQTAX (obj, success, error) {
     Vue.axios.put('http://venus:3000/quotation/cancel', JSON.stringify(obj)).then(
       (response) => {
