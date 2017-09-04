@@ -4,9 +4,12 @@ import Vueaxios from 'vue-axios'
 
 Vue.use(Vueaxios, axios)
 
+const URL = 'http://api.nopadol.com'
+// const URL = URL + ''
+
 export default {
   loginAX (user, pwd, success, error) {
-    Vue.axios.get('http://venus:9000/login?usercode=' + user + '&password=' + pwd + '&appid=1').then(
+    Vue.axios.get(URL + ':9000/login?usercode=' + user + '&password=' + pwd + '&appid=1').then(
       (response) => {
         success(response.data)
       },
@@ -18,10 +21,10 @@ export default {
     var url = ''
     switch (doctype) {
       case 1:
-        url = 'http://venus:3000/quotations/search?access_token=&doc_type=' + doctype + '&keyword=' + keyword
+        url = URL + ':3000/quotations/search?access_token=&doc_type=' + doctype + '&keyword=' + keyword
         break
       case 2:
-        url = 'http://venus:3000/saleorders/search?access_token=&doc_type=' + doctype + '&keyword=' + keyword
+        url = URL + ':3000/saleorders/search?access_token=&doc_type=' + doctype + '&keyword=' + keyword
         break
     }
     Vue.axios.get(url).then(
@@ -33,7 +36,7 @@ export default {
       })
   },
   gen_docNOAX (tablecode, billtype, success, error) {
-    Vue.axios.get('http://venus:3000/docno?table_code=' + tablecode + '&bill_type=' + billtype).then(
+    Vue.axios.get(URL + ':3000/docno?table_code=' + tablecode + '&bill_type=' + billtype).then(
       (response) => {
         success(response.data)
       },
@@ -43,7 +46,7 @@ export default {
     )
   },
   searchArAX (keyword, success, error) {
-    Vue.axios.get('http://venus:3000/customers?access_token=&keyword=' + keyword).then(
+    Vue.axios.get(URL + ':3000/customers?access_token=&keyword=' + keyword).then(
       (response) => {
         success(response.data)
       },
@@ -53,7 +56,7 @@ export default {
     )
   },
   searchEmpAX (keyword, success, error) {
-    Vue.axios.get('http://venus:3000/employees?access_token=&keyword=' + keyword).then(
+    Vue.axios.get(URL + ':3000/employees?access_token=&keyword=' + keyword).then(
       (response) => {
         success(response.data)
       },
@@ -63,7 +66,7 @@ export default {
     )
   },
   searchItemAX (keyword, billtype, isCon, arCode, vatType, success, error) {
-    Vue.axios.get('http://venus:8000/items?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&vatType=' + vatType + '&keyword=' + keyword).then(
+    Vue.axios.get(URL + ':8000/items?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&vatType=' + vatType + '&keyword=' + keyword).then(
       (response) => {
         success(response.data)
       },
@@ -73,7 +76,7 @@ export default {
     )
   },
   insertQTAX (obj, success, error) {
-    Vue.axios.post('http://venus:3000/quotation', JSON.stringify(obj)).then(
+    Vue.axios.post(URL + ':3000/quotation', JSON.stringify(obj)).then(
       (response) => {
         success(response.data)
       },
@@ -83,7 +86,7 @@ export default {
     )
   },
   updateQTAX (obj, success, error) {
-    Vue.axios.put('http://venus:3000/quotation', JSON.stringify(obj)).then(
+    Vue.axios.put(URL + ':3000/quotation', JSON.stringify(obj)).then(
       (response) => {
         success(response.data)
       },
@@ -93,7 +96,7 @@ export default {
     )
   },
   cancelQTAX (obj, success, error) {
-    Vue.axios.put('http://venus:3000/quotation/cancel', JSON.stringify(obj)).then(
+    Vue.axios.put(URL + ':3000/quotation/cancel', JSON.stringify(obj)).then(
       (response) => {
         success(response.data)
       },
@@ -103,7 +106,7 @@ export default {
     )
   },
   detailQTAX (docno, success, error) {
-    Vue.axios.get('http://venus:3000/quotation?access_token=&doc_no=' + docno).then(
+    Vue.axios.get(URL + ':3000/quotation?access_token=&doc_no=' + docno).then(
       (response) => {
         success(response.data)
       },
@@ -113,7 +116,7 @@ export default {
     )
   },
   searchUnitAX (items, billtype, isCon, arCode, vatType, success, error) {
-    Vue.axios.get('http://venus:8000/item?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&vatType=' + vatType + '&keyword=' + items).then(
+    Vue.axios.get(URL + ':8000/item?access_token=&bill_type=' + billtype + '&ar_code=' + arCode + '&isCon=' + isCon + '&vatType=' + vatType + '&keyword=' + items).then(
       (response) => {
         success(response.data.data)
       },

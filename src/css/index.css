@@ -283,11 +283,14 @@ input[type="text"]:disabled {
 			padding: 1%;
 			float: left;
 		}
+			.H-list-img img {
+				width: 100%;
+			}
 
 		.H-list-detail {
 			padding: 0.5%;
 			float: left;
-			font-size: 14px;
+			font-size: 12px;
 			word-wrap: break-word;
 			color: gray;
 			width: 70%;
@@ -296,6 +299,7 @@ input[type="text"]:disabled {
 		.H-list-dtitle {
 			font-weight: bold;
 			color: #000;
+			font-size: 14px;
 		}
 
 		.H-list .appp {
@@ -362,7 +366,7 @@ input[type="text"]:disabled {
 				width: 100%;
 				margin: 0 5%;
 				position: static;
-			}
+		}
 	.Hsearch .HS-select {
 		width: 30%;
 		text-align:right;
@@ -377,6 +381,19 @@ input[type="text"]:disabled {
 			margin-top:0.5%; 
 			background:#fff; 
 			cursor:pointer;
+		}
+
+		.Hsearch .HS-select .HS-select-l {
+			width:40%; 
+			float:left; 
+			font-size: 18px;
+			padding-top: 2.5%;
+		}
+		
+		.Hsearch .HS-select .HS-select-r {
+			width:60%; 
+			float:left; 
+			text-align:right;			
 		}
 
 	nav.pagination {
@@ -402,6 +419,13 @@ input[type="text"]:disabled {
 
 	.cancel_doc {
 		color: red
+	}
+
+	#dataList {
+		width:100%; 
+		max-height: 510px; 
+		overflow:auto;
+		/*border: 1px solid red;*/
 	}
 
 /* modal */

@@ -10,6 +10,8 @@ import 'vue-material/dist/vue-material.css'
 import './css/index.css'
 import './css/table.css'
 import './css/loading.css'
+import './css/ipad.css'
+import './css/iphone6.css'
 import VueSweetAlert from 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'
 

@@ -331,7 +331,7 @@
 	      <div style="overflow:auto; height:450px;">
 		      <div class="mo-list" v-for="cus in customer_lists" @click="selectCus(cus)">
 		      	<div class="mo-list-img">
-		      		<img src="../assets/logo.png">
+		      		<img src="../../assets/logo.png">
 		      	</div>
 		      	<div class="mo-list-detail">
 		      		<p class="mo-list-title">{{ cus.ar_code }} : {{ cus.ar_name }}</p>
@@ -374,7 +374,7 @@
 	      <div style="overflow:auto; height:450px;">
 		      <div class="mo-list" style="height:120px;" v-for="emp in employee_lists" @click="selectEmp(emp)">
 		      	<div class="mo-list-img" style="height:120px; width: 120px;">
-		      		<img src="../assets/logo.png">
+		      		<img src="../../assets/logo.png">
 		      	</div>
 		      	<div class="mo-list-detail">
 		      		<p class="mo-list-title">{{ emp.sale_code }} : {{ emp.sale_name }}</p>
@@ -390,4 +390,4 @@
   </div>
 </template>
 
-<script src="../js/qtd.js"></script>
+<script src="../../js/QT/qtd.js"></script>

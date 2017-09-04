@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Qtd from '@/components/qtd'
+import Qtd from '@/components/QT/qtd'
 import SaleHistory from '@/components/salehistory'
 import Menu from '@/components/menu'
 import Login from '@/components/login'

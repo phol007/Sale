@@ -1,0 +1,183 @@
+@media only screen and (device-width: 768px) {
+  .navbar {
+    height: 80px;
+  }
+  .navleft { width: 100px; padding: 1%;}
+  .navleft img{ width: 80%; }
+  .navright { width: 50%; padding-top: 2%; font-size: 60px;}
+  .profile {
+    float: right;
+    padding-top: 1%;
+   /* border:1px solid #fff;*/
+    width: 30%;
+  }
+    .profile .img-pro {
+      width: 65px;
+      height: 65px;
+      float: left;
+      padding-right: 1%;
+    }
+      .profile .img-pro img {
+        width: 100%;
+        border-radius:50%;
+        padding: 2%;
+      }
+    .profile .detail-pro {
+      width: 70%;
+      color: #fff;
+      float: left;
+      padding-left: 3%;
+      /*border:1px yellow solid;*/
+      height: 100%;
+      font-size: 20px;
+      line-height: 30px;
+    }  
+
+  .Cont {
+  /*background: yellow;*/
+    margin-top: 85px;
+  }
+
+  .Hsearch .HS-l {
+    width: 20%;
+    font-size: 30px;
+  }
+
+  .Hsearch .HS-c {
+    width: 50%;
+  }
+  .Hsearch .HS-c .input {
+    font-size: 20px;
+  }
+  .Hsearch .HS-r .button {
+    font-size: 20px;
+  }
+
+  .Hsearch .HS-select {
+    width: 95%;
+    margin: 0% auto 2% auto;
+    clear: both;
+    /* border: 1px solid red;*/
+  }
+
+  .Hsearch .HS-select .HS-select-l {
+    width: 30%;
+    font-size: 30px;
+    padding: 1% 0;
+  }
+
+  .Hsearch .HS-select select {
+    font-size: 18px;
+  }
+
+  #dataList {
+  	max-height: 1000px;
+  }
+
+  .H-list {
+  	height: 200px;
+  }
+  	.H-list-img {
+  		width: 200px;
+  		height: 200px;
+      padding: 1% 2%;
+  	}
+  	.H-list-dtitle {
+  		font-size: 30px;
+  	}
+  	.H-list-detail {
+  		font-size: 25px;
+  		line-height: 35px;
+  		padding-top: 3%;
+  		padding-left: 5%;
+  	}
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+  .Hsearch .HS-l {
+    width: 20%;
+    font-size: 30px;
+  }
+
+  .Hsearch .HS-c {
+    width: 50%;
+  }
+  .Hsearch .HS-c .input {
+    font-size: 20px;
+  }
+  .Hsearch .HS-r .button {
+    font-size: 20px;
+  }
+
+  .Hsearch .HS-select {
+    width: 95%;
+    margin: 0% auto 2% auto;
+    clear: both;
+    /* border: 1px solid red;*/
+  }
+
+  .Hsearch .HS-select .HS-select-l {
+    width: 30%;
+    font-size: 30px;
+    padding: 1% 0;
+  }
+
+  .Hsearch .HS-select select {
+    font-size: 18px;
+  }
+
+    #dataList {
+  	max-height: 1000px;
+  }
+
+  .H-list {
+  	height: 200px;
+  }
+  	.H-list-img {
+  		width: 200px;
+  		height: 200px;
+  	}
+  	.H-list-dtitle {
+  		font-size: 30px;
+  	}
+  	.H-list-detail {
+  		font-size: 25px;
+  		line-height: 35px;
+  		padding-top: 3%;
+  		padding-left: 5%;
+  	}
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+  .Hsearch .HS-l {
+    width: 20%;
+    font-size: 30px;
+  }
+
+  .Hsearch .HS-c {
+    width: 50%;
+  }
+  .Hsearch .HS-c .input {
+    font-size: 20px;
+  }
+  .Hsearch .HS-r .button {
+    font-size: 20px;
+  }
+
+  .Hsearch .HS-select {
+    width: 95%;
+    margin: 0% auto 2% auto;
+    clear: both;
+    /* border: 1px solid red;*/
+  }
+
+  .Hsearch .HS-select .HS-select-l {
+    width: 30%;
+    font-size: 30px;
+    padding: 1% 0;
+  }
+
+  .Hsearch .HS-select select {
+    font-size: 18px;
+  }
+}

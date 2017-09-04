@@ -1,0 +1,110 @@
+/*iPhone 6 and iPhone 6+ portrait and landscape*/
+
+@media only screen and (max-device-width: 640px),
+only screen and (max-device-width: 667px),
+only screen and (max-width: 480px) {
+
+html,body {
+  height: 100%;
+}
+  .navbar {
+    height: 80px;
+  }
+  .navleft { width: 100px; padding: 1%;}
+  .navleft img{ width: 80%; }
+  .navright { width: 50%; padding-top: 2%; font-size: 60px;}
+  .profile {
+    float: right;
+    padding-top: 1%;
+   /* border:1px solid #fff;*/
+    width: 30%;
+  }
+    .profile .img-pro {
+      width: 65px;
+      height: 65px;
+      float: left;
+      padding-right: 1%;
+    }
+      .profile .img-pro img {
+        width: 100%;
+        border-radius:50%;
+        padding: 2%;
+      }
+    .profile .detail-pro {
+      width: 70%;
+      color: #fff;
+      float: left;
+      padding-left: 3%;
+      /*border:1px yellow solid;*/
+      height: 100%;
+      font-size: 20px;
+      line-height: 30px;
+    }  
+
+  .Cont {
+  /*background: yellow;*/
+    margin-top: 85px;
+  }
+  
+  .Hsearch .HS-l {
+    width: 20%;
+    font-size: 40px;
+    padding-top: 2%;
+  }
+
+  .Hsearch .HS-c {
+    width: 50%;
+  }
+  .Hsearch .HS-c .input {
+    font-size: 30px;
+  }
+  .Hsearch .HS-r {
+  	width: 20%;
+  }
+  .Hsearch .HS-r .button {
+    font-size: 30px;
+    width: 100%;
+  }
+
+  .Hsearch .HS-select {
+    width: 100%;
+    margin: 2% auto 3% auto;
+    clear: both;
+    padding-right: 0;
+    /*border: 1px solid red;*/
+  }
+
+  .Hsearch .HS-select .HS-select-l {
+    width: 33%;
+    font-size: 40px;
+    padding: 1% 0;
+  }
+
+  .Hsearch .HS-select select {
+    font-size: 30px;
+    height: 50px;
+  }
+
+  #dataList {
+    max-height: 1300px;
+  }
+
+  .H-list {
+    height: 250px;
+  }
+  .H-list-img {
+    width: 250px;
+    height: 250px;
+  }
+  .H-list-dtitle {
+    font-size: 40px;
+    line-height: 50px;
+  }
+  .H-list-detail {
+    font-size: 30px;
+    line-height: 40px;
+    width: auto;
+    padding-top: 3%;
+    padding-left: 5%;
+  }
+}

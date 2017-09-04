@@ -1,4 +1,4 @@
-import api from '../service/services.js'
+import api from '../../service/services.js'
 import moment from 'moment'
 import numeral from 'numeral'
 import $ from 'jquery'

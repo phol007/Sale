@@ -17,18 +17,17 @@
 				</button>
 				</div>
 				<div class="HS-select">
-					<div style="width:40%; float:left; font-size: 18px;
-		padding-top: 2.5%;">
+					<div class="HS-select-l">
 					    ประเภทเอกสาร :
 					</div>
-					<div style="width:60%; float:left; text-align:right;">
+					<div class="HS-select-r">
 						<select v-model="menu" style="text-align:right;" @change="selectMenu(menu)">
 							<option v-for="menus in menu_lists" :value="menus.menuid" style="text-align:right;">{{ menus.menuname }}</option>
 						</select>
 					</div>
 				</div>
 			</div>
-			<div style="width:100%; height: 510px; overflow:auto;">
+			<div @scroll="addList" id="dataList">
 				<div class="H-list" v-for="lists in history_lists" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0" @click="toDo('Qtd', lists.doc_no)">
 					<div class="H-list-img">
 						<img src="../assets/logo.png">
