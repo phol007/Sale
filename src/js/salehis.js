@@ -1,6 +1,7 @@
 import api from '../service/services.js'
-import $ from 'jquery'
 import numeral from 'numeral'
+import $ from 'jquery'
+import Longpress from 'vue-longpress'
 
 export default {
   name: 'QThistory',
@@ -19,6 +20,7 @@ export default {
       dsearch: 0
     }
   },
+  components: {Longpress},
   methods: {
     money_format (int) {
       return numeral(int).format('0,0.00')
@@ -30,20 +32,20 @@ export default {
       this.$router.push({ name: page, params: { status: 1, docno: docno } })
     },
     show_tool () {
-      this.hold = 0
-      this.test = setInterval(function() {
-        this.hold += 1
-        if (this.hold == 3) {
-          this.tool = true
-          this.holdover()
-        }
-      }.bind(this), 500);
+      // this.hold = 0
+      // this.test = setInterval(function() {
+      //   this.hold += 1
+      //   if (this.hold == 3) {
+      //     this.holdover()
+      //   }
+      // }.bind(this), 500);
+      this.tool = true
     },
     holdover () {
       clearInterval(this.test)
     },
     hide_tool () {
-      clearInterval(this.test)
+      //clearInterval(this.test)
       this.tool = false
     },
     logout () {
@@ -137,7 +139,7 @@ export default {
         }
       }
     },
-    approve (data) {
+    approve (data, e) {
       alert(data)
     },
     cancel (data) {
@@ -197,10 +199,20 @@ export default {
       }
     }
   },
+  computed: {
+    sortedList() {
+      return this.history_lists.sort((a, b) => a.doc_date < b.doc_date ? -1 : a.doc_date > b.doc_date ? 1 : 0)
+    }
+  },
   mounted () {
     var title = document.getElementById('titleProgram')
     title.innerHTML = 'Quotation'
     this.menu_add()
     this.history('')
+    this.$nextTick(() => {
+       $(".H-list").click(function(){
+        $(this).hide();
+    })
+    })
   }
 }

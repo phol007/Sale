@@ -52,7 +52,9 @@ export default {
       dueDate: '',
       beforeNetAmount: 0,
       test: '',
-      tool_menu: []
+      tool_menu: [],
+      is_cancel: 0,
+      is_confirm: 0
     }
   },
   components: {
@@ -194,7 +196,7 @@ export default {
       // console.log (this.ArID)
       // console.log (this.isConditionSend)
       $("#loading").addClass('is-active')
-      api.searchItemAX(keyword, this.billType, this.ArID, this.isConditionSend, this.vatType,
+      api.searchItemAX(keyword, this.billType-1, this.ArID, this.isConditionSend, this.vatType-1,
         (result) => {
           $("#loading").removeClass('is-active')
           if (result.status == "success") {
@@ -636,7 +638,7 @@ export default {
         subs: item_Sub
       }
       // console.log(item_Sub)
-      console.log(JSON.stringify(obj))
+      console.log('insert = '+JSON.stringify(obj))
       if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
         api.insertQTAX(obj,
           (result) => {
@@ -754,7 +756,7 @@ export default {
         subs: item_Sub
       }
       // console.log(item_Sub)
-      console.log(JSON.stringify(obj))
+      console.log('update = '+JSON.stringify(obj))
       if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
         api.updateQTAX(obj,
           (result) => {
@@ -800,7 +802,7 @@ export default {
       $("#loading").addClass('is-active')
       api.detailQTAX(doc_no,
         (result) => {
-          console.log(result.data)
+          console.log('Detail = '+JSON.stringify(result.data))
           $("#loading").removeClass('is-active')
           this.DocNo = result.data.doc_no
           this.vatType = result.data.tax_type+1
@@ -966,6 +968,7 @@ export default {
       this.toDay()
     } else if (this.params.status == 1) {
       this.showDetail_QT(this.params.docno)
+      this.disabled = true
       this.setMenuTool(1)
     } else {
       this.$router.push('/Saleh')

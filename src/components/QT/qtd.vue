@@ -10,7 +10,10 @@
 	    		{{ formatMoney(billnetAmount) }} ฿
 	    	</div>
 	    	<div class="status">
-	    		Status :
+	    		Status : 
+	    		<span style="color: green; font-size: 20px; line-height:40px;" v-show="is_confirm==1">อนุมัติแล้ว</span>
+	    		<span style="color: red; font-size: 20px; line-height:40px;" v-show="is_cancel == 1">ยกเลิกแล้ว</span>
+	    		<span style="color: #000; font-size: 20px; line-height:40px;" v-show="is_confirm==0&&is_cancel==0"> ** เปลี่ยนแปลงข้อมูลบางส่วนได้</span>
 	    	</div>
 	    </div>
 	    <div class="T-l">
@@ -45,7 +48,7 @@
 	    		วันที่เอกสาร 
 	    	</div>
 	    	<div class="lb-r">
-	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" style="position: static;"></datepicker>
+	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" style="position: static;" ></datepicker>
 	    	</div>
 	    	<div class="lb-l">
 	    		รหัสลูกค้า
@@ -79,9 +82,9 @@
                         </thead>
                         <tbody>
                             <tr v-for="(item_list, index) in sortedList">
-                            	<td style="width: 50px; text-align:center;" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">{{ item_list.no }}</td>
-                            	<td style="width: 200px; text-align:left;" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">{{ item_list.item_code }}</td>
-                            	<td style="width: 290px; text-align:left;" @mousedown="taphold(index)" @mouseup="holdover" @mouseout="holdover">{{ item_list.item_name }}</td>
+                            	<td style="width: 50px; text-align:center;" v-touch.preventDefualt @hold="delete_item(index)">{{ item_list.no }}</td>
+                            	<td style="width: 200px; text-align:left;" v-touch.preventDefualt @hold="delete_item(index)">{{ item_list.item_code }}</td>
+                            	<td style="width: 290px; text-align:left;" v-touch.preventDefualt @hold="delete_item(index)">{{ item_list.item_name }}</td>
                             	<td style="width: 150px; padding:0 0.5%;">
                             		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calNetAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem)">
                             			<option v-for="unit in item_list.units" :value="unit">{{ unit.unit_name }}</option>
