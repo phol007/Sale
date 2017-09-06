@@ -39,5 +39,8 @@ export default {
     var title = document.getElementById('titleProgram')
     title.innerHTML = 'Program Sale'
     localStorage.clear()
+
+    var dt = [1,2,3,4,5]
+    console.log(dt[0])
   }
 }

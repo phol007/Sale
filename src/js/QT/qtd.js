@@ -705,6 +705,7 @@ export default {
       })
 
       var obj = {
+        id: this.DocID,
         doc_no: this.DocNo,
         doc_date: '',
         ar_id: this.ArDetail.id,
