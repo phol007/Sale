@@ -105,6 +105,16 @@ export default {
       }
     )
   },
+  approveQTAX (obj, success, error) {
+    Vue.axios.put(URL + ':3000/quotation/approve', JSON.stringify(obj)).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
+  },
   detailQTAX (docno, success, error) {
     Vue.axios.get(URL + ':3000/quotation?access_token=&doc_no=' + docno).then(
       (response) => {

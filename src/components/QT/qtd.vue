@@ -11,9 +11,10 @@
 	    	</div>
 	    	<div class="status">
 	    		Status : 
+	    		<span style="color: blue; font-size: 20px; line-height:40px;" v-show="this.params.status == 0"> ** เอกสารใหม่</span>
 	    		<span style="color: green; font-size: 20px; line-height:40px;" v-show="is_confirm==1">อนุมัติแล้ว</span>
 	    		<span style="color: red; font-size: 20px; line-height:40px;" v-show="is_cancel == 1">ยกเลิกแล้ว</span>
-	    		<span style="color: #000; font-size: 20px; line-height:40px;" v-show="is_confirm==0&&is_cancel==0"> ** เปลี่ยนแปลงข้อมูลบางส่วนได้</span>
+	    		<span style="color: #000; font-size: 20px; line-height:40px;" v-show="this.params.status==1&&is_confirm==0&&is_cancel==0"> ** เปลี่ยนแปลงข้อมูลบางส่วนได้</span>
 	    	</div>
 	    </div>
 	    <div class="T-l">
@@ -48,7 +49,7 @@
 	    		วันที่เอกสาร 
 	    	</div>
 	    	<div class="lb-r">
-	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" style="position: static;" ></datepicker>
+	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="docdata_disabled" style="position: static;" ></datepicker>
 	    	</div>
 	    	<div class="lb-l">
 	    		รหัสลูกค้า
@@ -91,13 +92,13 @@
                             		</select>
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" readonly="is_confirm==1||is_cancel==1">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" readonly="is_confirm==1||is_cancel==1">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" readonly="is_confirm==1||is_cancel==1">
                             	</td>
                             	<td style="padding:0;">
                             		<input type="text" placeholder="0.00" v-model="item_list.amount" readonly>
@@ -105,7 +106,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button class="button is-medium" style="width:100%; border:0;" @click="SearchItem">
+                    <button class="button is-medium" style="width:100%; border:0;" @click="SearchItem" :disabled="is_confirm==1||is_cancel==1">
                        <i class="fa fa-plus-circle is-large" aria-hidden="true"></i>
                     </button>
 	    	</div>
@@ -136,13 +137,13 @@
 		    	<div class="tarea">
 		    		หมายเหตุ 1
 		    	</div>
-		    	<textarea rows="3" v-model="discription1">
+		    	<textarea rows="3" v-model="discription1" readonly="is_confirm==1||is_cancel==1">
 		    		
 		    	</textarea>
 		    	<div class="tarea">
 		    		หมายเหตุ 2
 		    	</div>
-		    	<textarea rows="3" v-model="discription2">
+		    	<textarea rows="3" v-model="discription2" readonly="is_confirm==1||is_cancel==1">
 		    		
 		    	</textarea>
 	    	</div>
@@ -151,7 +152,7 @@
 		    		ยืนราคา
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1">
+		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1" readonly="is_confirm==1||is_cancel==1">
 		    	</div>
 		    	<!-- <div class="lb-l" style="width:50%">
 		    		ลูกค้าต้องรับภายใน
@@ -163,13 +164,13 @@
 		    		เอกสารหมดอายุภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)" min="1">
+		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)" min="1" readonly="is_confirm==1||is_cancel==1">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ส่งมอบภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)" min="1">
+		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)" min="1" readonly="is_confirm==1||is_cancel==1">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เครดิต | วัน
@@ -181,7 +182,7 @@
 		    		คำตอบจากลูกค้า
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<select v-model="custo_assert">
+		    		<select v-model="custo_assert" :disabled="is_confirm==1||is_cancel==1">
 		    			<option value="1">รอตอบกลับ</option>
 		    			<option value="2">ตอบกลับแล้ว</option>
 		    			<option value="3">ไม่รับราคา</option>
@@ -193,7 +194,7 @@
 		    		เงื่อนไขขนส่ง
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<select v-model="isConditionSend" :disabled="detail_itemlists.length!=0">
+		    		<select v-model="isConditionSend" :disabled="detail_itemlists.length!=0" >
 		    			<option value="0">รับเอง</option>
 		    			<option value="1">ส่งให้</option>
 		    		</select>
@@ -202,19 +203,19 @@
 		    		วันที่หมดอายุ
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" @input="calExpDay(ExpDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calExpDay(ExpDate)"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ลงวันที่
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" v-on:input="calDeliDay(deliveryDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calDeliDay(deliveryDate)"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		วันที่ครบกำหนด
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled" v-on:input="calcreditDay(dueDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calcreditDay(dueDate)"></datepicker>
 		    	</div>
 	    	</div>
 	    	<div class="btt-block" style="border:0;">
@@ -222,13 +223,13 @@
 		    		รวมมูลค่าสินค้า
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า..." readonly v-model="totalItemAmount">
+		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า..." readonly="is_confirm==1||is_cancel==1" v-model="totalItemAmount">
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		ส่วนลด %, บาท
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calVatnetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)">
+		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calVatnetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)" readonly="is_confirm==1||is_cancel==1">
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		อัตราภาษีมูลค้าเพิ่ม

@@ -420,7 +420,11 @@ input[type="text"]:disabled {
 	}
 
 	.cancel_doc {
-		color: red
+		color: red;
+	}
+
+	.approve_doc {
+		color: #30c103;
 	}
 
 	#dataList {

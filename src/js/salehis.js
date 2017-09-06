@@ -39,6 +39,7 @@ export default {
       //     this.holdover()
       //   }
       // }.bind(this), 500);
+      //this.preventDefualt()
       this.tool = true
     },
     holdover () {
@@ -139,11 +140,51 @@ export default {
         }
       }
     },
-    approve (data, e) {
-      alert(data)
+    approve (data) {
+      var body = {
+                  id: data.id,
+                  is_confirm: 1,
+                  approve_id: this.user.id,
+                  approve_code: this.user.usercode,
+                  approve_date_time: ''
+                }
+      swal({
+          title: "อนุมัติเอกสาร",
+          text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "ตกลง",
+          cancelButtonText: "ปิด",
+          closeOnConfirm: false
+        },
+        function () {
+          $('#loading').addClass('is-active')
+          api.approveQTAX(body,
+            (result) => {
+              //console.log(result.data)
+              $('#loading').removeClass('is-active')
+              swal({
+                title: "Approve Quotation",
+                text: "อนุมัติใบเสนอราคาเรียบร้อย",
+                timer: 1000,
+                type: "success",
+                showConfirmButton: false
+              })
+              this.tool = false
+              this.history('')
+            },
+            (error) => {
+              this.tool = false
+              $('#loading').removeClass('is-active')
+              console.log(error)
+            }
+          )
+        }.bind(this)
+      )
+      this.tool = false
     },
     cancel (data) {
-      $('#loading').addClass('is-active')
       var body = {
         id: data.id,
         is_cancel: 1,
@@ -163,6 +204,7 @@ export default {
           closeOnConfirm: false
         },
         function () {
+          $('#loading').addClass('is-active')
           api.cancelQTAX(body,
             (result) => {
               //console.log(result.data)
@@ -183,7 +225,8 @@ export default {
               console.log(error)
             }
           )
-        }.bind(this))
+        }.bind(this)
+      )
     },
     addList () {
       if($("#dataList").scrollTop() + $("#dataList").innerHeight() >= $("#dataList")[0].scrollHeight) {
@@ -202,6 +245,11 @@ export default {
   computed: {
     sortedList() {
       return this.history_lists.sort((a, b) => a.doc_date < b.doc_date ? -1 : a.doc_date > b.doc_date ? 1 : 0)
+    }
+  },
+  beforeDestroy () {
+    return {
+      removeEventListener: null
     }
   },
   mounted () {

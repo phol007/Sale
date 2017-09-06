@@ -8,8 +8,10 @@ export default {
   name: 'Qtd',
   data() {
     return {
+      user: '',
       usercode: '',
       params: [],
+      DocID: 0,
       DocNo: '',
       vatType: 2,
       billType: 1,
@@ -17,6 +19,7 @@ export default {
       DocDate: '',
       nowDate: {},
       disabled: false,
+      docdata_disabled: false,
       toDate: '',
       ExpDate: '',
       deliveryDate: '',
@@ -54,7 +57,8 @@ export default {
       test: '',
       tool_menu: [],
       is_cancel: 0,
-      is_confirm: 0
+      is_confirm: 0,
+      is_docNew: 0
     }
   },
   components: {
@@ -481,36 +485,40 @@ export default {
       this.calVatnetAmount()
     },
     delete_item(index) {
-      swal({
-          title: "ลบรายการสินค้า",
-          text: "ท่านต้องการลบรายการสินค้าที่เลือกหรือไม่",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "ตกลง",
-          cancelButtonText: "ยกเลิก",
-          closeOnConfirm: false,
-          closeOnCancel: true
-        },
-        function(isConfirm) {
-          if (isConfirm) {
-            this.detail_itemlists.splice(index, 1)
-            for (var i = 0; i < this.detail_itemlists.length; i++) {
-              this.detail_itemlists[i].no = i + 1
-            }
-            this.hold = 0
-            this.calVatnetAmount()
-            swal({
-              title: "Deleted!",
-              text: "ลบสินค้าเรียบร้อยแล้ว",
-              timer: 1000,
-              type: "success",
-              showConfirmButton: false
-            })
-          } else {
+      if(this.is_confirm==1||this.is_cancel==1){
 
-          }
-        }.bind(this))
+      }else{
+        swal({
+            title: "ลบรายการสินค้า",
+            text: "ท่านต้องการลบรายการสินค้าที่เลือกหรือไม่",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "ตกลง",
+            cancelButtonText: "ยกเลิก",
+            closeOnConfirm: false,
+            closeOnCancel: true
+          },
+          function(isConfirm) {
+            if (isConfirm) {
+              this.detail_itemlists.splice(index, 1)
+              for (var i = 0; i < this.detail_itemlists.length; i++) {
+                this.detail_itemlists[i].no = i + 1
+              }
+              this.hold = 0
+              this.calVatnetAmount()
+              swal({
+                title: "Deleted!",
+                text: "ลบสินค้าเรียบร้อยแล้ว",
+                timer: 1000,
+                type: "success",
+                showConfirmButton: false
+              })
+            } else {
+
+            }
+          }.bind(this))
+      }
     },
     calVatnetAmount() {
       // console.log (this.vatType)
@@ -575,25 +583,14 @@ export default {
         item_Sub.push({
           item_id: val['item_id'],
           item_code: val['item_code'],
-          bar_code: '',
           item_name: val['item_name'],
-          wh_code: val['stock_select']['wh_code'],
-          shelf_code: val['stock_select']['shelf_code'],
           qty: numeral(val['qty']).value(),
-          remain_qty: numeral(val['qty']).value(),
-          unit_code: val['unit_select']['unit_code'],
           price: numeral(val['price']).value(),
-          discount_word_sub: val['discount'],
-          discount_amount_sub: numeral(val['discount']).value(),
-          amount: numeral(val['amount']).value(),
-          net_amount: numeral(val['netAmountItem']).value(),
-          home_amount: numeral(val['home_amount']).value(),
-          my_description: '',
-          ref_no: val['ref_no'],
-          is_cancel: 0,
-          packing_rate1: val['unit_select']['packing_rate'],
-          packing_rate2: val['unit_select']['packing_rate'],
-          ref_line_number: 0,
+          dis_count_word_sub: val['discount'],
+          dis_count_amount_sub: numeral(val['discount']).value(),
+          unit_code: val['unit_select']['unit_code'],
+          item_amount: numeral(val['amount']).value(),
+          item_description: '',
           line_number: val['no']
         })
       })
@@ -634,7 +631,7 @@ export default {
         create_date_time: '',
         bill_type: this.billType-1,
         validity: this.sendpriceDay,
-        customer_assert: this.custo_assert,
+        customer_assert: this.numberInt(this.custo_assert),
         subs: item_Sub
       }
       // console.log(item_Sub)
@@ -690,30 +687,21 @@ export default {
       var DocNo = this.DocNo
 
       this.detail_itemlists.forEach(function(val, key) {
+
         item_Sub.push({
           item_id: val['item_id'],
           item_code: val['item_code'],
-          bar_code: '',
           item_name: val['item_name'],
-          wh_code: val['stock_select']['wh_code'],
-          shelf_code: val['stock_select']['shelf_code'],
           qty: numeral(val['qty']).value(),
-          remain_qty: numeral(val['qty']).value(),
-          unit_code: val['unit_select']['unit_code'],
           price: numeral(val['price']).value(),
-          discount_word_sub: val['discount'],
-          discount_amount_sub: numeral(val['discount']).value(),
-          amount: numeral(val['amount']).value(),
-          net_amount: numeral(val['netAmountItem']).value(),
-          home_amount: numeral(val['home_amount']).value(),
-          my_description: '',
-          ref_no: val['ref_no'],
-          is_cancel: 0,
-          packing_rate1: val['unit_select']['packing_rate'],
-          packing_rate2: val['unit_select']['packing_rate'],
-          ref_line_number: 0,
+          dis_count_word_sub: val['discount'],
+          dis_count_amount_sub: numeral(val['discount']).value(),
+          unit_code: val['unit_select']['unit_code'],
+          item_amount: numeral(val['amount']).value(),
+          item_description: '',
           line_number: val['no']
         })
+
       })
 
       var obj = {
@@ -800,10 +788,12 @@ export default {
     },
     showDetail_QT(doc_no) {
       $("#loading").addClass('is-active')
+      this.detail_itemlists = []
       api.detailQTAX(doc_no,
         (result) => {
           console.log('Detail = '+JSON.stringify(result.data))
           $("#loading").removeClass('is-active')
+          this.DocID = result.data.id
           this.DocNo = result.data.doc_no
           this.vatType = result.data.tax_type+1
           this.billType = result.data.bill_type+1
@@ -840,6 +830,14 @@ export default {
           this.totalItemAmount = this.formatMoney(result.data.sum_item_amount)
           this.billDiscount = this.formatMoney(result.data.dis_count_word)
           this.netVatAmount = this.formatMoney(result.data.tax_amount)
+          this.is_cancel = result.data.is_cancel
+          this.is_confirm = result.data.is_confirm
+
+          if(this.is_confirm==1){
+            this.setMenuTool(2) 
+          }else{
+            this.setMenuTool(1)            
+          }
 
           result.data.subs.forEach(function(val, key) {
             if (parseInt(this.vatType) == 2) {
@@ -918,6 +916,29 @@ export default {
                           func: 2
                         }
                         ]
+      }else if (status==1) {
+        this.tool_menu = [
+                        {
+                          text: 'ย้อนกลับ',
+                          icon: 'fa fa-chevron-left',
+                          func: 1
+                        },
+                        {
+                          text: 'บันทึกการแก้ไขเอกสาร',
+                          icon: 'fa fa-pencil-square-o',
+                          func: 4
+                        },
+                        {
+                          text: 'อนุมัติเอกสาร',
+                          icon: 'fa fa-thumbs-o-up',
+                          func: 5
+                        },
+                        {
+                          text: 'คู่มือใช้งาน',
+                          icon: 'fa fa-question',
+                          func: 2
+                        }
+                        ]
       }else{
         this.tool_menu = [
                         {
@@ -948,8 +969,55 @@ export default {
           break
         case 4: this.update_QT()
           break
+        case 5: this.approve ()
       }
+    },
+    approve (data) {
+      var body = {
+                  id: this.DocID,
+                  is_confirm: 1,
+                  approve_id: this.user.id,
+                  approve_code: this.user.usercode,
+                  approve_date_time: ''
+                }
+      swal({
+          title: "อนุมัติเอกสาร",
+          text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "ตกลง",
+          cancelButtonText: "ปิด",
+          closeOnConfirm: false
+        },
+        function () {
+          $('#loading').addClass('is-active')
+          api.approveQTAX(body,
+            (result) => {
+              //console.log(result.data)
+              $('#loading').removeClass('is-active')
+              swal({
+                title: "Approve Quotation",
+                text: "อนุมัติใบเสนอราคาเรียบร้อย",
+                timer: 1000,
+                type: "success",
+                showConfirmButton: false
+              })
+              this.tool = false
+              this.showDetail_QT(this.DocNo)
+            },
+            (error) => {
+              this.tool = false
+              $('#loading').removeClass('is-active')
+              console.log(error)
+            }
+          )
+        }.bind(this)
+      )
     }
+  },
+  beforeDestroy () {
+    this.removeEventListener = null
   },
   computed: {
     sortedList() {
@@ -958,8 +1026,8 @@ export default {
   },
   mounted() {
     this.params = this.$route.params
-    var userDetail = JSON.parse(localStorage.DataUser)
-    this.usercode = userDetail.usercode
+    this.user = JSON.parse(localStorage.DataUser)
+    this.usercode = this.user.usercode
     moment.locale()
 
     if (this.params.status == 0) {
@@ -968,8 +1036,7 @@ export default {
       this.toDay()
     } else if (this.params.status == 1) {
       this.showDetail_QT(this.params.docno)
-      this.disabled = true
-      this.setMenuTool(1)
+      this.docdata_disabled = true
     } else {
       this.$router.push('/Saleh')
     }
