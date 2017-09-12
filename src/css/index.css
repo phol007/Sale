@@ -1,3 +1,7 @@
+html {
+	overflow: hidden;
+}
+
 .navbar {
 	background: #3d98e2;
 	height: 50px;
