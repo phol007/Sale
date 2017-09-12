@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20170912 14:43:01.791" generator="Robot 2.8.4 (Python 2.7.13 on linux2)">
+<suite source="/home/it9n/robot/Login.robot" id="s1" name="Login">
+<test id="s1-t1" name="พี่ทอม login ด้วย username tom และ pwd 1234 แล้ว สามารถเข้าสู่ระบบได้">
+<kw type="kw" name="เปิดเบราเซอร์แล้วพิมพ์ URL http://venus/Sale_vue">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="Selenium2Library.Open Browser">
+<doc>Opens a new browser instance to given URL.</doc>
+<arguments>
+<arg>http://venus/Sale_vue</arg>
+<arg>${Browser}</arg>
+</arguments>
+<msg timestamp="20170912 14:43:01.852" level="INFO">Opening browser 'gc' to base url 'http://venus/Sale_vue'</msg>
+<status status="PASS" endtime="20170912 14:43:06.758" starttime="20170912 14:43:01.852"></status>
+</kw>
+<status status="PASS" endtime="20170912 14:43:06.759" starttime="20170912 14:43:01.852"></status>
+</kw>
+<kw type="kw" name="กรอก Username">
+<doc></doc>
+<arguments>
+</arguments>
+<msg timestamp="20170912 14:43:06.760" level="FAIL">No keyword with name 'กรอก Username' found.</msg>
+<status status="FAIL" endtime="20170912 14:43:06.760" starttime="20170912 14:43:06.760"></status>
+</kw>
+<kw type="teardown" name="Selenium2Library.Close Browser">
+<doc>Closes the current browser.</doc>
+<arguments>
+</arguments>
+<status status="PASS" endtime="20170912 14:43:06.816" starttime="20170912 14:43:06.761"></status>
+</kw>
+<doc></doc>
+<tags>
+</tags>
+<status status="FAIL" endtime="20170912 14:43:06.816" critical="yes" starttime="20170912 14:43:01.850">No keyword with name 'กรอก Username' found.</status>
+</test>
+<doc></doc>
+<metadata>
+</metadata>
+<status status="FAIL" endtime="20170912 14:43:06.817" starttime="20170912 14:43:01.791"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="1" pass="0">Critical Tests</stat>
+<stat fail="1" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="1" pass="0" id="s1" name="Login">Login</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

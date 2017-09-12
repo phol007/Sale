@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20170912 16:25:30.837" generator="Robot 3.0.2 (Python 2.7.13 on linux2)">
+<suite source="/home/it9n/robot/Case_api_login.robot" id="s1" name="Case api login">
+<test id="s1-t1" name="Get Requests">
+<kw name="GETAPI">
+<arguments>
+<arg>/login?usercode=tom&amp;password=1234&amp;appid=1</arg>
+</arguments>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>venus</arg>
+<arg>http://venus:9000</arg>
+</arguments>
+<msg timestamp="20170912 16:25:30.933" level="INFO">Creating Session using : alias=venus, url=http://venus:9000, headers={},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" endtime="20170912 16:25:30.933" starttime="20170912 16:25:30.933"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the</doc>
+<arguments>
+<arg>venus</arg>
+<arg>${PATH}</arg>
+</arguments>
+<assign>
+<var>${resp}</var>
+</assign>
+<msg timestamp="20170912 16:25:31.888" level="INFO">Get Request using : alias=venus, uri=/login?usercode=tom&amp;password=1234&amp;appid=1, headers=None json=None</msg>
+<msg timestamp="20170912 16:25:31.889" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<status status="PASS" endtime="20170912 16:25:31.889" starttime="20170912 16:25:30.933"></status>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<arguments>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+</arguments>
+<msg timestamp="20170912 16:25:31.890" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" endtime="20170912 16:25:31.891" starttime="20170912 16:25:31.890"></status>
+</kw>
+<kw name="Should Not Be Empty" library="BuiltIn">
+<doc>Verifies that the given item is not empty.</doc>
+<arguments>
+<arg>${resp.json()}</arg>
+</arguments>
+<msg timestamp="20170912 16:25:31.891" level="INFO">Length is 2</msg>
+<status status="PASS" endtime="20170912 16:25:31.891" starttime="20170912 16:25:31.891"></status>
+</kw>
+<status status="PASS" endtime="20170912 16:25:31.891" starttime="20170912 16:25:30.932"></status>
+</kw>
+<status status="PASS" endtime="20170912 16:25:31.891" critical="yes" starttime="20170912 16:25:30.932"></status>
+</test>
+<status status="PASS" endtime="20170912 16:25:31.892" starttime="20170912 16:25:30.838"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="Case api login" pass="1">Case api login</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
