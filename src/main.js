@@ -14,7 +14,7 @@ import './css/ipad.css'
 import './css/iphone6.css'
 import VueSweetAlert from 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'
-import Touch from 'vue-touchjs'
+import vueTouch from 'vue-touchjs'
 
 Vue.config.productionTip = false
 
@@ -25,7 +25,7 @@ Vue.use(VueMaterial.MdSidenav)
 Vue.use(VueMaterial.MdToolbar)
 Vue.use(VueMaterial)
 Vue.use(VueSweetAlert)
-Vue.use(Touch)
+Vue.use(vueTouch, {name: 'v-touch'})
 
 /* eslint-disable no-new */
 new Vue({

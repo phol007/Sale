@@ -58,7 +58,9 @@ export default {
       tool_menu: [],
       is_cancel: 0,
       is_confirm: 0,
-      is_docNew: 0
+      is_docNew: 0,
+      check_price: '',
+      price_lists: []
     }
   },
   components: {
@@ -1015,6 +1017,55 @@ export default {
           )
         }.bind(this)
       )
+    },
+    selectTR (item_detail) {
+      $("#loading").addClass('is-active')      
+      $("#Price_item").addClass('is-active')
+      this.price_lists = []
+      api.searchUnitAX(item_detail.item_code, this.billType-1, this.ArID, this.isConditionSend, this.vatType-1,
+        (result) => {
+          $("#loading").removeClass('is-active')
+          this.check_price = result.item_name
+          result.price_list.forEach(function(val, key){
+            if(val['sale_type']==0){
+              val['sale_type'] = 'ขายสด'
+            }else{
+              val['sale_type'] = 'ขายเชื่อ'
+            }
+
+            if(val['tax_type']==0){
+              val['tax_type'] = 'แยกนอก'
+            }else{
+              val['tax_type'] = 'รวมใน'
+            }
+
+            if(val['transport_type']==0){
+              val['transport_type'] = 'รับเอง'
+            }else{
+              val['transport_type'] = 'ส่งให้'
+            }
+            this.price_lists.push({
+              unit: val['unit'], 
+              sale_type: val['sale_type'], 
+              tax_type: val['tax_type'],
+              price1: val['sale_price_1'],
+              price2: val['sale_price_2'],
+              price3: val['sale_price_3'],
+              price4: val['sale_price_4'],
+              transfer: val['transport_type'],
+              qty: this.formatMoney(val['from_qty']) +' - '+ this.formatMoney(val['to_qty'])
+            })
+          }.bind(this))
+        },
+        (error) => {
+          $("#loading").removeClass('is-active')
+          swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+          console.log(error)
+        }
+      )
+    },
+    closeTR () {
+      $('#Price_item').removeClass('is-active')
     }
   },
   beforeDestroy () {
@@ -1041,5 +1092,8 @@ export default {
     } else {
       this.$router.push('/Saleh')
     }
+    document.addEventListener("keydown", (e) => {
+      // alert(e.keyCode)
+    })
   }
 }

@@ -29,7 +29,7 @@
 			</div>
 			<div @scroll="addList" id="dataList">
 				<!-- <div class="H-list" v-for="lists in sortedList" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0" @click="toDo('Qtd', lists.doc_no)"> -->
-				<div class="H-list" v-for="lists in history_lists" v-touch.preventDefualt @hold="show_tool">
+				<div class="H-list" v-for="lists in history_lists" v-touch:hold.prevenDefualt="show_tool">
 					<div class="H-list-img" @tap="toDo('Qtd', lists.doc_no)">
 						<img src="../assets/logo.png">
 					</div>

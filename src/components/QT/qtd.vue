@@ -82,10 +82,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item_list, index) in sortedList">
-                            	<td style="width: 50px; text-align:center;" v-touch.preventDefualt @hold="delete_item(index)">{{ item_list.no }}</td>
-                            	<td style="width: 200px; text-align:left;" v-touch.preventDefualt @hold="delete_item(index)">{{ item_list.item_code }}</td>
-                            	<td style="width: 290px; text-align:left;" v-touch.preventDefualt @hold="delete_item(index)">{{ item_list.item_name }}</td>
+                            <tr v-for="(item_list, index) in sortedList" @dblclick="selectTR(item_list)">
+                            	<td style="width: 50px; text-align:center;" v-touch @hold.preventDefualt="delete_item(index)" >{{ item_list.no }}</td>
+                            	<td style="width: 200px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_code }}</td>
+                            	<td style="width: 290px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_name }}</td>
                             	<td style="width: 150px; padding:0 0.5%;">
                             		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calNetAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem)">
                             			<option v-for="unit in item_list.units" :value="unit">{{ unit.unit_name }}</option>
@@ -390,7 +390,46 @@
 	    </section>
 	  </div>
 	</div>
-<!-- modal item -->
+<!-- modal Emplo -->
+
+<!-- modal Price item -->
+    <div class="modal" id="Price_item">
+	  <div class="modal-background"></div>
+	  <div class="modal-content">
+	    <header class="modal-card-head" style="position: fixed; width: 80%;">
+	      <p class="modal-card-title">ราคาสินค้าของ {{ check_price }}</p>
+	      <button class="delete" aria-label="close" @click="closeTR"></button>
+	    </header>
+	    <section class="modal-card-body" style="overflow: auto; margin-top: 7%;">
+	      <table class="table">
+	      	<tr>
+	      		<th>หน่วยนับ</th>
+	      		<th>ประเภทการขาย</th>
+	      		<th>ประเภทภาษี</th>
+	      		<th>ราคา (1)</th>
+	      		<th>ราคา (2)</th>
+	      		<th>ราคา (3)</th>
+	      		<th>ราคา (4)</th>
+	      		<th>ประเภทการขนส่ง</th>
+	      		<th>จำนวน</th>
+	      	</tr>
+	      	<tr v-for="price in price_lists">
+	      		<td>{{ price.unit }}</td>
+	      		<td>{{ price.sale_type }}</td>
+	      		<td>{{ price.tax_type }}</td>
+	      		<td>{{ formatMoney(price.price1) }}</td>
+	      		<td>{{ formatMoney(price.price2) }}</td>
+	      		<td>{{ formatMoney(price.price3) }}</td>
+	      		<td>{{ formatMoney(price.price4) }}</td>
+	      		<td>{{ price.transfer }}</td>
+	      		<td>{{ price.qty }}</td>
+	      	</tr>
+	      </table>
+	    </section>
+	  </div>
+	</div>
+<!-- modal Price item -->
+
   </div>
 </template>
 
