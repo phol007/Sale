@@ -4,8 +4,8 @@ import Vueaxios from 'vue-axios'
 
 Vue.use(Vueaxios, axios)
 
-// const URL = 'http://api.nopadol.com'
-const URL = 'http://venus.nopadol.com'
+const URL = 'http://api.nopadol.com'
+// const URL = 'http://venus.nopadol.com'
 
 export default {
   loginAX (user, pwd, success, error) {

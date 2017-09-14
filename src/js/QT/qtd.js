@@ -60,7 +60,9 @@ export default {
       is_confirm: 0,
       is_docNew: 0,
       check_price: '',
-      price_lists: []
+      price_lists: [],
+      item_selected: '',
+      stock_detail: '',
     }
   },
   components: {
@@ -400,6 +402,8 @@ export default {
     },
     calNetAmount(lineNumber, unit, cnt, price, discount, itemAmount) {
       //alert ('lineNumber = '+lineNumber+', unit = '+unit+', cnt = '+cnt+', price = '+price+', discount = '+discount)
+      this.item_selected = ''
+      this.stock_detail = ''
       if (price == '') {
         price = unit.price
       }
@@ -1066,6 +1070,33 @@ export default {
     },
     closeTR () {
       $('#Price_item').removeClass('is-active')
+    },
+    show_stock (index, item_detail) {
+      this.item_selected = item_detail
+      this.stock_detail = item_detail.stock_list
+      var label_item = document.getElementsByClassName('item_list_label')
+      var select_item = document.getElementsByClassName('item_list_select')
+      var input1_item = document.getElementsByClassName('item_list_input1')
+      var input2_item = document.getElementsByClassName('item_list_input2')
+      var input3_item = document.getElementsByClassName('item_list_input3')
+      var input4_item = document.getElementsByClassName('item_list_input4')
+      for(var i = 0; i < select_item.length; i++){
+        if(i == index){          
+          label_item[i].style.backgroundColor  = '#f7f8f9'
+          select_item[i].style.backgroundColor  = '#f7f8f9'
+          input1_item[i].style.backgroundColor  = '#f7f8f9'
+          input2_item[i].style.backgroundColor  = '#f7f8f9'
+          input3_item[i].style.backgroundColor  = '#f7f8f9'
+          input4_item[i].style.backgroundColor  = '#f7f8f9'
+        }else{
+          label_item[i].style.backgroundColor  = '#fff'
+          select_item[i].style.backgroundColor  = '#fff'
+          input1_item[i].style.backgroundColor  = '#fff'
+          input2_item[i].style.backgroundColor  = '#fff'
+          input3_item[i].style.backgroundColor  = '#fff'
+          input4_item[i].style.backgroundColor  = '#fff'
+        }
+      }
     }
   },
   beforeDestroy () {
@@ -1094,6 +1125,12 @@ export default {
     }
     document.addEventListener("keydown", (e) => {
       // alert(e.keyCode)
+      if(e.keyCode == 113){
+        if(this.item_selected!=''){
+          this.selectTR(this.item_selected)
+          return false
+        }
+      }
     })
   }
 }
