@@ -76,3 +76,26 @@ table.tableSection td {
     .table td {
         text-align: right;
     }
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+    width: 0px;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 0px;
+    border: 0px solid #ffffff;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0px;  
+    background-color: #ffffff; 
+}
