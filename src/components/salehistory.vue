@@ -59,7 +59,7 @@
 	          	</li>
 			  </ul>
 			</nav> -->
-			<md-button class="md-fab md-fab-bottom-right" v-show="tool==true" @click="hide_tool">
+			<md-button class="md-fab md-fab-bottom-right" id="bt_tools" v-show="tool==true" @click="hide_tool">
 			  <i class="fa fa-times icon is-large" aria-hidden="true"></i>
 			</md-button>
 			<md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;" v-show="tool==false">
@@ -73,7 +73,7 @@
 			  	<md-tooltip md-direction="left" style="font-size:14px;">ออกจากระบบ</md-tooltip>
 			  </md-button>			  
 
-			  <md-button class="md-fab md-mini md-clean" @click="goTo('/menuDoc')">
+			  <md-button class="md-fab md-mini md-clean" @click="goTo('/menuDoc')" id="new_doc">
 			    <md-icon><i class="fa fa-plus" aria-hidden="true"></i></md-icon>
 			    <md-tooltip md-direction="left" style="font-size:14px;">สร้างเอกสารใหม่</md-tooltip>
 			  </md-button>
