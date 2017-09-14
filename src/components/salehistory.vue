@@ -60,10 +60,10 @@
 			  </ul>
 			</nav> -->
 			<md-button class="md-fab md-fab-bottom-right" v-show="tool==true" @click="hide_tool">
-			  <i class="fa fa-times icon is-large" id="bt_tools" aria-hidden="true"></i>
+			  <i class="fa fa-times icon is-large" aria-hidden="true"></i>
 			</md-button>
 			<md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;" v-show="tool==false">
-			  <md-button class="md-fab" md-fab-trigger>
+			  <md-button class="md-fab" md-fab-trigger id="bt_tools">
 			    <md-icon md-icon-morph><i class="fa fa-times" aria-hidden="true"></i></md-icon>
 			    <md-icon><i class="fa fa-th" aria-hidden="true"></i></md-icon>
 			  </md-button>
