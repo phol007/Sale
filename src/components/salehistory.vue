@@ -59,8 +59,8 @@
 	          	</li>
 			  </ul>
 			</nav> -->
-			<md-button class="md-fab md-fab-bottom-right" id="bt_tools" v-show="tool==true" @click="hide_tool">
-			  <i class="fa fa-times icon is-large" aria-hidden="true"></i>
+			<md-button class="md-fab md-fab-bottom-right" v-show="tool==true" @click="hide_tool">
+			  <i class="fa fa-times icon is-large" id="bt_tools" aria-hidden="true"></i>
 			</md-button>
 			<md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;" v-show="tool==false">
 			  <md-button class="md-fab" md-fab-trigger>
