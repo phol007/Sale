@@ -113,10 +113,10 @@
 	    </div>
 	    <div class="Dstock">
 	    	<div class="stItem">
-	    		ยอดคงเหลือ : <span style="font-weight:normal;">{{ stock_detail }}</span>
+	    		ยอดคงเหลือ : <span style="font-weight:normal; font-size:12px;" v-for="(stock, sindex) in stock_detail"><span v-show="sindex!=0" style="font-weight:bold;"> ,&nbsp;&nbsp;</span>{{stock.qty}} &nbsp;({{stock.unit_code}} | {{stock.wh_code}})</span>
 	    	</div>
 	    	<div class="weightItem">
-	    		น้ำหนักรวม :
+	    		น้ำหนักรวม :  {{ formatMoney(weight_all) }}
 	    	</div>
 	    </div>
 	    <div class="btt">

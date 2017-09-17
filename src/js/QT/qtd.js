@@ -63,6 +63,7 @@ export default {
       price_lists: [],
       item_selected: '',
       stock_detail: '',
+      weight_all: 0
     }
   },
   components: {
@@ -433,6 +434,7 @@ export default {
             data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
             data[i].netAmountItem = this.numberInt(netAmountItem)
             data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
+            data[i].weight = this.numberInt(cnt) * data[i].weight
           }
         }
         this.calVatnetAmount()
@@ -486,7 +488,8 @@ export default {
         netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
         home_amount: this.formatMoney(1 * item.units[0].price),
         stock_list: item.stock_list,
-        ref_no: this.DocNo
+        ref_no: this.DocNo,
+        weight: item.weight
       })
       this.calVatnetAmount()
     },
@@ -528,9 +531,12 @@ export default {
     },
     calVatnetAmount() {
       // console.log (this.vatType)
+      this.weight_all = 0
       var sumTotal = 0
+      console.log(this.detail_itemlists)
       for (var i = 0; i < this.detail_itemlists.length; i++) {
         sumTotal += this.numberInt(this.detail_itemlists[i].amount)
+        this.weight_all += this.numberInt(this.detail_itemlists[i].qty)*this.detail_itemlists[i].weight
       }
       switch (parseInt(this.vatType)) {
         case 1: // แยกนอก
@@ -867,7 +873,6 @@ export default {
                     unit_select = units[r]
                   }
                 }
-
                 this.detail_itemlists.push({
                   no: val['line_number'],
                   item_id: val['item_id'],
@@ -883,7 +888,8 @@ export default {
                   netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
                   home_amount: val['item_amount'],
                   stock_list: stock,
-                  ref_no: this.DocNo
+                  ref_no: this.DocNo,
+                  weight: result.weight
                 })
               },
               (error) => {

@@ -244,8 +244,16 @@ input[type="text"]:disabled {
 		font-weight: bold;
 	}
 
-	.Dstock .stItem, .Dstock .weightItem {
-		width: 50%;
+	.Dstock .stItem{
+		width: 80%;
+		height: 100%;
+		padding: 0.5% 2%;
+		float: left;
+		overflow: auto;
+	}
+	
+	.Dstock .weightItem {
+		width: 20%;
 		height: 100%;
 		padding: 0.5% 2%;
 		float: left;
