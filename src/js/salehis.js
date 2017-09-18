@@ -17,7 +17,8 @@ export default {
       hold: 0,
       test: '',
       user: JSON.parse(localStorage.DataUser),
-      dsearch: 0
+      dsearch: 0,
+      permission: []
     }
   },
   components: {Longpress},
@@ -29,7 +30,24 @@ export default {
       this.$router.push(page)
     },
     toDo (page, docno) {
-      this.$router.push({ name: page, params: { status: 1, docno: docno } })
+      $("#loading").addClass('is-active')
+      this.permission.forEach(function(val, key){   
+        if(this.menu==val['menuid']){
+          if(val['is_read'] == 1){
+            this.$router.push({ name: page, params: { status: 1, docno: docno } })
+            $("#loading").removeClass('is-active')
+          }else{
+            swal({
+                title: "แจ้งเตือน",
+                text: "ท่านไม่มีสิทธิเข้าถึงรายละเอียดของเอกสารนี้",
+                timer: 1000,
+                type: "warning",
+                showConfirmButton: false
+              })            
+            $("#loading").removeClass('is-active')
+          }
+        }
+      }.bind(this))
     },
     show_tool () {
       // this.hold = 0
@@ -60,6 +78,12 @@ export default {
     selectMenu(index) {
       this.menu = index
       this.history('')
+      this.menu_lists.forEach(function(val, key){
+        if(val['menuid']==index){
+          var title = document.getElementById('titleProgram')
+          title.innerHTML = val['menuname']          
+        }
+      })
     },
     history (keyword) {
       $("#loading").addClass('is-active')
@@ -141,92 +165,120 @@ export default {
       }
     },
     approve (data) {
-      var body = {
-                  id: data.id,
-                  is_confirm: 1,
-                  approve_id: this.user.id,
-                  approve_code: this.user.usercode,
-                  approve_date_time: ''
-                }
-      swal({
-          title: "อนุมัติเอกสาร",
-          text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "ตกลง",
-          cancelButtonText: "ปิด",
-          closeOnConfirm: false
-        },
-        function () {
-          $('#loading').addClass('is-active')
-          api.approveQTAX(body,
-            (result) => {
-              //console.log(result.data)
-              $('#loading').removeClass('is-active')
-              swal({
-                title: "Approve Quotation",
-                text: "อนุมัติใบเสนอราคาเรียบร้อย",
-                timer: 1000,
-                type: "success",
-                showConfirmButton: false
-              })
-              this.tool = false
-              this.history('')
-            },
-            (error) => {
-              this.tool = false
-              $('#loading').removeClass('is-active')
-              console.log(error)
-            }
-          )
-        }.bind(this)
-      )
-      this.tool = false
-    },
-    cancel (data) {
-      var body = {
-        id: data.id,
-        is_cancel: 1,
-        cancel_id: this.user.id,
-        cancel_code: this.user.usercode,
-        cancel_date_time: ''
-      }
-      //console.log(JSON.stringify(body))
-      swal({
-          title: "ยกเลิกเอกสาร",
-          text: "ท่านต้องการยกเลิกเอาสารใบนี้หรือไม่ ?",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "ตกลง",
-          cancelButtonText: "ปิด",
-          closeOnConfirm: false
-        },
-        function () {
-          $('#loading').addClass('is-active')
-          api.cancelQTAX(body,
-            (result) => {
-              //console.log(result.data)
-              $('#loading').removeClass('is-active')
+      this.permission.forEach(function(val, key){
+        if(this.menu==val['menuid']){
+          if(val['is_delete'] == 1){
+            var body = {
+                        id: data.id,
+                        is_confirm: 1,
+                        approve_id: this.user.id,
+                        approve_code: this.user.usercode,
+                        approve_date_time: ''
+                      }
+            swal({
+                title: "อนุมัติเอกสาร",
+                text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ปิด",
+                closeOnConfirm: false
+              },
+              function () {
+                $('#loading').addClass('is-active')
+                api.approveQTAX(body,
+                  (result) => {
+                    //console.log(result.data)
+                    $('#loading').removeClass('is-active')
+                    swal({
+                      title: "Approve Quotation",
+                      text: "อนุมัติใบเสนอราคาเรียบร้อย",
+                      timer: 1000,
+                      type: "success",
+                      showConfirmButton: false
+                    })
+                    this.tool = false
+                    this.history('')
+                  },
+                  (error) => {
+                    this.tool = false
+                    $('#loading').removeClass('is-active')
+                    console.log(error)
+                  }
+                )
+              }.bind(this)
+            )
+            this.tool = false
+          }else{
               swal({
                 title: "cancel Quotation",
-                text: "ยกเลิกใบเสนอราคาเรียบร้อย",
+                text: "ท่านไม่มีสิทธิยกเลิกรายการนี้",
                 timer: 1000,
-                type: "success",
+                type: "warning",
                 showConfirmButton: false
               })
-              this.tool = false
-              this.history('')
-            },
-            (error) => {
-              this.tool = false
-              $('#loading').removeClass('is-active')
-              console.log(error)
+          }
+        }
+      }.bind(this))
+    },
+    cancel (data) {
+      this.permission.forEach(function(val, key){
+        if(this.menu==val['menuid']){
+          if(val['is_delete'] == 1){
+            var body = {
+              id: data.id,
+              is_cancel: 1,
+              cancel_id: this.user.id,
+              cancel_code: this.user.usercode,
+              cancel_date_time: ''
             }
-          )
-        }.bind(this)
-      )
+            //console.log(JSON.stringify(body))
+            swal({
+                title: "ยกเลิกเอกสาร",
+                text: "ท่านต้องการยกเลิกเอาสารใบนี้หรือไม่ ?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ปิด",
+                closeOnConfirm: false
+              },
+              function () {
+                $('#loading').addClass('is-active')
+                api.cancelQTAX(body,
+                  (result) => {
+                    //console.log(result.data)
+                    $('#loading').removeClass('is-active')
+                    swal({
+                      title: "cancel Quotation",
+                      text: "ยกเลิกใบเสนอราคาเรียบร้อย",
+                      timer: 1000,
+                      type: "success",
+                      showConfirmButton: false
+                    })
+                    this.tool = false
+                    this.history('')
+                  },
+                  (error) => {
+                    this.tool = false
+                    $('#loading').removeClass('is-active')
+                    console.log(error)
+                  }
+                )
+              }.bind(this)
+            )
+          }else{
+            swal({
+              title: "cancel Quotation",
+              text: "ท่านไม่มีสิทธิยกเลิกรายการนี้",
+              timer: 1000,
+              type: "warning",
+              showConfirmButton: false
+            })
+          }
+        }
+      }.bind(this))
     },
     addList () {
       if($("#dataList").scrollTop() + $("#dataList").innerHeight() >= $("#dataList")[0].scrollHeight) {
@@ -253,14 +305,16 @@ export default {
     }
   },
   mounted () {
-    var title = document.getElementById('titleProgram')
-    title.innerHTML = 'Quotation'
+    // var title = document.getElementById('titleProgram')
+    // title.innerHTML = 'Quotation'
     this.menu_add()
     this.history('')
-    this.$nextTick(() => {
-       $(".H-list").click(function(){
-        $(this).hide();
-    })
-    })
+    this.permission = this.user.menu
+    this.menu_lists.forEach(function(val, key){
+      if(val['menuid']==this.menu){
+        var title = document.getElementById('titleProgram')
+        title.innerHTML = val['menuname']          
+      }
+    }.bind(this))
   }
 }

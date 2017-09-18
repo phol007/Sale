@@ -3,7 +3,8 @@ export default {
   data () {
     return {
       msg: 'เลือกประเภทเอกสาร',
-      menu_lists: []
+      menu_lists: [],
+      permission: []
     }
   },
   methods: {
@@ -11,7 +12,9 @@ export default {
       this.$router.push(page)
     },
   	toDo (page, menu) {
-  		this.$router.push({ name: page, params: { status: 0, docno: '' }})
+      if(menu.is_create==1){        
+        this.$router.push({ name: page, params: { status: 0, docno: '' }})
+      }
   	},
     menu_add () {
       var user = JSON.parse(localStorage.DataUser)

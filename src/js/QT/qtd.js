@@ -63,7 +63,8 @@ export default {
       price_lists: [],
       item_selected: '',
       stock_detail: '',
-      weight_all: 0
+      weight_all: 0,
+      permission: []
     }
   },
   components: {
@@ -691,113 +692,127 @@ export default {
     },
     update_QT() {
       $("#loading").addClass('is-active')
-      var sumTotal = 0
-      for (var i = 0; i < this.detail_itemlists.length; i++) {
-        sumTotal += this.numberInt(this.detail_itemlists[i].amount)
-      }
-      var item_Sub = []
-      var DocNo = this.DocNo
+      this.permission.forEach(function(val, key){
+        if(val['menuid']==1){
+          if(val['is_update'] == 1){
+            var sumTotal = 0
+            for (var i = 0; i < this.detail_itemlists.length; i++) {
+              sumTotal += this.numberInt(this.detail_itemlists[i].amount)
+            }
+            var item_Sub = []
+            var DocNo = this.DocNo
 
-      this.detail_itemlists.forEach(function(val, key) {
+            this.detail_itemlists.forEach(function(val, key) {
 
-        item_Sub.push({
-          item_id: val['item_id'],
-          item_code: val['item_code'],
-          item_name: val['item_name'],
-          qty: numeral(val['qty']).value(),
-          price: numeral(val['price']).value(),
-          dis_count_word_sub: val['discount'],
-          dis_count_amount_sub: numeral(val['discount']).value(),
-          unit_code: val['unit_select']['unit_code'],
-          item_amount: numeral(val['amount']).value(),
-          item_description: '',
-          line_number: val['no']
-        })
+              item_Sub.push({
+                item_id: val['item_id'],
+                item_code: val['item_code'],
+                item_name: val['item_name'],
+                qty: numeral(val['qty']).value(),
+                price: numeral(val['price']).value(),
+                dis_count_word_sub: val['discount'],
+                dis_count_amount_sub: numeral(val['discount']).value(),
+                unit_code: val['unit_select']['unit_code'],
+                item_amount: numeral(val['amount']).value(),
+                item_description: '',
+                line_number: val['no']
+              })
 
-      })
+            })
 
-      var obj = {
-        id: this.DocID,
-        doc_no: this.DocNo,
-        doc_date: '',
-        ar_id: this.ArDetail.id,
-        ar_code: this.ArCode,
-        ar_name: this.ArName,
-        ar_bill_address: this.ArDetail.address,
-        ar_telephone: this.ArDetail.ar_telephone,
-        sale_id: parseInt(this.EmpID),
-        sale_code: this.EmpCode.toString(),
-        sale_name: this.EmpName,
-        ref_no: '',
-        tax_type: this.vatType-1,
-        credit_day: this.creditDay,
-        due_date: moment(this.dueDate).format("YYYY/MM/DD"),
-        delivery_day: this.sendDay,
-        delivery_date: moment(this.deliveryDate).format("YYYY/MM/DD"),
-        expire_day: this.expDay,
-        expire_date: moment(this.ExpDate).format("YYYY/MM/DD"),
-        contract_id: 0,
-        is_condition_send: this.isConditionSend,
-        my_description: this.discription1 + '|' + this.discription2,
-        sum_item_amount: sumTotal,
-        dis_count_word: this.billDiscount,
-        dis_count_amount: this.numberInt(this.billDiscount),
-        after_discount_amount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount), // ลบส่วนลดท้ายบิล
-        before_tax_amount: this.beforeNetAmount, // ถอด vat 7% รวมใน
-        tax_amount: this.numberInt(this.netVatAmount),
-        total_amount: this.billnetAmount,
-        approve_id: 0,
-        project_id: 0,
-        allocate_id: 0,
-        creator_code: this.usercode,
-        create_date_time: '',
-        bill_type: this.billType-1,
-        validity: this.sendpriceDay,
-        customer_assert: this.numberInt(this.custo_assert),
-        subs: item_Sub
-      }
-      // console.log(item_Sub)
-      console.log('update = '+JSON.stringify(obj))
-      if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
-        api.updateQTAX(obj,
-          (result) => {
-            // alert("บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว")
-            swal("แจ้งเตือน", "บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว", "success")
-            this.$router.push('/Saleh')
-          },
-          (error) => {
-            $("#loading").removeClass('is-active')
-            swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
-            console.log(error)
+            var obj = {
+              id: this.DocID,
+              doc_no: this.DocNo,
+              doc_date: '',
+              ar_id: this.ArDetail.id,
+              ar_code: this.ArCode,
+              ar_name: this.ArName,
+              ar_bill_address: this.ArDetail.address,
+              ar_telephone: this.ArDetail.ar_telephone,
+              sale_id: parseInt(this.EmpID),
+              sale_code: this.EmpCode.toString(),
+              sale_name: this.EmpName,
+              ref_no: '',
+              tax_type: this.vatType-1,
+              credit_day: this.creditDay,
+              due_date: moment(this.dueDate).format("YYYY/MM/DD"),
+              delivery_day: this.sendDay,
+              delivery_date: moment(this.deliveryDate).format("YYYY/MM/DD"),
+              expire_day: this.expDay,
+              expire_date: moment(this.ExpDate).format("YYYY/MM/DD"),
+              contract_id: 0,
+              is_condition_send: this.isConditionSend,
+              my_description: this.discription1 + '|' + this.discription2,
+              sum_item_amount: sumTotal,
+              dis_count_word: this.billDiscount,
+              dis_count_amount: this.numberInt(this.billDiscount),
+              after_discount_amount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount), // ลบส่วนลดท้ายบิล
+              before_tax_amount: this.beforeNetAmount, // ถอด vat 7% รวมใน
+              tax_amount: this.numberInt(this.netVatAmount),
+              total_amount: this.billnetAmount,
+              approve_id: 0,
+              project_id: 0,
+              allocate_id: 0,
+              creator_code: this.usercode,
+              create_date_time: '',
+              bill_type: this.billType-1,
+              validity: this.sendpriceDay,
+              customer_assert: this.numberInt(this.custo_assert),
+              subs: item_Sub
+            }
+            // console.log(item_Sub)
+            console.log('update = '+JSON.stringify(obj))
+            if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
+              api.updateQTAX(obj,
+                (result) => {
+                  // alert("บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว")
+                  swal("แจ้งเตือน", "บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว", "success")
+                  this.$router.push('/Saleh')
+                },
+                (error) => {
+                  $("#loading").removeClass('is-active')
+                  swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+                  console.log(error)
+                }
+              )
+            } else {
+              if (this.EmpCode == '') {
+                swal({
+                  title: "แจ้งเตือน",
+                  text: "กรุณาเลือกพนักงานขาย",
+                  timer: 1000,
+                  type: "warning",
+                  showConfirmButton: false
+                })
+                $("#loading").removeClass('is-active')
+                this.SearchEmplo()
+              } else {
+                $("#loading").removeClass('is-active')
+                swal({
+                    title: "แจ้งเตือน",
+                    text: "เอกสารนี้ ไม่มีรายการสินค้า",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: false
+                  },
+                  function() {
+                    this.SearchItem()
+                  }.bind(this))
+              }
+            }
+        }else{
+            swal({
+                title: "แจ้งเตือน",
+                text: "ท่านไม่มีสิทธิเข้าถึงรายละเอียดของเอกสารนี้",
+                timer: 1000,
+                type: "warning",
+                showConfirmButton: false
+              })
           }
-        )
-      } else {
-        if (this.EmpCode == '') {
-          swal({
-            title: "แจ้งเตือน",
-            text: "กรุณาเลือกพนักงานขาย",
-            timer: 1000,
-            type: "warning",
-            showConfirmButton: false
-          })
-          $("#loading").removeClass('is-active')
-          this.SearchEmplo()
-        } else {
-          $("#loading").removeClass('is-active')
-          swal({
-              title: "แจ้งเตือน",
-              text: "เอกสารนี้ ไม่มีรายการสินค้า",
-              type: "warning",
-              showCancelButton: false,
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "OK",
-              closeOnConfirm: false
-            },
-            function() {
-              this.SearchItem()
-            }.bind(this))
         }
-      }
+      }.bind(this))
     },
     showDetail_QT(doc_no) {
       $("#loading").addClass('is-active')
@@ -1117,6 +1132,7 @@ export default {
     this.params = this.$route.params
     this.user = JSON.parse(localStorage.DataUser)
     this.usercode = this.user.usercode
+    this.permission = this.user.menu
     moment.locale()
 
     if (this.params.status == 0) {

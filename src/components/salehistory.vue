@@ -22,7 +22,7 @@
 					</div>
 					<div class="HS-select-r">
 						<select v-model="menu" style="text-align:right;" @change="selectMenu(menu)">
-							<option v-for="menus in menu_lists" :value="menus.menuid" style="text-align:right;">{{ menus.menuname }}</option>
+							<option v-for="menus in menu_lists" :value="menus.menuid" style="text-align:right;" v-show="menus.is_read==1">{{ menus.menuname }}</option>
 						</select>
 					</div>
 				</div>

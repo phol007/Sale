@@ -28,9 +28,9 @@ input[type="text"]:disabled {
 	.navright {
 		/*border: 1px red solid;*/
 		width: 75%;
-		font-size: 45px;
+		font-size: 40px;
 		color: #fff;
-		line-height: 45px;
+		line-height: 60px;
 		float: left;
 	}
 
