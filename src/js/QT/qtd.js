@@ -585,7 +585,7 @@ export default {
             console.log("อัตราศูนย์ " + sumTotal)
             this.netVatAmount = this.formatMoney(0)
             this.totalItemAmount = this.formatMoney(sumTotal)
-            this.billnetAmount = this.numberInt(sumTotal)
+            this.billnetAmount = this.numberInt(sumTotal - this.numberInt(this.billDiscount))
             if (this.billDiscount.includes("%") == true) {
               this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
             } else {
