@@ -532,55 +532,76 @@ export default {
     },
     calVatnetAmount() {
       // console.log (this.vatType)
-      this.weight_all = 0
-      var sumTotal = 0
-      console.log(this.detail_itemlists)
-      for (var i = 0; i < this.detail_itemlists.length; i++) {
-        sumTotal += this.numberInt(this.detail_itemlists[i].amount)
-        this.weight_all += this.numberInt(this.detail_itemlists[i].qty)*this.detail_itemlists[i].weight
-      }
-      switch (parseInt(this.vatType)) {
-        case 1: // แยกนอก
-          console.log("แยกนอก " + sumTotal)
-          this.taxRage = 7
-          this.netVatAmount = this.formatMoney((sumTotal - this.numberInt(this.billDiscount)) * (this.taxRage / 100))
-          this.totalItemAmount = this.formatMoney(sumTotal)
-          this.billnetAmount = this.numberInt(this.netVatAmount) + (sumTotal - this.numberInt(this.billDiscount))
-          if (this.billDiscount.includes("%") == true) {
-            this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
-          } else {
-            this.billDiscount = this.formatMoney(this.billDiscount)
-          }
-          this.beforeNetAmount = this.totalItemAmount - this.billDiscount
-          break
-        case 2: // รวมใน
-          console.log("รวมใน " + sumTotal)
-          this.taxRage = 7
-          this.netVatAmount = this.formatMoney((sumTotal - this.numberInt(this.billDiscount)) - (((sumTotal - this.numberInt(this.billDiscount)) * 100) / (this.taxRage + 100)))
-          this.totalItemAmount = this.formatMoney(sumTotal)
-          this.billnetAmount = this.numberInt(sumTotal - this.numberInt(this.billDiscount))
-          if (this.billDiscount.includes("%") === true) {
-            this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
-          } else {
-            this.billDiscount = this.formatMoney(this.billDiscount)
-          }
-          this.beforeNetAmount = this.numberInt(this.billnetAmount) - this.numberInt(this.netVatAmount)
-          break
-        case 3: // อัตราศูนย์
-          console.log("อัตราศูนย์ " + sumTotal)
-          this.netVatAmount = this.formatMoney(0)
-          this.totalItemAmount = this.formatMoney(sumTotal)
-          this.billnetAmount = this.numberInt(sumTotal)
-          if (this.billDiscount.includes("%") == true) {
-            this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
-          } else {
-            this.billDiscount = this.formatMoney(this.billDiscount)
-          }
-          this.taxRage = 0
-          this.beforeNetAmount = this.totalItemAmount - this.billDiscount
-          break
-        default:
-          console.log(this.vatType)
+      if(this.numberInt(this.billDiscount)<0){
+        swal("Warning !!", "ส่วนลดต้องไม่น้อยกว่า 0", "warning")
+        this.billDiscount = this.formatMoney(0)
+        this.calVatnetAmount()
+      }else{
+        this.weight_all = 0
+        var sumTotal = 0
+        console.log(this.detail_itemlists)
+        for (var i = 0; i < this.detail_itemlists.length; i++) {
+          sumTotal += this.numberInt(this.detail_itemlists[i].amount)
+          this.weight_all += this.numberInt(this.detail_itemlists[i].qty)*this.detail_itemlists[i].weight
+        }
+        switch (parseInt(this.vatType)) {
+          case 1: // แยกนอก
+            console.log("แยกนอก " + sumTotal)
+            this.taxRage = 7
+            this.netVatAmount = this.formatMoney((sumTotal - this.numberInt(this.billDiscount)) * (this.taxRage / 100))
+            this.totalItemAmount = this.formatMoney(sumTotal)
+            this.billnetAmount = this.numberInt(this.netVatAmount) + (sumTotal - this.numberInt(this.billDiscount))
+            if (this.billDiscount.includes("%") == true) {
+              this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
+            } else {
+              this.billDiscount = this.formatMoney(this.billDiscount)
+            }
+            this.beforeNetAmount = this.totalItemAmount - this.billDiscount
+            if(this.numberInt(this.billDiscount)>this.numberInt(this.billnetAmount)){
+              swal("Warning !!", "ท่านใส่ส่วนลดมากเกินไป", "warning")
+              this.billDiscount = this.formatMoney(0)
+              this.calVatnetAmount()
+            }
+            break
+          case 2: // รวมใน
+            console.log("รวมใน " + sumTotal)
+            this.taxRage = 7
+            this.netVatAmount = this.formatMoney((sumTotal - this.numberInt(this.billDiscount)) - (((sumTotal - this.numberInt(this.billDiscount)) * 100) / (this.taxRage + 100)))
+            this.totalItemAmount = this.formatMoney(sumTotal)
+            this.billnetAmount = this.numberInt(sumTotal - this.numberInt(this.billDiscount))
+            if (this.billDiscount.includes("%") === true) {
+              this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
+            } else {
+              this.billDiscount = this.formatMoney(this.billDiscount)
+            }
+            this.beforeNetAmount = this.numberInt(this.billnetAmount) - this.numberInt(this.netVatAmount)
+            if(this.numberInt(this.billDiscount)>this.numberInt(sumTotal)){
+              swal("Warning !!", "ส่วนลดต้องไม่เกิน "+this.formatMoney(sumTotal)+" บาท", "warning")
+              this.billDiscount = this.formatMoney(0)
+              this.calVatnetAmount()
+            }
+            break
+          case 3: // อัตราศูนย์
+            console.log("อัตราศูนย์ " + sumTotal)
+            this.netVatAmount = this.formatMoney(0)
+            this.totalItemAmount = this.formatMoney(sumTotal)
+            this.billnetAmount = this.numberInt(sumTotal)
+            if (this.billDiscount.includes("%") == true) {
+              this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
+            } else {
+              this.billDiscount = this.formatMoney(this.billDiscount)
+            }
+            this.taxRage = 0
+            this.beforeNetAmount = this.totalItemAmount - this.billDiscount
+            if(this.numberInt(this.billDiscount)>this.numberInt(this.billnetAmount)){
+              swal("Warning !!", "ท่านใส่ส่วนลดมากเกินไป", "warning")
+              this.billDiscount = this.formatMoney(0)
+              this.calVatnetAmount()
+            }
+            break
+          default:
+            console.log(this.vatType)
+        }
       }
     },
     insert_QT() {
