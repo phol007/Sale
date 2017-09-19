@@ -167,7 +167,7 @@ export default {
     approve (data) {
       this.permission.forEach(function(val, key){
         if(this.menu==val['menuid']){
-          if(val['is_delete'] == 1){
+          // if(val['is_delete'] == 1){
             var body = {
                         id: data.id,
                         is_confirm: 1,
@@ -210,15 +210,15 @@ export default {
               }.bind(this)
             )
             this.tool = false
-          }else{
-              swal({
-                title: "cancel Quotation",
-                text: "ท่านไม่มีสิทธิยกเลิกรายการนี้",
-                timer: 1000,
-                type: "warning",
-                showConfirmButton: false
-              })
-          }
+          // }else{
+          //     swal({
+          //       title: "cancel Quotation",
+          //       text: "ท่านไม่มีสิทธิยกเลิกรายการนี้",
+          //       timer: 1000,
+          //       type: "warning",
+          //       showConfirmButton: false
+          //     })
+          // }
         }
       }.bind(this))
     },
