@@ -95,12 +95,13 @@ export default {
               closeOnConfirm: true,
               showLoaderOnConfirm: true,
             },
-            function() {
-              $('#SItem').addClass('is-active')
-              this.moSitem = ''
-              this.searchItems(this.moSitem)
+            function(isConfirm) {
+              if(isConfirm){
+                $('#SItem').addClass('is-active')
+                this.moSitem = ''
+                this.searchItems(this.moSitem)              
+              }
             }.bind(this))
-
         } else {
           $('#SItem').addClass('is-active')
           this.moSitem = ''
