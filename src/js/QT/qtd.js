@@ -323,19 +323,25 @@ export default {
     numberInt(str) {
       return numeral(str).value()
     },
-    return_Int_Discount(str) {
-      this.billDiscount = this.numberInt(str)
+    return_Int_Discount(str) { 
+      if (typeof str == 'string') {
+        if (str.includes("%") === true) {
+          this.billDiscount = numeral(this.numberInt(str)).format('(0.0%)')
+        } else {
+          this.billDiscount = this.numberInt(str)
+        }
+      }
     },
     return_FM_Discount(int) {
       if (typeof int == 'string') {
         if (int.includes("%") === true) {
-          this.billDiscount = numeral(this.numberInt(int)).format('0%')
+          this.billDiscount = numeral(this.numberInt(int)).format('(0.0%)')
         } else {
           this.billDiscount = this.formatMoney(int)
         }
       } else {
         if (int > 0) {
-          this.billDiscount = numeral(this.numberInt(int)).format('0%')
+          this.billDiscount = numeral(this.numberInt(int)).format('0,0.00')
         } else {
           this.billDiscount = this.formatMoney(int)
         }
@@ -353,7 +359,7 @@ export default {
           if (discount != '') {
             if (typeof discount == 'string') {
               if (discount.includes("%") === true) {
-                discount = numeral(this.numberInt(discount)).format('0%')
+                discount = numeral(this.numberInt(discount)).format('(0.0%)')
               } else {
                 discount = this.numberInt(discount)
               }
@@ -381,7 +387,7 @@ export default {
             // console.log(this.numberInt(discount))
             if (typeof discount == 'string') {
               if (discount.includes("%") === true) {
-                discount = numeral(this.numberInt(discount)).format('0%')
+                discount = numeral(this.numberInt(discount)).format('(0.0%)')
               } else {
                 discount = this.formatMoney(discount)
               }
@@ -414,7 +420,7 @@ export default {
       if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
         var data = this.detail_itemlists
         if (discount.includes("%") === true) {
-          discount = numeral(this.numberInt(discount)).format('0%')
+          discount = numeral(this.numberInt(discount)).format('(0.0%)')
         } else {
           discount = this.formatMoney(discount)
         }
@@ -533,6 +539,7 @@ export default {
     },
     calVatnetAmount() {
       // console.log (this.vatType)
+      // alert(this.numberInt(this.billDiscount))
       if(this.numberInt(this.billDiscount)<0){
         swal("Warning !!", "ส่วนลดต้องไม่น้อยกว่า 0", "warning")
         this.billDiscount = this.formatMoney(0)
@@ -553,7 +560,7 @@ export default {
             this.totalItemAmount = this.formatMoney(sumTotal)
             this.billnetAmount = this.numberInt(this.netVatAmount) + (sumTotal - this.numberInt(this.billDiscount))
             if (this.billDiscount.includes("%") == true) {
-              this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
+              this.billDiscount = this.billDiscount
             } else {
               this.billDiscount = this.formatMoney(this.billDiscount)
             }
@@ -570,8 +577,9 @@ export default {
             this.netVatAmount = this.formatMoney((sumTotal - this.numberInt(this.billDiscount)) - (((sumTotal - this.numberInt(this.billDiscount)) * 100) / (this.taxRage + 100)))
             this.totalItemAmount = this.formatMoney(sumTotal)
             this.billnetAmount = this.numberInt(sumTotal - this.numberInt(this.billDiscount))
+            // alert(this.billnetAmount+'= '+sumTotal+' - '+this.numberInt(this.billDiscount))
             if (this.billDiscount.includes("%") === true) {
-              this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
+              this.billDiscount = this.billDiscount
             } else {
               this.billDiscount = this.formatMoney(this.billDiscount)
             }
@@ -588,7 +596,7 @@ export default {
             this.totalItemAmount = this.formatMoney(sumTotal)
             this.billnetAmount = this.numberInt(sumTotal - this.numberInt(this.billDiscount))
             if (this.billDiscount.includes("%") == true) {
-              this.billDiscount = numeral(this.numberInt(this.billDiscount)).format('0%')
+              this.billDiscount = this.billDiscount
             } else {
               this.billDiscount = this.formatMoney(this.billDiscount)
             }
@@ -1138,6 +1146,33 @@ export default {
           input2_item[i].style.backgroundColor  = '#fff'
           input3_item[i].style.backgroundColor  = '#fff'
           input4_item[i].style.backgroundColor  = '#fff'
+        }
+      }
+    },
+    keyInt (e) {
+      if(e.keyCode!=190){
+        if(e.keyCode!=9){
+          if(e.keyCode!=13){
+            if(e.keyCode!=8){
+              if(e.keyCode<46||e.keyCode>57){
+                e.returnValue = false
+              }
+            }
+          }
+        }
+      }
+    },
+    keyNumber (e) {
+      console.log(e.keyCode)
+      if(e.keyCode!=190){
+        if(e.keyCode!=9){
+          if(e.keyCode!=13){
+            if(e.keyCode!=8){
+              if(e.keyCode<46||e.keyCode>57){
+                e.returnValue = false
+              }
+            }
+          }
         }
       }
     }

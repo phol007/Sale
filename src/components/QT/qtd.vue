@@ -92,13 +92,13 @@
                             		</select>
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input1">
+                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input1" @keydown="keyNumber">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input2">
+                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input2" @keydown="keyNumber">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1"  class="item_list_input3">
+                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1"  class="item_list_input3" @keydown="keyNumber">
                             	</td>
                             	<td style="padding:0;">
                             		<input type="text" placeholder="0.00" v-model="item_list.amount" readonly  class="item_list_input4">
@@ -152,7 +152,7 @@
 		    		ยืนราคา
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1" :readonly="is_confirm==1||is_cancel==1">
+		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
 		    	</div>
 		    	<!-- <div class="lb-l" style="width:50%">
 		    		ลูกค้าต้องรับภายใน
@@ -164,13 +164,13 @@
 		    		เอกสารหมดอายุภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)" min="1" :readonly="is_confirm==1||is_cancel==1">
+		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ส่งมอบภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)" min="1" :readonly="is_confirm==1||is_cancel==1">
+		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เครดิต | วัน
@@ -229,7 +229,7 @@
 		    		ส่วนลด %, บาท
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calVatnetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)" :readonly="is_confirm==1||is_cancel==1">
+		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calVatnetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)" :readonly="is_confirm==1||is_cancel==1" @keydown="keyNumber">
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		อัตราภาษีมูลค้าเพิ่ม
