@@ -15,9 +15,10 @@ export default {
       DocNo: '',
       vatType: 2,
       billType: 1,
-      isConditionSend: 1,
+      isConditionSend: 0,
       DocDate: '',
       nowDate: {},
+      nowDocDate: {},
       disabled: false,
       docdata_disabled: false,
       toDate: '',
@@ -160,6 +161,11 @@ export default {
       var m = day.getMonth()
       var y = day.getFullYear()
       this.toDate = new Date(y, m, d)
+
+      this.DocDate = moment(this.toDate).format('MM/DD/YYYY')
+      this.calExpDate(this.expDay)
+      this.calDeliDate(this.sendDay)
+      this.calDueDate(0)
     },
     searchCus(keyword) {
       $("#loading").addClass('is-active')
@@ -243,13 +249,22 @@ export default {
         this.detailItemlist(item)
       }
     },
+    setDocDate (date) {
+      this.DocDate = date
+      this.nowDocDate = {
+           to: new Date(date)
+      }
+      this.calExpDate(this.expDay)
+      this.calDeliDate(this.sendDay)
+      this.calDueDate(this.creditDay)
+    },
     calExpDate(addDay) {
-      var d = new Date()
+      var d = new Date(this.DocDate)
       d.setDate(d.getDate() + parseInt(addDay))
-      var mkMonth = d.getMonth() + 1
+      var mkMonth = d.getMonth()
       var mkMonth = new String(mkMonth)
       if (mkMonth.length == 1) {
-        mkMonth = "0" + (mkMonth - 1)
+        mkMonth = "0" + (mkMonth)
       }
       var mkDay = d.getDate();
       mkDay = new String(mkDay)
@@ -260,12 +275,12 @@ export default {
       this.ExpDate = moment(new Date(mkYear, mkMonth, mkDay)).format('MM/DD/YYYY')
     },
     calDeliDate(addDay) {
-      var d = new Date()
+      var d = new Date(this.DocDate)
       d.setDate(d.getDate() + parseInt(addDay))
-      var mkMonth = d.getMonth() + 1
+      var mkMonth = d.getMonth()
       var mkMonth = new String(mkMonth)
       if (mkMonth.length == 1) {
-        mkMonth = "0" + (mkMonth - 1)
+        mkMonth = "0" + (mkMonth)
       }
       var mkDay = d.getDate();
       mkDay = new String(mkDay)
@@ -276,12 +291,12 @@ export default {
       this.deliveryDate = moment(new Date(mkYear, mkMonth, mkDay)).format('MM/DD/YYYY')
     },
     calDueDate(addDay) {
-      var d = new Date()
+      var d = new Date(this.DocDate)
       d.setDate(d.getDate() + parseInt(addDay))
-      var mkMonth = d.getMonth() + 1
+      var mkMonth = d.getMonth()
       var mkMonth = new String(mkMonth)
       if (mkMonth.length == 1) {
-        mkMonth = "0" + (mkMonth - 1)
+        mkMonth = "0" + (mkMonth)
       }
       var mkDay = d.getDate();
       mkDay = new String(mkDay)
@@ -293,7 +308,7 @@ export default {
     },
     calExpDay(date) {
       var oneDay = 24 * 60 * 60 * 1000
-      var firstDate = new Date()
+      var firstDate = new Date(this.DocDate)
       var secondDate = date
       var difference = firstDate.getTime() - secondDate.getTime()
       var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
@@ -301,7 +316,7 @@ export default {
     },
     calDeliDay(date) {
       var oneDay = 24 * 60 * 60 * 1000
-      var firstDate = new Date()
+      var firstDate = new Date(this.DocDate)
       var secondDate = date
       var difference = firstDate.getTime() - secondDate.getTime()
       var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
@@ -309,7 +324,7 @@ export default {
     },
     calcreditDay(date) {
       var oneDay = 24 * 60 * 60 * 1000
-      var firstDate = new Date()
+      var firstDate = new Date(this.DocDate)
       var secondDate = date
       // var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
       var difference = firstDate.getTime() - secondDate.getTime()
@@ -458,14 +473,7 @@ export default {
         (result) => {
           $("#loading").removeClass('is-active')
           this.DocNo = result.data.new_doc_no
-          this.DocDate = moment(this.toDate).format('MM/DD/YYYY')
-          this.calExpDate(this.expDay)
-          this.calDeliDate(this.sendDay)
-          this.calDueDate(0)
-          this.nowDate = {
-            // to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-          }
-          this.calVatnetAmount()
+          this.insert_QT()
         },
         (error) => {
           $("#loading").removeClass('is-active')
@@ -1023,7 +1031,7 @@ export default {
           break
         case 2: alert("คู่มือใช้งานยังไม่ได้ทำครับ")
           break
-        case 3: this.insert_QT()
+        case 3: this.GenDocNo('QT', 0)
           break
         case 4: this.update_QT()
           break
@@ -1149,20 +1157,7 @@ export default {
         }
       }
     },
-    keyInt (e) {
-      if(e.keyCode!=190){
-        if(e.keyCode!=9){
-          if(e.keyCode!=13){
-            if(e.keyCode!=8){
-              if(e.keyCode<46||e.keyCode>57){
-                e.returnValue = false
-              }
-            }
-          }
-        }
-      }
-    },
-    keyNumber (e) {
+    keyInt (e) {      
       console.log(e.keyCode)
       if(e.keyCode!=190){
         if(e.keyCode!=9){
@@ -1175,6 +1170,21 @@ export default {
           }
         }
       }
+      e.returnValue = true
+    },
+    keyNumber (e) {
+      if(e.keyCode!=190){
+        if(e.keyCode!=9){
+          if(e.keyCode!=13){
+            if(e.keyCode!=8){
+              if(e.keyCode<46||e.keyCode>57){
+                e.returnValue = false
+              }
+            }
+          }
+        }
+      }      
+      e.returnValue = true
     }
   },
   beforeDestroy () {
@@ -1193,12 +1203,17 @@ export default {
     moment.locale()
 
     if (this.params.status == 0) {
-      this.GenDocNo('QT', 0)
+      // this.GenDocNo('QT', 0)  
+      this.DocNo = 'ใบเสนอราคาใหม่'    
+      this.calVatnetAmount()
       this.setMenuTool(0)
+      this.nowDate = {
+           to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+      }
       this.toDay()
     } else if (this.params.status == 1) {
       this.showDetail_QT(this.params.docno)
-      this.docdata_disabled = true
+      this.docdata_disabled = false
     } else {
       this.$router.push('/Saleh')
     }

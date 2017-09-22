@@ -37,6 +37,11 @@ npm install sweetalert --save
 import VueSweetAlert from 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'
 
+# touch 
+npm install vue-touchjs --save
+import vueTouch from 'vue-touchjs'
+Vue.use(vueTouch, {name: 'v-touch'})
+
 ```
 ## Set config after build project
 # set path index

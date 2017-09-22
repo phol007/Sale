@@ -45,11 +45,11 @@
 	    	</div>
 	    </div>
 	    <div class="T-l">
-	    	<div class="lb-l">
-	    		วันที่เอกสาร 
+	    	<div class="lb-l" style="padding-left:0;">
+	    		วันที่ออกเอกสาร 
 	    	</div>
 	    	<div class="lb-r">
-	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="docdata_disabled" style="position: static;" ></datepicker>
+	    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="DocDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="docdata_disabled" style="position: static;" @input="setDocDate(DocDate)"></datepicker>
 	    	</div>
 	    	<div class="lb-l">
 	    		รหัสลูกค้า
@@ -203,19 +203,19 @@
 		    		วันที่หมดอายุ
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calExpDay(ExpDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calExpDay(ExpDate)"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ลงวันที่
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calDeliDay(deliveryDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calDeliDay(deliveryDate)"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		วันที่ครบกำหนด
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calcreditDay(dueDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calcreditDay(dueDate)"></datepicker>
 		    	</div>
 	    	</div>
 	    	<div class="btt-block" style="border:0;">
