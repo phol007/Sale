@@ -446,6 +446,13 @@ input[type="text"]:disabled {
 		/*border: 1px solid red;*/
 	}
 
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
 /* modal */
 
 .modal .modal-content {

@@ -899,11 +899,7 @@ export default {
           this.is_cancel = result.data.is_cancel
           this.is_confirm = result.data.is_confirm
 
-          if(this.is_confirm==1){
-            this.setMenuTool(2) 
-          }else{
-            this.setMenuTool(1)            
-          }
+          this.setMenuTool(1)     
 
           result.data.subs.forEach(function(val, key) {
             if (parseInt(this.vatType) == 2) {
@@ -983,46 +979,71 @@ export default {
                         }
                         ]
       }else if (status==1) {
-        this.tool_menu = [
-                        {
-                          text: 'ย้อนกลับ',
-                          icon: 'fa fa-chevron-left',
-                          func: 1
-                        },
-                        {
-                          text: 'บันทึกการแก้ไขเอกสาร',
-                          icon: 'fa fa-pencil-square-o',
-                          func: 4
-                        },
-                        {
-                          text: 'อนุมัติเอกสาร',
-                          icon: 'fa fa-thumbs-o-up',
-                          func: 5
-                        },
-                        {
-                          text: 'คู่มือใช้งาน',
-                          icon: 'fa fa-question',
-                          func: 2
-                        }
-                        ]
-      }else{
-        this.tool_menu = [
-                        {
-                          text: 'ย้อนกลับ',
-                          icon: 'fa fa-chevron-left',
-                          func: 1
-                        },
-                        {
-                          text: 'บันทึกการแก้ไขเอกสาร',
-                          icon: 'fa fa-pencil-square-o',
-                          func: 4
-                        },
-                        {
-                          text: 'คู่มือใช้งาน',
-                          icon: 'fa fa-question',
-                          func: 2
-                        }
-                        ]
+        if(this.is_confirm==0&&this.is_cancel==0){
+          this.tool_menu = [
+                            {
+                              text: 'ย้อนกลับ',
+                              icon: 'fa fa-chevron-left',
+                              func: 1
+                            },
+                            {
+                              text: 'บันทึกการแก้ไขเอกสาร',
+                              icon: 'fa fa-pencil-square-o',
+                              func: 4
+                            },
+                            {
+                              text: 'อนุมัติเอกสาร',
+                              icon: 'fa fa-thumbs-o-up',
+                              func: 5
+                            },
+                            {
+                              text: 'คู่มือใช้งาน',
+                              icon: 'fa fa-question',
+                              func: 2
+                            }
+                          ]
+        }else if(this.is_confirm==1){
+          this.tool_menu = [
+                            {
+                              text: 'ย้อนกลับ',
+                              icon: 'fa fa-chevron-left',
+                              func: 1
+                            },
+                            {
+                              text: 'ปรับเอกสารให้เป็นใบ BackOrder',
+                              icon: 'fa fa-exchange',
+                              func: 6
+                            },
+                            {
+                              text: 'ปรับเอกสารให้เป็นใบสั่งขาย',
+                              icon: 'fa fa-exchange',
+                              func: 7
+                            },
+                            {
+                              text: 'ปรับเอกสารให้เป็นใบใบสั่งจอง',
+                              icon: 'fa fa-exchange',
+                              func: 8
+                            },
+                            {
+                              text: 'คู่มือใช้งาน',
+                              icon: 'fa fa-question',
+                              func: 2
+                            }
+                          ]
+        }else{
+           this.tool_menu = [
+                            {
+                              text: 'ย้อนกลับ',
+                              icon: 'fa fa-chevron-left',
+                              func: 1
+                            },
+                            {
+                              text: 'คู่มือใช้งาน',
+                              icon: 'fa fa-question',
+                              func: 2
+                            }
+                          ]
+        }
       }
     },
     funcMenu (type) {
@@ -1036,6 +1057,13 @@ export default {
         case 4: this.update_QT()
           break
         case 5: this.approve ()
+          break
+        case 6: alert('ไม่เปิดให้บริการครับ')// BO 
+          break
+        case 7: alert('ไม่เปิดให้บริการครับ')// SO
+          break
+        case 8: alert('ไม่เปิดให้บริการครับ')// RO
+          break
       }
     },
     approve (data) {
@@ -1210,12 +1238,13 @@ export default {
       this.nowDate = {
            to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
       }
-      this.toDay()
+      this.toDay()      
     } else if (this.params.status == 1) {
       this.showDetail_QT(this.params.docno)
       this.docdata_disabled = false
     } else {
       this.$router.push('/Saleh')
+      //console.log(this.$route.params.status)
     }
     document.addEventListener("keydown", (e) => {
       // alert(e.keyCode)

@@ -38,7 +38,7 @@
 	    		ประเภทราคา
 	    	</div>
 	    	<div class="lb-r">
-	    		<select v-model="billType" @change="GenDocNo('QT', billType-1)" :disabled="detail_itemlists.length!=0">
+	    		<select v-model="billType" :disabled="detail_itemlists.length!=0">
 	    			<option value="1">ขายสด</option>
 	    			<option value="2">ขายเชื่อ</option>
 	    		</select>
@@ -248,7 +248,7 @@
 			  </md-button>
 			  <md-button class="md-fab md-mini md-clean" v-for="(tools, index) in tool_menu" @click="funcMenu(tools.func)" :key="index">
 			    <md-icon><i :class="tools.icon" aria-hidden="true"></i></md-icon>
-			  	<md-tooltip md-direction="left" style="font-size:14px;">{{ tools.text }}</md-tooltip>
+			  	<md-tooltip md-delay="0" md-direction="left" style="font-size:14px;">{{ tools.text }}</md-tooltip>
 			  </md-button>			  
 
 			  <!-- <md-button class="md-fab md-mini md-clean" @click="insert_QT">
