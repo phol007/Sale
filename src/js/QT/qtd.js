@@ -483,6 +483,7 @@ export default {
       )
     },
     detailItemlist(item) {
+      var copy = false
       if(this.detail_itemlists.length != 0){
         for(var k = 0; k < this.detail_itemlists.length; k++){
           if(this.detail_itemlists[k].item_id == item.id){
@@ -498,13 +499,45 @@ export default {
               closeOnCancel: true
             },
             function(isConfirm) {
-              if (isConfirm) {              
+              if (isConfirm) {      
                 if (parseInt(this.vatType) == 2) {
                   this.taxRage = 7
                   var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
                 } else {
                   var netAmountItem = this.formatMoney(1 * item.units[0].price)
                 }
+                  this.detail_itemlists.push({
+                    no: this.detail_itemlists.length + 1,
+                    item_id: item.id,
+                    item_code: item.item_code,
+                    item_name: item.item_name,
+                    units: item.units,
+                    unit_select: item.units[0],
+                    stock_select: item.stock_list[0],
+                    qty: this.formatMoney(1),
+                    price: this.formatMoney(item.units[0].price),
+                    discount: this.formatMoney(0),
+                    amount: this.formatMoney(1 * item.units[0].price),
+                    netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
+                    home_amount: this.formatMoney(1 * item.units[0].price),
+                    stock_list: item.stock_list,
+                    ref_no: this.DocNo,
+                    weight: item.weight
+                  })
+                  this.calVatnetAmount()
+              } else {
+
+              }
+            }.bind(this))
+          }else{
+            if(k == this.detail_itemlists.length-1){
+              // alert(true)
+              if (parseInt(this.vatType) == 2) {
+                this.taxRage = 7
+                var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
+              } else {
+                var netAmountItem = this.formatMoney(1 * item.units[0].price)
+              }
                 this.detail_itemlists.push({
                   no: this.detail_itemlists.length + 1,
                   item_id: item.id,
@@ -524,10 +557,8 @@ export default {
                   weight: item.weight
                 })
                 this.calVatnetAmount()
-              } else {
-
-              }
-            }.bind(this))
+                k = this.detail_itemlists.length
+            }
           }
         }
       }else{
