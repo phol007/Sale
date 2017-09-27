@@ -56,7 +56,7 @@
 	    	</div>
 	    	<div class="lb-r">
 	    		<input type="text" class="input" style="width:70%;" placeholder="รหัสลูกค้า ..." v-model="ArCode" readonly @click="SearchCusto" :disabled="detail_itemlists.length!=0">
-	    		<i class="fa fa-search" aria-hidden="true" @click="SearchCusto" :disabled="detail_itemlists.length!=0"></i>
+	    		<i class="fa fa-search" aria-hidden="true" @click="SearchCusto" :disabled="detail_itemlists.length!=0 || is_cancel == 1 || is_confirm == 1"></i>
 	    	</div>
 	    	<div class="lb-l">
 	    		ชื่อลูกค้า
