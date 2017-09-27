@@ -152,7 +152,7 @@
 		    		ยืนราคา
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
+		    		<input type="number" class="input" placeholder="ยืนราคา..." v-model="sendpriceDay" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt" @blur="sendpriceDay_lessone_day(sendpriceDay)">
 		    	</div>
 		    	<!-- <div class="lb-l" style="width:50%">
 		    		ลูกค้าต้องรับภายใน
@@ -164,13 +164,13 @@
 		    		เอกสารหมดอายุภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @change="calExpDate(expDay)" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
+		    		<input type="number" class="input" placeholder="เอกสารหมดอายุภายใน..." v-model="expDay" @blur="expDay_lessone_day(expDay)" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		ส่งมอบภายใน
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @change="calDeliDate(sendDay)" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
+		    		<input type="number" class="input" placeholder="ส่งมอบภายใน..." v-model="sendDay" @blur="sendDay_lessone_day(sendDay)" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
 		    	</div>
 		    	<div class="lb-l" style="width:50%">
 		    		เครดิต | วัน

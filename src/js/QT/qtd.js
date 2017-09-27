@@ -1293,6 +1293,48 @@ export default {
         }
       }      
       e.returnValue = true
+    },
+    sendpriceDay_lessone_day (day) {
+      if(day < 1) {    
+        swal({
+          title: "แจ้งเตือน",
+          text: "จำนวนวันต้องไม่น้อยกว่า 1 วัน",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })
+        this.sendpriceDay = 1
+      }
+    },
+    expDay_lessone_day (day) {
+      if(day < 1) { 
+        swal({
+          title: "แจ้งเตือน",
+          text: "จำนวนวันต้องไม่น้อยกว่า 1 วัน",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })   
+        this.expDay = 1
+        this.calExpDate(1)
+      }else{
+        this.calExpDate(day)
+      }
+    },
+    sendDay_lessone_day (day) {
+      if(day < 1) {    
+        swal({
+          title: "แจ้งเตือน",
+          text: "จำนวนวันต้องไม่น้อยกว่า 1 วัน",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })
+        this.sendDay = 1
+        this.calDeliDate(1)
+      }else{
+        this.calDeliDate(day)
+      }
     }
   },
   beforeDestroy () {
