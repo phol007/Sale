@@ -739,11 +739,11 @@ export default {
         sale_name: this.EmpName,
         ref_no: '',
         tax_type: this.vatType-1,
-        credit_day: this.creditDay,
+        credit_day: this.numberInt(this.creditDay),
         due_date: this.return_date(this.dueDate),
-        delivery_day: this.sendDay,
+        delivery_day: this.numberInt(this.sendDay),
         delivery_date: this.return_date(this.deliveryDate),
-        expire_day: this.expDay,
+        expire_day: this.numberInt(this.expDay),
         expire_date: this.return_date(this.ExpDate),
         contract_id: 0,
         is_condition_send: this.isConditionSend,
@@ -761,7 +761,7 @@ export default {
         creator_code: this.usercode,
         create_date_time: '',
         bill_type: this.billType-1,
-        validity: this.sendpriceDay,
+        validity: this.numberInt(this.sendpriceDay),
         customer_assert: this.numberInt(this.custo_assert),
         subs: item_Sub
       }
