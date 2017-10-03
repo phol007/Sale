@@ -12,8 +12,13 @@ export default {
       this.$router.push(page)
     },
   	toDo (page, menu) {
-      if(menu.is_create==1){        
-        this.$router.push({ name: page, params: { status: 0, docno: '' }})
+      if(menu.is_create==1){
+        switch(page){
+          case 0 : this.$router.push({ name: 'Qtd', params: { status: 0, docno: '' }})
+                  break
+          case 1 : this.$router.push({ name: 'so', params: { status: 0, docno: '' }})
+                  break
+        }
       }
   	},
     menu_add () {

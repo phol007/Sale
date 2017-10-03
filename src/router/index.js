@@ -4,6 +4,7 @@ const Qtd = () => import('@/components/QT/qtd')
 const SaleHistory = () => import('@/components/salehistory')
 const Menu = () => import('@/components/menu')
 const Login = () => import('@/components/login')
+const So = () => import('@/components/SO/so')
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/menuDoc',
       name: 'menu',
       component: Menu
+    },
+    {
+      path: '/so/status/docno',
+      name: 'so',
+      component: So
     }
   ]
 })

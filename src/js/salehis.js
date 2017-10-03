@@ -29,12 +29,18 @@ export default {
     goTo (page) {
       this.$router.push(page)
     },
-    toDo (page, docno) {
+    toDo (docno) {
       $("#loading").addClass('is-active')
       this.permission.forEach(function(val, key){   
         if(this.menu==val['menuid']){
           if(val['is_read'] == 1){
-            this.$router.push({ name: page, params: { status: 1, docno: docno } })
+            // alert(this.menu)
+            switch(this.menu){
+              case 1 : this.$router.push({ name: 'Qtd', params: { status: 1, docno: docno }})
+                      break
+              case 2 : this.$router.push({ name: 'so', params: { status: 1, docno: docno }})
+                      break
+            }
             $("#loading").removeClass('is-active')
           }else{
             swal({

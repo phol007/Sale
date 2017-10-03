@@ -11,6 +11,13 @@ html {
     width: 100%; /* Full width */
 }
 
+.md-fab i{
+	/*background: red;*/
+	padding: 0;
+	line-height: 20px;
+	margin: auto;
+}
+
 input[type="text"]:disabled {
 	background: #fff;
 }

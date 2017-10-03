@@ -22,7 +22,7 @@
 					</div>
 					<div class="HS-select-r">
 						<select v-model="menu" style="text-align:right;" @change="selectMenu(menu)">
-							<option v-for="menus in menu_lists" :value="menus.menuid" style="text-align:right;" v-show="menus.is_read==1">{{ menus.menuname }}</option>
+							<option v-for="(menus, index) in menu_lists" :value="menus.menuid" style="text-align:right;" v-show="menus.is_read==1">{{ menus.menuname }}</option>
 						</select>
 					</div>
 				</div>
@@ -33,7 +33,7 @@
 					<div class="H-list-img" @tap="toDo('Qtd', lists.doc_no)">
 						<img src="../assets/logo.png">
 					</div>
-					<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm}" @tap="toDo('Qtd', lists.doc_no)">
+					<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm}" @tap="toDo(lists.doc_no)">
 						<p class="H-list-dtitle" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm}">{{ lists.doc_no }}</p>
 						<p>{{ lists.ar_code }} | {{ lists.ar_name }}</p>
 						<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>

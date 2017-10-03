@@ -1,0 +1,541 @@
+.Wcontainer {
+  /*Fcontainer*/
+  clear: both;
+  /*border: 1px solid green;*/
+  /*background: yellowgreen;*/
+  height: 100%;
+  position: static;
+  width: 100%;
+  margin-top: 60px;
+  padding: 10px 10px;
+}
+
+.head-r {
+  /*T-r*/
+  /*border: 1px solid gray;*/
+  width: 38%;
+  height: 80px;
+  float: right;
+  padding: 0.5px;
+}
+
+.headR-l {
+  /*title-l*/
+  /*border: 1px solid gray;*/
+  width: 30%;
+  height: 100%;
+  word-wrap: break-word;
+  float: left;
+  font-size: 20px;
+  line-height: 32px;
+  text-align: center;
+  color: #b8bfc4;
+}
+
+.headR-l i {
+  /*title-l i*/
+  font-size: 40px;
+}
+
+.headR-r {
+  /*detail-r*/
+  /*border: 1px solid gray;*/
+  /*border-left: 1px solid #b8bfc4;*/
+  width: 70%;
+  height: 100%;
+  float: left;
+  font-size: 55px;
+  padding: 5% 1% 0 0;
+  text-align: right;
+  /*background-color: #fff0b3;*/
+}
+
+.T-status {
+  /*T-status*/
+  /*border: 1px solid gray;*/
+  clear: both;
+  width: 100%;
+  padding-top: 0;
+  font-size: 16px;
+  margin-top: 0px;
+}
+
+.T-status b,
+span {
+  line-height: 10px;
+  padding: 0;
+}
+
+.head-l {
+  /*border: 1px solid red;*/
+  height: 60%;
+  width: 20%;
+  float: left;
+  padding: 0%;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+
+.headL-l {
+  border: 0.5px solid #ebebe0;
+  border-right: 0;
+  width: 45%;
+  float: left;
+  clear: both;
+  padding: 1% 5% 0.5% 0.5%;
+  height: 35px;
+  text-align: right;
+  line-height: 30px;
+  font-size: 14px;
+  background: none;
+  /*font-weight: bold;*/
+}
+
+.headL-r {
+  border: 1px solid #ebebe0;
+  border-left: 0;
+  width: 55%;
+  float: left;
+  padding: 0.5%;
+  height: 35px;
+  margin: 0;
+  text-align: center;
+  background: #fff;
+}
+
+.headL-r select {
+  border: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+}
+
+.headL-r input {
+  border: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+  margin: 0;
+}
+
+.headL-r .datepicker {
+  height: 300px;
+  width: 20%;
+  text-align: right;
+  padding-right: 0%;
+  cursor: pointer;
+  position: static;
+}
+
+.headL-r i {
+  /*height: 10px;*/
+  float: right;
+  margin: 0.5% 3%;
+  /*border: 1px solid gray;*/
+  padding: 1%;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  user-drag: none;
+}
+
+.headL-r i:active {
+  background: red;
+}
+
+.head-l1 {
+  /*yborder: 1px solid blue;*/
+  height: 60%;
+  width: 40%;
+  float: left;
+  padding: 0%;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.headL-l1 {
+  border: 0.5px solid #ebebe0;
+  border-right: 0;
+  width: 20%;
+  float: left;
+  /*padding: 1% 5% 0.5% 0.5%;   */
+  height: 35px;
+  text-align: right;
+  line-height: 30px;
+  font-size: 14px;
+  margin-bottom: 0px;
+  /*font-weight: bold;*/
+}
+
+.headL-r1 {
+  border: 1px solid #ebebe0;
+  border-left: 0;
+  width: 30%;
+  float: left;
+  padding: 0.5%;
+  height: 35px;
+  text-align: center;
+  background: #fff;
+  margin-bottom: 0px;
+  position: static;
+}
+
+.headL-r1 .date {
+  height: 30px;
+  width: 60%;
+  text-align: right;
+  padding-right: 0%;
+  cursor: pointer;
+  position: static;
+  font-weight: normal;
+}
+
+.headL-r1 .datepicker {
+  height: 30px;
+  width: 100%;
+  text-align: right;
+  padding-right: 0%;
+  cursor: pointer;
+  position: static;  
+  font-weight: normal;
+}
+
+.headL-r1 input {
+  border: 0;
+  height: 95%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+  position: static;
+}
+
+.headL-r1 select {
+  border: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+}
+
+.headL-r1 i {
+  /*height: 10px;
+	   	float:right;
+	   	margin: 0.5% 3%;
+	   	/*border: 1px solid gray;*/
+  padding: 1%;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  user-drag: none;
+}
+
+.headL-r1 i:active {
+  background: red;
+}
+
+.head-l2 {
+  /*border: 0.1px solid gray;*/
+  border-radius: 5px;
+  width: 20%;
+  float: left;
+  height: 70px;
+  padding: 0%;
+  margin-right: 3px;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+
+.headL-l2 {
+  border: 0.5px solid #ebebe0;
+  border-right: 0;
+  width: 40%;
+  float: left;
+  clear: both;
+  /*padding: 1% 5% 0.5% 0.5%;   */
+  height: 35px;
+  text-align: right;
+  line-height: 30px;
+  font-size: 14px;
+  margin-bottom: 0px;
+  /*font-weight: bold;*/
+}
+
+.headL-r2 {
+  border: 1px solid #ebebe0;
+  border-left: 0;
+  width: 60%;
+  float: left;
+  padding: 0.5%;
+  height: 35px;
+  text-align: center;
+  background: #fff;
+  margin-bottom: 0px;
+  position: static;
+}
+
+.headL-r2 .date {
+  height: 30px;
+  width: 70%;
+  text-align: right;
+  padding-right: 0%;
+  cursor: pointer;
+  position: static;
+  font-weight: normal;
+  font-weight: normal;
+}
+
+.headL-r2 .datepicker {
+  height: 30px;
+  width: 50%;
+  text-align: right;
+  padding-right: 0%;
+  cursor: pointer;
+  position: static;
+}
+
+.headL-r2 input {
+  border: 0;
+  height: 95%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+  position: static;
+}
+
+.headL-r2 select {
+  border: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+}
+
+.headL-r2 i {
+  /*height: 10px;*/
+  float: right;
+  margin: 0.5% 3%;
+  /*border: 1px solid gray;*/
+  padding: 1%;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  user-drag: none;
+}
+
+.headL-r2 i:active {
+  background: red;
+}
+
+.head-d {
+  /*border: 0.1px solid gray;*/
+  border-radius: 5px;
+  width: 40%;
+  float: left;
+  height: 40px;
+  padding: 0%;
+  margin-top: 0px;
+  /*margin-right: 3px;*/
+  margin-left: 3px;
+}
+
+.headD-l {
+  border: 0.5px solid #ebebe0;
+  border-right: 0;
+  width: 22%;
+  float: left;
+  clear: both;
+  padding: 1% 5% 0.5% 0.5%;
+  height: 35px;
+  text-align: right;
+  line-height: 30px;
+  font-size: 14px;
+  /*font-weight: bold;*/
+}
+
+.headD-r {
+  border: 1px solid #ebebe0;
+  border-left: 0;
+  width: 78%;
+  float: left;
+  padding: 0.5%;
+  height: 35px;
+  text-align: center;
+  background: #fff;
+}
+
+.headD-r input {
+  border: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+}
+
+.headD-r i {
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 1%;
+  /*margin: 2% 1%;*/
+  cursor: pointer;
+  font-size: 18px;
+}
+
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.body-c {
+  /*border: 1px solid blue;*/
+  width: 100%;
+  height: 270px;
+  margin-top: 1%;
+}
+
+.T-Desc input {
+  width: 100%;
+  border: 0px solid red;
+}
+
+.web-view {
+  /*border: 1px solid red;*/
+  position: relative;
+  height: 98%;
+}
+
+
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.buttom {
+  clear: both;
+  width: 65%;
+  height: 165px;
+  /*border: 1px solid pink;*/
+  float: left;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.buttom-l {
+  /*clear: both;*/
+  /*border: 0.1px solid gray;*/
+  border-radius: 5px;
+  width: 30%;
+  float: left;
+  height: 143px;
+  padding: 0%;
+  margin-right: 3px;
+  margin-left: 3px;
+  margin-bottom: 0px;
+  font-size: 12px;
+}
+
+.buttom-l1 {
+  /*border: 0.1px solid gray;*/
+  border-radius: 5px;
+  width: 98.7%;
+  float: left;
+  height: 40px;
+  padding: 0%;
+  margin-right: 3px;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+
+.buttomL1-l {
+  border: 0.5px solid #ebebe0;
+  border-right: 0;
+  width: 15.5%;
+  float: left;
+  clear: both;
+  padding: 0% 5% 0.5% 0.5%;
+  height: 35px;
+  text-align: right;
+  line-height: 30px;
+  font-size: 14px;
+  /*font-weight: bold;*/
+}
+
+.buttomL1-r {
+  border: 0.1px solid #ebebe0;
+  border-left: 0;
+  width: 77%;
+  float: left;
+  padding: 0.5%;
+  height: 35px;
+  text-align: center;
+  background: #fff;
+}
+
+.buttomL1-r input {
+  border: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  padding-left: 2%;
+  background: #fff;
+}
+
+.buttom-l2 {
+  /*clear: both;*/
+  /*border: 0.1px solid gray;*/
+  border-radius: 5px;
+  width: 25%;
+  float: right;
+  height: 185px;
+  padding: 0%;
+  margin-top: 5px;
+  margin-right: 3px;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+
+
+.addItem {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	font-size: 20px;
+	font-weight: bold;
+	background: #fff;
+	border: 0;
+	cursor: pointer;
+}
+
+.addItem:active {
+	border: 1px solid gray;
+}
+
+
+.addItem:hover {
+	border: 1px solid gray;
+}
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
