@@ -16,6 +16,7 @@ import './css/iphone6.css'
 import VueSweetAlert from 'sweetalert'
 import 'sweetalert/dist/sweetalert.css'
 import vueTouch from 'vue-touchjs'
+import './js/mainFunction/main_function.js'
 
 Vue.config.productionTip = false
 

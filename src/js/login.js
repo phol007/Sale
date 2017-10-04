@@ -1,5 +1,6 @@
 import api from '../service/services.js'
 import $ from 'jquery'
+
 export default {
   name: 'login',
   data () {
