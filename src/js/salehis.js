@@ -171,62 +171,63 @@ export default {
       }
     },
     approve (data) {
-      this.permission.forEach(function(val, key){
-        if(this.menu==val['menuid']){
-          // if(val['is_delete'] == 1){
-            var body = {
-                        id: data.id,
-                        is_confirm: 1,
-                        approve_id: this.user.id,
-                        approve_code: this.user.usercode,
-                        approve_date_time: ''
-                      }
-            swal({
-                title: "อนุมัติเอกสาร",
-                text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "ตกลง",
-                cancelButtonText: "ปิด",
-                closeOnConfirm: false
-              },
-              function () {
-                $('#loading').addClass('is-active')
-                api.approveQTAX(body,
-                  (result) => {
-                    //console.log(result.data)
-                    $('#loading').removeClass('is-active')
-                    swal({
-                      title: "Approve Quotation",
-                      text: "อนุมัติใบเสนอราคาเรียบร้อย",
-                      timer: 1000,
-                      type: "success",
-                      showConfirmButton: false
-                    })
-                    this.tool = false
-                    this.history('')
-                  },
-                  (error) => {
-                    this.tool = false
-                    $('#loading').removeClass('is-active')
-                    console.log(error)
-                  }
-                )
-              }.bind(this)
-            )
-            this.tool = false
-          // }else{
-          //     swal({
-          //       title: "cancel Quotation",
-          //       text: "ท่านไม่มีสิทธิยกเลิกรายการนี้",
-          //       timer: 1000,
-          //       type: "warning",
-          //       showConfirmButton: false
-          //     })
-          // }
-        }
-      }.bind(this))
+      if(this.user.rolecode=='Admin'){
+        this.permission.forEach(function(val, key){
+          if(this.menu==val['menuid']){
+            // if(val['is_delete'] == 1){
+              var body = {
+                          id: data.id,
+                          is_confirm: 1,
+                          approve_id: this.user.id,
+                          approve_code: this.user.usercode,
+                          approve_date_time: ''
+                        }
+              swal({
+                  title: "อนุมัติเอกสาร",
+                  text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
+                  type: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#DD6B55",
+                  confirmButtonText: "ตกลง",
+                  cancelButtonText: "ปิด",
+                  closeOnConfirm: false
+                },
+                function () {
+                  $('#loading').addClass('is-active')
+                  api.approveQTAX(body,
+                    (result) => {
+                      //console.log(result.data)
+                      $('#loading').removeClass('is-active')
+                      swal({
+                        title: "Approve Quotation",
+                        text: "อนุมัติใบเสนอราคาเรียบร้อย",
+                        timer: 1000,
+                        type: "success",
+                        showConfirmButton: false
+                      })
+                      this.tool = false
+                      this.history('')
+                    },
+                    (error) => {
+                      this.tool = false
+                      $('#loading').removeClass('is-active')
+                      console.log(error)
+                    }
+                  )
+                }.bind(this)
+              )
+              this.tool = false
+          }
+        }.bind(this))
+      }else{
+        swal({
+          title: "แจ้งเตือน",
+          text: "ท่านไม่มีสิทธิในการอนุมัติเอกสาร",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })
+      }
     },
     cancel (data) {
       this.permission.forEach(function(val, key){

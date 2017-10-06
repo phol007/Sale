@@ -1103,47 +1103,57 @@ export default {
       }
     },
     approve (data) {
-      var body = {
-                  id: this.DocID,
-                  is_confirm: 1,
-                  approve_id: this.user.id,
-                  approve_code: this.user.usercode,
-                  approve_date_time: ''
-                }
-      swal({
-          title: "อนุมัติเอกสาร",
-          text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
+      if(this.user.rolecode=='Admin'){
+        var body = {
+                    id: this.DocID,
+                    is_confirm: 1,
+                    approve_id: this.user.id,
+                    approve_code: this.user.usercode,
+                    approve_date_time: ''
+                  }
+        swal({
+            title: "อนุมัติเอกสาร",
+            text: "ท่านต้องการอนุมัติเอาสารใบนี้หรือไม่ ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "ตกลง",
+            cancelButtonText: "ปิด",
+            closeOnConfirm: false
+          },
+          function () {
+            $('#loading').addClass('is-active')
+            api.approveQTAX(body,
+              (result) => {
+                //console.log(result.data)
+                $('#loading').removeClass('is-active')
+                swal({
+                  title: "Approve Quotation",
+                  text: "อนุมัติใบเสนอราคาเรียบร้อย",
+                  timer: 1000,
+                  type: "success",
+                  showConfirmButton: false
+                })
+                this.tool = false
+                this.showDetail_QT(this.DocNo)
+              },
+              (error) => {
+                this.tool = false
+                $('#loading').removeClass('is-active')
+                console.log(error)
+              }
+            )
+          }.bind(this)
+        )
+      }else{
+        swal({
+          title: "แจ้งเตือน",
+          text: "ท่านไม่มีสิทธิในการอนุมัติเอกสาร",
+          timer: 1000,
           type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "ตกลง",
-          cancelButtonText: "ปิด",
-          closeOnConfirm: false
-        },
-        function () {
-          $('#loading').addClass('is-active')
-          api.approveQTAX(body,
-            (result) => {
-              //console.log(result.data)
-              $('#loading').removeClass('is-active')
-              swal({
-                title: "Approve Quotation",
-                text: "อนุมัติใบเสนอราคาเรียบร้อย",
-                timer: 1000,
-                type: "success",
-                showConfirmButton: false
-              })
-              this.tool = false
-              this.showDetail_QT(this.DocNo)
-            },
-            (error) => {
-              this.tool = false
-              $('#loading').removeClass('is-active')
-              console.log(error)
-            }
-          )
-        }.bind(this)
-      )
+          showConfirmButton: false
+        })
+      }
     },
     selectTR (item_detail) {
       $("#loading").addClass('is-active')      
