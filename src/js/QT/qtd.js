@@ -1103,7 +1103,7 @@ export default {
       }
     },
     approve (data) {
-      if(this.user.rolecode=='Admin'){
+      if(this.user.roleid==4 || this.user.roleid==5){
         var body = {
                     id: this.DocID,
                     is_confirm: 1,

@@ -171,7 +171,7 @@ export default {
       }
     },
     approve (data) {
-      if(this.user.rolecode=='Admin'){
+      if(this.user.roleid==4 || this.user.roleid==5){
         this.permission.forEach(function(val, key){
           if(this.menu==val['menuid']){
             // if(val['is_delete'] == 1){
