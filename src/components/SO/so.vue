@@ -1,16 +1,16 @@
 <template>
 	<div class="saleorder">
-      <div class="Wcontainer">
-    	<div class="head-r">
-    		<div class="headR-l">
+      <div class="Cont">
+    	<div class="T-r" style="width: 40%;">
+    		<div class="Tr-l" style="font-size: 20px;">
     			ราคารวมทั้งหมด
 	      		<br>
 	      		<i class="fa fa-money" aria-hidden="true"></i>
     		</div>
-    		<div class="headR-r">
+    		<div class="Tr-r" style="font-size: 45px;">
     			{{ totalNetAmount }} ฿
     		</div>   
-			<div class="T-status">
+			<div class="status">
 		     	<b>Status : 
 		     	<span style="color: green; font-size: 14px; line-height:40px;" v-show="isConfirm==1">อนุมัติแล้ว</span>
 	    		<span style="color: red; font-size: 14px; line-height:40px;" v-show="isCancel == 1">ยกเลิกแล้ว</span>
@@ -18,72 +18,67 @@
 	    		</b>
 		    </div> 		
     	</div>
-    	<div class="head-l"><!-- 
-    		<div class="headL-l">
-    			ประเภทเอกสาร :
+    	<div class="T-l" style="width: 20%;">	
+    		<div class="lb-l" style="font-size: 12px;">
+    			เลขที่เอกสาร 
     		</div>
-    		<div class="headL-r">
-    			<select v-model="docType" @change="">
-    			<option value=0> ใบสั่งขายสินค้า </option>
-			    <option value=1> ใบสั่งจองสินค้า </option>
-			   </select>
-    		</div> -->    		
-    		<div class="headL-l">
-    			เลขที่เอกสาร :
+    		<div class="lb-r">
+    			<input type="text" class="input" placeholder="เลขที่เอกสาร ..." :value="docNo" readonly style="font-size: 12px;">
     		</div>
-    		<div class="headL-r">
-    			<input type="text" class="input" placeholder="เลขที่เอกสาร ..." :value="docNo" readonly>
+    		<div class="lb-l" style="font-size: 12px;">
+    		ประภทขาย 
     		</div>
-    		<div class="headL-l">
-    		ประภทขาย :
-    		</div>
-    		<div class="headL-r">
-    			<select v-model="billType" @change="">
+    		<div class="lb-r">
+    			<select v-model="billType" @change="" style="font-size: 12px;">
     			<option value=0> ขายสินค้าเงินสด </option>
 			    <option value=1> ขายสินค้าเงินเชื่อ </option>
 			   </select>
     		</div>
-    		<div class="headL-l">
-    			ประเภทภาษี :
+    		<div class="lb-l" style="font-size: 12px;">
+    			ประเภทภาษี 
     		</div>
-    		<div class="headL-r">
-	    		<select v-model="taxType" @change="">
+    		<div class="lb-r">
+	    		<select v-model="taxType" @change="" style="font-size: 12px;">
 	    			<option value=0>แยกนอก</option>
 	    			<option value=1>รวมใน</option>
 	    			<option value=2>อัตราศูนย์</option>
 	    		</select>
     		</div>
     	</div>
-    	<div class="head-l1">
-	    	<div class="headL-l1">
-	    		วันที่เอกสาร :
+
+    	<div style="width: 40%; float:left; margin-top: 0.5%;">    
+
+    	<div style="width: 50%; float: left;">
+	    	<div class="lb-l" style="font-size: 12px;">
+	    		วันที่เอกสาร 
 	    	</div>
-	    	<div class="headL-r1">
-		    	<datepicker format="dd/MM/yyyy" style = "position: static; font-weight:normal; font-size:16px;" input-class="date" v-model="docDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
-	    	</div>  		
-	    	<div class="headL-l1">
-	    		ประเภทขนส่ง :
+	    	<div class="lb-r" ar>
+		    	<datepicker format="dd/MM/yyyy" style = "position: static; font-weight:normal; font-size:12px; border:0;" input-class="date" v-model="docDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
 	    	</div>
-	    	<div class="headL-r1">
-	    		<select v-model="isConditionSend">
+   		</div>
+    	<div style="width: 50%; float: left;">    		  		
+	    	<div class="lb-l" style="font-size: 12px;">
+	    		ประเภทขนส่ง 
+	    	</div>
+	    	<div class="lb-r">
+	    		<select v-model="isConditionSend" style="font-size: 12px;">
 	    			<option value=0> รับเอง </option>
 				    <option value=1> ส่งให้ </option>
 				</select>
 			</div>
-
-
-    		<div class="headD-l">
+    	</div>		 	
+    		<div class="lb-l" style="width: 30%; font-size: 12px; padding:1.5%;">
     			รหัสลูกค้า :
     		</div>
-    		<div class="headD-r">
-				<input type="text" class="input" style="width:90%;" placeholder="รหัสลูกค้า" v-model="arCode" readonly>
-				<i class="fa fa-search" aria-hidden="true" @click="searchCustomer" :disabled="detail_itemlists.length!=0"></i>
+    		<div class="lb-r" style="width: 70%;">
+				<input type="text" class="input" style="width:80%; font-size: 12px;" placeholder="รหัสลูกค้า" v-model="arCode" readonly>
+				<i class="fa fa-search" aria-hidden="true" @click="searchCustomer" :disabled="detail_itemlists.length!=0" style="margin:0.5%;"></i>
     		</div>
-    		<div class="headD-l">
+    		<div class="lb-l" style="font-size: 12px; width: 30%; padding:1.5%;">
     			ชื่อลูกค้า :
     		</div>
-    		<div class="headD-r">
-    			<input type="text" placeholder="ชื่อลูกค้า" v-model="arName" readonly>
+    		<div class="lb-r" style="width: 70%;">
+    			<input type="text" placeholder="ชื่อลูกค้า" v-model="arName" readonly style="font-size: 12px; height: 100%; width: 100%; border:0;">
     		</div>
 
     	</div>
@@ -136,129 +131,139 @@
 	                    </tr>
 					</tbody>
 				</table>
-				<button class="addItem" @click="searchItem">+</button>
-				<div class="T-Desc">
-					<input type="text" readonly="">	
-				</div>
+				<button class="button is-medium" style="width:100%; border:0;" >
+                       <i class="fa fa-plus-circle is-large" aria-hidden="true"></i>
+                </button>
 			</div>
 		</div>
-		<div class="buttom">
-			<div class="buttom-l">
-	    		<div class="headL-l2">
-	    			รหัสพนักงาน :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="text" style ="width: 70%;" placeholder="รหัสพนักงาน" v-model="saleCode">
-	    			<i class="material-icons" @click="searchSale">search</i>
-	    		</div>
-	    		<div class="headL-l2">
-	    			ชื่อพนักงาน :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="text" readonly v-model="saleName">
-	    		</div>
-	    		<div class="headL-l2">
-	    			ส่งของภายใน :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="number" min = "0" v-model="deliveryDay" @change="calcDueDate(1, deliveryDay)">
-	    		</div>
-	    		<div class="headL-l2">
-	    			เครดิต(วัน) :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="number" min="0" v-model="creditDay" @change="calcDueDate(2, creditDay)">
-	    		</div>
-			</div>
-			<div class="buttom-l">
-	    		<div class="headL-l2">
-	    			อ้างใบสั่งซื้อ :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="text" placeholder="เลขที่ใบสั่งซื้อ" v-model="poRefNo">
-	    		</div>
-	    		<div class="headL-l2">
-	    			Job ID :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="text" placeholder="Job ID" v-model="jobId">
-	    		</div>
-	    		<div class="headL-l2">
-	    			วันที่ส่งของ :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<datepicker format="dd/MM/yyyy" style = "position: static; font-weight:normal; font-size:16px;" input-class="date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
-	    		</div>
-	    		<div class="headL-l2">
-	    			ครบกำหนด :
-	    		</div>
-		    	<div class="headL-r2">
-	    			<datepicker format="dd/MM/yyyy" style = "position: static; font-weight:normal; font-size:16px;" input-class="date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDate" :disabled-picker="disabled"></datepicker>
+		  <div class="Dstock">
+	    	<div class="stItem">
+	    		ยอดคงเหลือ : <!-- <span style="font-weight:normal; font-size:12px;" v-for="(stock, sindex) in stock_detail"><span v-show="sindex!=0" style="font-weight:bold;"> ,&nbsp;&nbsp;</span>{{stock.qty}} &nbsp;({{stock.unit_code}} | {{stock.wh_code}})</span> -->
+	    	</div>
+	    	<div class="weightItem">
+	    		น้ำหนักรวม :  <!-- {{ formatMoney(weight_all) }} -->
+	    	</div>
+	    </div>
+
+	    <div class="btt">
+	    	<div class="btt-block">
+	    		<div class="lb-l">
+	    		รหัสพนักงาน
 		    	</div>
-			</div>
-			<div class="buttom-l">
-				<div class="headL-l2">
-	    			แผนก :
-	    		</div>
-	    		<div class="headL-r2" v-model="departCode">
-	    			<select>
-	    				
-	    			</select>
-	    		</div>
-	    		<div class="headL-l2">
-	    			ผู้รับสินค้า :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="text" v-model="receiveName">
-	    		</div>
-	    		<div class="headL-l2">
-	    			ทะเบียนรถ :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="text" v-model="carLicense">
-	    		</div>
-	    		<div class="headL-l2">
-	    			เบอร์ผู้รับของ :
-	    		</div>
-	    		<div class="headL-r2">
-	    			<input type="text" v-model="receiveTel">
-	    		</div>
-			</div>
-			<div class="buttom-l1">
-				<div class="buttomL1-l">
-	    			หมายเหตุ :
-	    		</div>
-	    		<div class="buttomL1-r">
-	    			<input type="text" placeholder="กรอกหมายเหตุ" v-model="myDescription">
-	    		</div>	
-			</div>
-			</div>
-			<div class="buttom-l2">
-	    		<div class="headL-l">
-	    			มูลค่าสินค้า :
-	    		</div>
-	    		<div class="headL-r">
-	    			<input type="text" style="text-align:right;" readonly v-model="sumItemAmount">
-	    		</div>
-	    		<div class="headL-l">
-	    			ส่วนลด %,บาท :
-	    		</div>
-	    		<div class="headL-r">
-	    			<input type="text" style="text-align:right;" v-model="discountWord">
-	    		</div>
-	    		<div class="headL-l">
-	    			ภาษีมูลค่าเพิ่ม :
-	    		</div>
-	    		<div class="headL-r">
-	    			<input type="text" style="text-align:right;" readonly v-model="sumTaxAmount">
-	    		</div>
-	    		<div class="headL-l">
-	    			มูลค่ารวมภาษี :
-	    		</div>
-	    		<div class="headL-r">
-	    			<input type="text" style="text-align:right;" readonly v-model="sumItemAmount">
-	    		</div>
-			</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน..." readonly v-model="EmpCode">
+		    		<i class="fa fa-search" aria-hidden="true" @click="SearchEmplo"></i>
+		    	</div>
+		    	<div class="lb-l">
+		    		ชื่อพนักงาน
+		    	</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" placeholder="ชื่อพนักงาน..." style="text-align:left;" v-model="EmpName" readonly>
+		    	</div>
+		    	<div class="lb-l">
+		    		ส่งของ
+		    	</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" placeholder="ส่งของ..." style="text-align:left;" v-model="EmpName" readonly>
+		    	</div>
+		    	<div class="tarea">
+		    		หมายเหตุ 
+		    	</div>
+		    	<textarea rows="3" v-model="discription2" :readonly="is_confirm==1||is_cancel==1" placeholder="หมายเหตุ...">
+		    		
+		    	</textarea>
+		    </div>
+
+		    <div class="btt-block">
+		    	<div class="lb-l">
+		    		อ้างใบสั่งซื้อ :
+		    	</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" placeholder="เลขที่ใบสั่งซื้อ..." style="text-align:left;" v-model="EmpName" readonly>
+		    	</div>
+		    	<div class="lb-l">
+		    		Job ID :
+		    	</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" placeholder="Job ID..." style="text-align:left;" v-model="EmpName" readonly>
+		    	</div>		    	
+		    	<div class="lb-l" style="width:40%">
+		    		เครดิต | วัน
+		    	</div>
+		    	<div class="lb-r" style="width:60%">
+		    		<input type="number" class="input" placeholder="เครดิต..." v-model="creditDay" readonly>
+		    	</div>
+		    	<div class="lb-l" style="width:40%">
+		    		วันที่ส่งของ
+		    	</div>
+		    	<div class="lb-r" style="width:60%">
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calExpDay(ExpDate)"></datepicker>
+		    	</div>
+		    	<div class="lb-l" style="width:40%">
+		    		วันที่ครบกำหนด
+		    	</div>
+		    	<div class="lb-r" style="width:60%">
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calcreditDay(dueDate)"></datepicker>
+		    	</div>
+		    </div>
+
+
+		    <div class="btt-block">
+		    	<div class="lb-l">
+		    		แผนก :
+		    	</div>
+		    	<div class="lb-r">
+		    		<select>
+		    			<option></option>
+		    			<option></option>
+		    		</select>
+		    	</div>
+		    	<div class="lb-l">
+		    		ผู้รับสินค้า :
+		    	</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" placeholder="ผู้รับสินค้า..." style="text-align:left;" v-model="EmpName" readonly>
+		    	</div>	
+		    	<div class="lb-l">
+		    		ทะเบียนรถ :
+		    	</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" placeholder="ทะเบียนรถ..." style="text-align:left;" v-model="EmpName" readonly>
+		    	</div>	
+		    	<div class="lb-l">
+		    		เบอร์ผู้รับ :
+		    	</div>
+		    	<div class="lb-r">
+		    		<input type="text" class="input" placeholder="เบอร์ผู้รับ..." style="text-align:left;" v-model="EmpName" readonly>
+		    	</div>	
+		    </div>
+
+		    <div class="btt-block" style="border:0;">
+	    		<div class="lb-l" style="width:45%">
+		    		รวมมูลค่าสินค้า
+		    	</div>
+		    	<div class="lb-r" style="width:55%">
+		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า..." readonly v-model="totalItemAmount">
+		    	</div>
+		    	<div class="lb-l" style="width:45%">
+		    		ส่วนลด %, บาท
+		    	</div>
+		    	<div class="lb-r" style="width:55%">
+		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calVatnetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)" :readonly="is_confirm==1||is_cancel==1" @keydown="keyNumber">
+		    	</div>
+		    	<div class="lb-l" style="width:45%">
+		    		อัตราภาษีมูลค้าเพิ่ม
+		    	</div>
+		    	<div class="lb-r" style="width:55%">
+		    		<input type="text" class="input" placeholder="7" readonly style="width:20%" v-model="taxRage"><span style="margin-left:3%; line-height:40px; font-weight:bold;"> % &nbsp;= &nbsp;</span>
+		    		<input type="text" class="input" placeholder="ภาษีมูลค่าเพิ่ม.." readonly v-model="netVatAmount" style="width:50%">
+		    	</div>	    	
+	    	</div>
+
+		</div>
+
+
+
 
 		    <md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;">
 				  <md-button class="md-fab" md-fab-trigger>
@@ -296,22 +301,22 @@
 	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
 	      <div style="overflow:auto; height:450px;">
 		      <div class="mo-list" v-for="items in item_lists" @click="selectItem(items)">
-	    		<div class="mo-list-pic">
-	    		</div>
-		      	<div class="mo-list-detail">
-	    			<p class="mo-Icon-title">รหัสสินค้า {{ items.item_code}} | {{ items.item_name }} </p>
-	    			<p>ยอดคงเหลือ : {{ items.stock_qty }} | {{ items.unit_code }} </p>
-	    			<p><span v-for="(stock, index) in items.stock_list"> <span v-show="index%2==1"> | </span><b>คลัง :</b>{{ stock.wh_code }} จำนวน {{ stock.qty }} {{ stock.unit_code }} </span></p>
-	    			<p>ยอดค้างส่ง | ยอดค้างรับ| ยอดจองสินค้า</p>
-	    			<p>ราคา : {{ items.price }} </p>
-	    			<p>น้ำหนัก</p>
-	    			<p>ค่าคอม/หน่วย</p>
-		      	</div>
+		      <div class="mo-list-img">
+		      	<img :src="items.img_profile">
 		      </div>
+		      <div class="mo-list-detail">
+		      	<p class="mo-list-title">{{ items.item_code }} : {{ items.item_name }}</p>
+		      	<p style="width:100%; word-wrap: break-word;"><span v-for="(stock, index) in items.stock_list"> <span v-show="index%2==1"> | </span><b>คลัง :</b>{{ stock.wh_code }} จำนวน {{ stock.qty }} {{ stock.unit_code }} </span></p>
+		      	<p>ยอดค้างส่ง {{ items.so_qty }} | ยอดค้างรับ {{ items.po_qty }} | ยอดจองสินค้า {{ items.ro_qty }} </p>
+		      	<p>ราคา : {{ return_price(items.units) }}</span></p>
+		      	<p>My Grade : {{ items.my_grade }}</p>
+		     </div>
+		    </div>
 	      </div>
 	    </section>
 	  </div>
 	</div>
+
 	<div class="modal" id="mSearchCustomer">
 	  <div class="modal-background"></div>
 	  <div class="modal-content">
@@ -337,8 +342,9 @@
 	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
 	      <div style="overflow:auto; height:450px;">
 		      <div class="mo-list" v-for="cus in customer_lists" @click="selectCustomer(cus)">
-	    		<div class="mo-list-pic">
-	    		</div>
+		      	<div class="mo-list-img">
+		      		<img src="../../assets/logo.png">
+		      	</div>
 		      	<div class="mo-list-detail">
 		      		<p class="mo-list-title">{{ cus.ar_code }} : {{ cus.ar_name }}</p>
 		      		<p>รหัสสมาชิก : {{ cus.id }}</p>
@@ -351,6 +357,7 @@
 	    </section>
 	  </div>
 	</div>
+
 	<div class="modal" id="mSearchSale">
 	  <div class="modal-background"></div>
 	  <div class="modal-content">
@@ -375,15 +382,16 @@
 	      </div>
 	      <hr style="clear:both; width:100%; margin-bottom:0.5%;">
 	      <div style="overflow:auto; height:450px;">
-		      <div class="mo-list" v-for="sale in sale_lists" @click="selectSale(sale)">
-	    		<div class="mo-list-pic">
-	    		</div>
-		      	<div class="mo-list-detail">
-		      		<p class="mo-list-title">{{ sale.sale_code }} : {{ sale.sale_name }}</p>
-					<p>โทรศัพท์ : {{ sale.sale_telephone }}  </p>
-					<p>สังกัดหน่วยงาน : {{ sale.profit_center }}</p>
+	    	<div class="mo-list" style="height:120px;" v-for="sale in sale_lists" @click="selectSale(sale)">
+		      	<div class="mo-list-img" style="height:120px; width: 120px;">
+		      		<img src="../../assets/logo.png">
 		      	</div>
-		      </div>
+		      	<div class="mo-list-detail">
+		      		<p class="mo-list-title">{{ emp.sale_code }} : {{ emp.sale_name }}</p>
+		      		<p>commition : </p>
+		      		<p>team : {{ emp.profit_center }}</p>
+		      	</div>
+		     </div>
 	      </div>
 	    </section>
 	  </div>

@@ -35,9 +35,9 @@
 					</div>
 					<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm}" @tap="toDo(lists.doc_no)">
 						<p class="H-list-dtitle" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm}">{{ lists.doc_no }}</p>
-						<p>{{ lists.ar_code }} | {{ lists.ar_name }}</p>
+						<p>{{ lists.cust.ar_code }} | {{ lists.cust.ar_name }}</p>
 						<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>
-						<p>พนง.ขาย {{ lists.sale_code }} | {{ lists.sale_name }}</p>
+						<p>พนง.ขาย {{ lists.sale.sale_code }} | {{ lists.sale.sale_name }}</p>
 					</div>
 					<div v-show="tool == true" style="height: 100%;">
 						<div class="del" v-show="tool == true && lists.is_cancel == 0 && lists.is_confirm == 0" @click="cancel(lists)">

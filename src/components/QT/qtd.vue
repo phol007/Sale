@@ -1,5 +1,5 @@
 <template>
-  <div class="Qtd" style="overflow:hidden">
+  <div class="Qtd">
   	<div class="Cont">
 	    <div class="T-r">
 	    	<div class="Tr-l">
@@ -66,8 +66,8 @@
 	    	</div>
 	    </div>
 	    <hr style="clear:both; margin: 0% 2% 0.5% 2%;" />
-	    <div class="QT-body">
-	    	<div id="web-view">
+	    <div class="body-c">
+	    	<div class="web-view">
 	    		 <table class="tableSection">
                         <thead>
                             <tr>

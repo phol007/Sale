@@ -195,6 +195,7 @@ input[type="text"]:disabled {
 			padding-right: 10%;
 			cursor: pointer;
 			position: static;
+			border:0;
 		}
 
 	.QT-body {
@@ -220,7 +221,7 @@ input[type="text"]:disabled {
 		.btt-block .lb-l,.btt-block .lb-r {
 			border: 0;
 			font-size: 12px;
-			text-align: left;
+			text-align: right;
 			margin: 0.5% 0;
 		}
 

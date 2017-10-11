@@ -1,15 +1,3 @@
-.Wcontainer {
-  /*Fcontainer*/
-  clear: both;
-  /*border: 1px solid green;*/
-  /*background: yellowgreen;*/
-  height: 100%;
-  position: static;
-  width: 100%;
-  margin-top: 60px;
-  padding: 10px 10px;
-}
-
 .head-r {
   /*T-r*/
   /*border: 1px solid gray;*/
@@ -134,13 +122,13 @@ span {
 }
 
 .headL-r i {
-  /*height: 10px;*/
-  float: right;
-  margin: 0.5% 3%;
-  /*border: 1px solid gray;*/
+  border: 1px solid gray;
+  border-radius: 4px;
   padding: 1%;
-  border-radius: 5px;
+  /*margin: 2% 1%;*/
   cursor: pointer;
+  font-size: 18px;
+
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -334,13 +322,14 @@ span {
 }
 
 .headL-r2 i {
-  /*height: 10px;*/
-  float: right;
-  margin: 0.5% 3%;
-  /*border: 1px solid gray;*/
+  
+  border: 1px solid gray;
+  border-radius: 4px;
   padding: 1%;
-  border-radius: 5px;
+  /*margin: 2% 1%;*/
   cursor: pointer;
+  font-size: 18px;
+
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -351,7 +340,7 @@ span {
 }
 
 .headL-r2 i:active {
-  background: red;
+  background: gray;
 }
 
 .head-d {
@@ -415,7 +404,7 @@ span {
 .body-c {
   /*border: 1px solid blue;*/
   width: 100%;
-  height: 270px;
+  height: 220px;
   margin-top: 1%;
 }
 
@@ -427,7 +416,7 @@ span {
 .web-view {
   /*border: 1px solid red;*/
   position: relative;
-  height: 98%;
+  height: 100%;
 }
 
 
@@ -436,24 +425,25 @@ span {
 
 .buttom {
   clear: both;
-  width: 65%;
-  height: 165px;
+  width: 74.5%;
+  height: 190px;
   /*border: 1px solid pink;*/
+  padding: 0;
   float: left;
   margin: 0;
   margin-top: 5px;
+  overflow: auto;
 }
 
 .buttom-l {
   /*clear: both;*/
   /*border: 0.1px solid gray;*/
   border-radius: 5px;
-  width: 30%;
+  width: 33%;
   float: left;
-  height: 143px;
   padding: 0%;
   margin-right: 3px;
-  margin-left: 3px;
+  margin-left: 0;
   margin-bottom: 0px;
   font-size: 12px;
 }
@@ -471,43 +461,39 @@ span {
 }
 
 .buttomL1-l {
-  border: 0.5px solid #ebebe0;
+  border: 0.1px solid #ebebe0;
   border-right: 0;
-  width: 15.5%;
   float: left;
   clear: both;
-  padding: 0% 5% 0.5% 0.5%;
-  height: 35px;
+  width: 13%;
   text-align: right;
-  line-height: 30px;
-  font-size: 14px;
-  /*font-weight: bold;*/
+  padding-top: 1%;  
+  height: 40px;
 }
 
 .buttomL1-r {
   border: 0.1px solid #ebebe0;
   border-left: 0;
-  width: 77%;
+  width: 87%;
+  padding-top: 0 1% 1% 1%;    
+  height: 100%;
   float: left;
-  padding: 0.5%;
-  height: 35px;
-  text-align: center;
-  background: #fff;
 }
 
 .buttomL1-r input {
   border: 0;
-  height: 100%;
-  width: 100%;
+  width: 99.97%;
   font-size: 14px;
-  padding-left: 2%;
+  padding: 0.2% 0.2% 0.2% 2%;
   background: #fff;
+  margin-left: 0;
+  height: 37px;
 }
 
 .buttom-l2 {
   /*clear: both;*/
-  /*border: 0.1px solid gray;*/
-  border-radius: 5px;
+  /*border: 1px solid blue;*/
+  /*border-radius: 5px;*/
   width: 25%;
   float: right;
   height: 185px;

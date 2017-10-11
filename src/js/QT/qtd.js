@@ -685,16 +685,21 @@ export default {
       var obj = {
         doc_no: this.DocNo,
         doc_date: '',
-        ar_id: this.ArDetail.id,
-        ar_code: this.ArCode,
-        ar_name: this.ArName,
-        ar_bill_address: this.ArDetail.address,
-        ar_telephone: this.ArDetail.ar_telephone,
-        sale_id: parseInt(this.EmpID),
-        sale_code: this.EmpCode.toString(),
-        sale_name: this.EmpName,
+        cust: {
+          ar_id: this.ArDetail.id,
+          ar_code: this.ArCode,
+          ar_name: this.ArName,
+          ar_bill_address: this.ArDetail.address,
+          ar_telephone: this.ArDetail.ar_telephone
+        },
+        sale: {
+          sale_id: parseInt(this.EmpID),
+          sale_code: this.EmpCode.toString(),
+          sale_name: this.EmpName
+        },
         ref_no: '',
         tax_type: this.vatType-1,
+        tax_rate: this.taxRage,
         credit_day: this.numberInt(this.creditDay),
         due_date: this.return_date(this.dueDate),
         delivery_day: this.numberInt(this.sendDay),
@@ -798,16 +803,21 @@ export default {
               id: this.DocID,
               doc_no: this.DocNo,
               doc_date: '',
-              ar_id: this.ArDetail.id,
-              ar_code: this.ArCode,
-              ar_name: this.ArName,
-              ar_bill_address: this.ArDetail.address,
-              ar_telephone: this.ArDetail.ar_telephone,
-              sale_id: parseInt(this.EmpID),
-              sale_code: this.EmpCode.toString(),
-              sale_name: this.EmpName,
+              cust: {
+                ar_id: this.ArDetail.id,
+                ar_code: this.ArCode,
+                ar_name: this.ArName,
+                ar_bill_address: this.ArDetail.address,
+                ar_telephone: this.ArDetail.ar_telephone
+              },
+              sale: {
+                sale_id: parseInt(this.EmpID),
+                sale_code: this.EmpCode.toString(),
+                sale_name: this.EmpName
+              },
               ref_no: '',
               tax_type: this.vatType-1,
+              tax_rate: this.taxRage,
               credit_day: this.creditDay,
               due_date: moment(this.dueDate).format("YYYY/MM/DD"),
               delivery_day: this.sendDay,
@@ -899,16 +909,16 @@ export default {
           this.DocNo = result.data.doc_no
           this.vatType = result.data.tax_type+1
           this.billType = result.data.bill_type+1
-          this.ArCode = result.data.ar_code
-          this.ArName = result.data.ar_name
+          this.ArCode = result.data.cust.ar_code
+          this.ArName = result.data.cust.ar_name
           this.DocDate = new Date(result.data.doc_date)
           this.nowDate = {
             to: new Date(result.data.doc_date)
           }
 
-          this.EmpID = result.data.sale_id
-          this.EmpCode = result.data.sale_code
-          this.EmpName = result.data.sale_name
+          this.EmpID = result.data.sale.sale_id
+          this.EmpCode = result.data.sale.sale_code
+          this.EmpName = result.data.sale.sale_name
 
           var discript = result.data.my_description
           if (discript != "") {

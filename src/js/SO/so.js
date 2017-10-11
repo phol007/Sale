@@ -67,6 +67,7 @@ export default {
       totalAmount: 0,
       netAmount: 0,
       isCancel: 0,
+      isConfirm: 0,
       isConditionSend: 0,
       creatorId: 0,
       creatorCode: '',
@@ -75,7 +76,8 @@ export default {
       jobId: '',
       receiveName: '',
       carLicense: '',
-      receiveTel: ''
+      receiveTel: '',
+      weight_all: 0
     }
   },
   components: {
@@ -162,18 +164,18 @@ export default {
       this.searchCustomers(this.moScus)
     },
     searchCustomers(keyword) {
-      $("#loading").addClass('is-active')
-      api.searchArAX(keyword,
-        (result) => {
+      // $("#loading").addClass('is-active')
+      // api.searchArAX(keyword,
+      //   (result) => {
           $("#loading").removeClass('is-active')
-          if (result.status == "success") {
-            this.customer_lists = result.data
-          }
-        },
-        (error) => {
-          $("#loading").removeClass('is-active')
-          console.log(error)
-        })
+      //     if (result.status == "success") {
+      //       this.customer_lists = result.data
+      //     }
+      //   },
+      //   (error) => {
+      //     $("#loading").removeClass('is-active')
+      //     console.log(error)
+      //   })
     },
     selectCustomer(CusD) {
       this.closeSearchCustomer()
@@ -246,7 +248,7 @@ export default {
     calcDekiveryDate (addDay) {
       var d = new Date()
       d.setDate(d.getDate() + parseInt(addDay))
-      var vM
+      // var vM
     },
     calcreditDay(date) {
       var oneDay = 24 * 60 * 60 * 1000
@@ -498,11 +500,11 @@ export default {
   mounted() {
     this.params = this.$route.params
     this.params.status = 0
-    this.genDocNo('SO', 0)
-    alert(this.params.status)
+    // alert(this.params.status)
     if (this.params.status == 0) {
-      this.genDocNo('SO', 0)
-     this.setMenuTool(0)
+      // this.genDocNo('SO', 0)
+      this.docNo = 'เอกสารใหม่'
+      this.setMenuTool(0)
       //this.toDay()
     } else if (this.params.status == 1) {
       this.showDetail_QT(this.params.docno)
