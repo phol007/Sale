@@ -12,9 +12,9 @@
     		</div>   
 			<div class="status">
 		     	<b>Status : 
-		     	<span style="color: green; font-size: 14px; line-height:40px;" v-show="isConfirm==1">อนุมัติแล้ว</span>
-	    		<span style="color: red; font-size: 14px; line-height:40px;" v-show="isCancel == 1">ยกเลิกแล้ว</span>
-	    		<span style="color: #000; font-size: 14px; line-height:40px;" v-show="isConfirm==0&&isCancel==0">New</span>
+		     	<span style="color: green; font-size: 14px; line-height:40px;" v-show="is_confirm==1">อนุมัติแล้ว</span>
+	    		<span style="color: red; font-size: 14px; line-height:40px;" v-show="is_cancel == 1">ยกเลิกแล้ว</span>
+	    		<span style="color: #000; font-size: 14px; line-height:40px;" v-show="is_confirm==0&&is_cancel==0">New</span>
 	    		</b>
 		    </div> 		
     	</div>
@@ -151,25 +151,25 @@
 	    		รหัสพนักงาน
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน..." readonly v-model="EmpCode">
-		    		<i class="fa fa-search" aria-hidden="true" @click="SearchEmplo"></i>
+		    		<input type="text" class="input" style="width:70%; text-align:left;" placeholder="รหัสพนักงาน..." readonly v-model="saleCode">
+		    		<i class="fa fa-search" aria-hidden="true" @click="searchSale"></i>
 		    	</div>
 		    	<div class="lb-l">
 		    		ชื่อพนักงาน
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ชื่อพนักงาน..." style="text-align:left;" v-model="EmpName" readonly>
+		    		<input type="text" class="input" placeholder="ชื่อพนักงาน..." style="text-align:left;" v-model="saleName" readonly>
 		    	</div>
 		    	<div class="lb-l">
 		    		ส่งของ
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ส่งของ..." style="text-align:left;" v-model="EmpName" readonly>
+		    		<input type="text" class="input" placeholder="ส่งของ..." style="text-align:left;" v-model="deliveryDay" readonly>
 		    	</div>
 		    	<div class="tarea">
 		    		หมายเหตุ 
 		    	</div>
-		    	<textarea rows="3" v-model="discription2" :readonly="is_confirm==1||is_cancel==1" placeholder="หมายเหตุ...">
+		    	<textarea rows="3" v-model="myDescription" :readonly="is_confirm==1||is_cancel==1" placeholder="หมายเหตุ...">
 		    		
 		    	</textarea>
 		    </div>
@@ -179,13 +179,13 @@
 		    		อ้างใบสั่งซื้อ :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="เลขที่ใบสั่งซื้อ..." style="text-align:left;" v-model="EmpName" readonly>
+		    		<input type="text" class="input" placeholder="เลขที่ใบสั่งซื้อ..." style="text-align:left;" v-model="poRefNo" readonly>
 		    	</div>
 		    	<div class="lb-l">
 		    		Job ID :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="Job ID..." style="text-align:left;" v-model="EmpName" readonly>
+		    		<input type="text" class="input" placeholder="Job ID..." style="text-align:left;" v-model="jobId" readonly>
 		    	</div>		    	
 		    	<div class="lb-l" style="width:40%">
 		    		เครดิต | วัน
@@ -197,7 +197,7 @@
 		    		วันที่ส่งของ
 		    	</div>
 		    	<div class="lb-r" style="width:60%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="ExpDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calExpDay(ExpDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calExpDay(ExpDate)"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:40%">
 		    		วันที่ครบกำหนด
@@ -213,7 +213,7 @@
 		    		แผนก :
 		    	</div>
 		    	<div class="lb-r">
-		    		<select>
+		    		<select v-model="departCode">
 		    			<option></option>
 		    			<option></option>
 		    		</select>
@@ -222,19 +222,19 @@
 		    		ผู้รับสินค้า :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ผู้รับสินค้า..." style="text-align:left;" v-model="EmpName" readonly>
+		    		<input type="text" class="input" placeholder="ผู้รับสินค้า..." style="text-align:left;" v-model="receiveName" readonly>
 		    	</div>	
 		    	<div class="lb-l">
 		    		ทะเบียนรถ :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ทะเบียนรถ..." style="text-align:left;" v-model="EmpName" readonly>
+		    		<input type="text" class="input" placeholder="ทะเบียนรถ..." style="text-align:left;" v-model="carLicense" readonly>
 		    	</div>	
 		    	<div class="lb-l">
 		    		เบอร์ผู้รับ :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="เบอร์ผู้รับ..." style="text-align:left;" v-model="EmpName" readonly>
+		    		<input type="text" class="input" placeholder="เบอร์ผู้รับ..." style="text-align:left;" v-model="receiveTel" readonly>
 		    	</div>	
 		    </div>
 
@@ -261,9 +261,6 @@
 	    	</div>
 
 		</div>
-
-
-
 
 		    <md-speed-dial md-mode="scale" class="md-fab-bottom-right" style="position: fixed;">
 				  <md-button class="md-fab" md-fab-trigger>

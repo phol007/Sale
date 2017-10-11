@@ -798,6 +798,12 @@ export default {
               })
 
             })
+            if(this.ArDetail.address){
+              this.ArDetail.address = this.ArDetail.address
+            }else{
+              this.ArDetail.address = this.ArDetail.ar_bill_address
+            }
+            // alert(JSON.stringify(this.ArDetail.address))
 
             var obj = {
               id: this.DocID,
@@ -911,6 +917,7 @@ export default {
           this.billType = result.data.bill_type+1
           this.ArCode = result.data.cust.ar_code
           this.ArName = result.data.cust.ar_name
+          this.ArDetail = result.data.cust
           this.DocDate = new Date(result.data.doc_date)
           this.nowDate = {
             to: new Date(result.data.doc_date)
@@ -995,7 +1002,8 @@ export default {
             )
           }.bind(this))
           setTimeout(function() {
-            this.calVatnetAmount()
+            this.calVatnetAmount()            
+            console.log(this.detail_itemlists.length)
           }.bind(this), 1000)
         },
         (error) => {

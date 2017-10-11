@@ -40,20 +40,19 @@ export default {
       docType: 0,
       billType: 0,
       totalNetAmount: this.formatMoney(0),
-      sumItemAmount: this.formatMoney(0),
+      totalItemAmount: this.formatMoney(0),
       sumBeforeTaxAmount: this.formatMoney(0),
       sumTaxAmount: this.formatMoney(0),
       unit_list: '',
       stock_list: '',
-      isCancel: 0,
-      isConfirm: 0,
+      is_cancel: 0,
+      is_confirm: 0,
       departCode: '',
       creditDay: 0,
       dueDate: '',
       deliveryDay: 0,
       deliveryDate: '',
-      taxRate: 7,
-      isConfirm: 0,
+      taxRage: 7,
       myDescription: '',
       billStatus: 0,
       docType: 0,
@@ -66,8 +65,6 @@ export default {
       taxAmount: 0,
       totalAmount: 0,
       netAmount: 0,
-      isCancel: 0,
-      isConfirm: 0,
       isConditionSend: 0,
       creatorId: 0,
       creatorCode: '',
@@ -164,18 +161,18 @@ export default {
       this.searchCustomers(this.moScus)
     },
     searchCustomers(keyword) {
-      // $("#loading").addClass('is-active')
-      // api.searchArAX(keyword,
-      //   (result) => {
+      $("#loading").addClass('is-active')
+      api.searchArAX(keyword,
+        (result) => {
           $("#loading").removeClass('is-active')
-      //     if (result.status == "success") {
-      //       this.customer_lists = result.data
-      //     }
-      //   },
-      //   (error) => {
-      //     $("#loading").removeClass('is-active')
-      //     console.log(error)
-      //   })
+          if (result.status == "success") {
+            this.customer_lists = result.data
+          }
+        },
+        (error) => {
+          $("#loading").removeClass('is-active')
+          console.log(error)
+        })
     },
     selectCustomer(CusD) {
       this.closeSearchCustomer()
@@ -303,7 +300,7 @@ export default {
           this.sumTaxAmount = this.formatMoney(vTaxAmount)
           this.sumBeforeTaxAmount = this.formatMoney(vBeforeTaxAmount)
           this.totalNetAmount = this.formatMoney(vSumTotalAmount)
-          this.sumItemAmount = this.formatMoney(vSumTotalAmount)
+          this.totalItemAmount = this.formatMoney(vSumTotalAmount)
 
           var netAmountItem = ((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
           netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price) - netAmountItem)
@@ -317,15 +314,15 @@ export default {
         this.detail_itemlists[lineNumber - 1].discount = this.formatMoney(0)
       }
 
-       //alert(this.sumItemAmount)
+       //alert(this.totalItemAmount)
       // alert(this.sumBeforeTaxAmount)
 
     },
     calcItemAmount1(line_number) {
-      var sumItemAmount = 0
+      var totalItemAmount = 0
      // alert(line_number)
-      sumItemAmount = this.detail_itemlists[line_number].price * this.detail_itemlists[line_number].qty
-      this.detail_itemlists[line_number].netItemAmount = sumItemAmount
+      totalItemAmount = this.detail_itemlists[line_number].price * this.detail_itemlists[line_number].qty
+      this.detail_itemlists[line_number].netItemAmount = totalItemAmount
       //alert(this.detail_itemlists[line_number].qty)
      // alert(this.detail_itemlists[line_number].netItemAmount)
     },
@@ -407,12 +404,12 @@ export default {
         delivery_day: this.numberInt(this.deliveryDay),
         delivery_date: this.deliveryDate,
         tax_rate: this.taxRate,
-        is_confirm: this.isConfirm,
+        is_confirm: this.is_confirm,
         my_description: this.myDescription,
         bill_status: this.billStatus,
         so_status: this.docType,
         holding_status: this.holdingStatus,
-        sum_of_item_amount: this.numberInt(this.sumItemAmount),
+        sum_of_item_amount: this.numberInt(this.totalItemAmount),
         discount_word: this.discountWord,
         discount_amount: this.numberInt(this.discountAmount),
         after_discount: this.numberInt(this.afterDiscountAmount),
@@ -420,7 +417,7 @@ export default {
         tax_amount: this.numberInt(this.sumTaxAmount),
         total_amount: this.numberInt(this.totalNetAmount),
         net_amount: this.numberInt(this.totalNetAmount),
-        is_cancel: this.isCancel,
+        is_cancel: this.is_cancel,
         is_condition_send: this.isConditionSend,
         creator_id: this.creatorId,
         creator_code: this.creatorCode,
