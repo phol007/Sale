@@ -190,7 +190,7 @@ export default {
                   confirmButtonColor: "#DD6B55",
                   confirmButtonText: "ตกลง",
                   cancelButtonText: "ปิด",
-                  closeOnConfirm: false
+                  closeOnConfirm: true
                 },
                 function () {
                   $('#loading').addClass('is-active')
@@ -249,7 +249,7 @@ export default {
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "ตกลง",
                 cancelButtonText: "ปิด",
-                closeOnConfirm: false
+                closeOnConfirm: true
               },
               function () {
                 $('#loading').addClass('is-active')

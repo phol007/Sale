@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import numeral from 'numeral'
 
 Vue.mixin({
   methods: {
@@ -86,6 +87,17 @@ Vue.mixin({
           }
         default:
           console.log(vatType)
+      }
+    },
+    numberInt (str) {
+      return numeral(str).value()
+    },
+    formatMoney (int) {
+      return numeral(int).format('0,0.00')
+    },
+    checkStock (stock, qty) {
+      if (stock > qty) {
+        return true
       }
     }
   }

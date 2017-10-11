@@ -332,12 +332,6 @@ export default {
       var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
       this.creditDay = Math.abs(daysDifference)
     },
-    formatMoney(int) {
-      return numeral(int).format('0,0.00')
-    },
-    numberInt(str) {
-      return numeral(str).value()
-    },
     return_Int_Discount(str) { 
       if (typeof str == 'string') {
         if (str.includes("%") === true) {

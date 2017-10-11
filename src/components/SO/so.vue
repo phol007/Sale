@@ -8,7 +8,7 @@
 	      		<i class="fa fa-money" aria-hidden="true"></i>
     		</div>
     		<div class="Tr-r" style="font-size: 45px;">
-    			{{ totalNetAmount }} ฿
+    			{{ billnetAmount }} ฿
     		</div>   
 			<div class="status">
 		     	<b>Status : 
@@ -38,10 +38,10 @@
     			ประเภทภาษี 
     		</div>
     		<div class="lb-r">
-	    		<select v-model="taxType" @change="" style="font-size: 12px;">
-	    			<option value=0>แยกนอก</option>
-	    			<option value=1>รวมใน</option>
-	    			<option value=2>อัตราศูนย์</option>
+	    		<select v-model="vatType" @change="" style="font-size: 12px;">
+	    			<option value="0">แยกนอก</option>
+	    			<option value="1">รวมใน</option>
+	    			<option value="2">อัตราศูนย์</option>
 	    		</select>
     		</div>
     	</div>
@@ -102,7 +102,7 @@
 						</tr>
 					</thead>
 					<tbody>
-	                    <tr v-for="item_list in detail_itemlists">
+	                    <tr v-for="(item_list, index) in detail_itemlists">
 	                    	<td style="width: 50px; text-align:center;">{{ item_list.no }}</td>
 	                    	<td style="width: 140px; text-align:left;">{{ item_list.item_code }}</td>
                             <td style="width: 400px; text-align:left;">{{ item_list.item_name }}</td>
@@ -112,26 +112,26 @@
                             	</select>
                         	</td>
                         	<td style="width: 100px; padding:0 0.5%;">
-                        		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem)">
+                        		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem, item_list.stock_list)">
                         			<option v-for="unit in item_list.units" :value="unit">{{ unit.unit_name }}</option>
                         		</select>
                         	</td>                       	
                         	<td style="padding:0;">
-                        		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem)">
+                        		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, item_list.stock_list)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                         	</td>
                         	<td style="padding:0;">
-                        		<input type="text" placeholder="0.00" :value="formatMoney(item_list.price)">
+                        		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                         	</td>
                         	<td style="padding:0;">
-                        		<input type="text" placeholder="0%, 0.00" :value="formatMoney(item_list.discount)">
+                        		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                         	</td>
                         	<td style="padding:0;">
-                        		<input type="text" placeholder="0.00" :value="formatMoney(item_list.netAmountItem)">
+                        		<input type="text" placeholder="0.00" :value="formatMoney(item_list.netAmountItem)" readonly>
                         	</td>
 	                    </tr>
 					</tbody>
 				</table>
-				<button class="button is-medium" style="width:100%; border:0;" >
+				<button class="button is-medium" style="width:100%; border:0;" @click="searchItem">
                        <i class="fa fa-plus-circle is-large" aria-hidden="true"></i>
                 </button>
 			</div>
@@ -367,7 +367,7 @@
 	      	ค้นหา :
 	      </div>
 	      <div class="S-c">
-	      	<input type="text" class="input" placeholder="กรุณากรอกพนักงานขายที่ต้องการค้นหา" v-model="moScus" @keyup.enter="searchSales(moSsale)">
+	      	<input type="text" class="input" placeholder="กรุณากรอกพนักงานขายที่ต้องการค้นหา" v-model="moSsale" @keyup.enter="searchSales(moSsale)">
 	      </div>
 	      <div class="S-r">
 	      	<button class="button is-info" @click="searchSales(moSsale)">
@@ -384,9 +384,9 @@
 		      		<img src="../../assets/logo.png">
 		      	</div>
 		      	<div class="mo-list-detail">
-		      		<p class="mo-list-title">{{ emp.sale_code }} : {{ emp.sale_name }}</p>
+		      		<p class="mo-list-title">{{ sale.sale_code }} : {{ sale.sale_name }}</p>
 		      		<p>commition : </p>
-		      		<p>team : {{ emp.profit_center }}</p>
+		      		<p>team : {{ sale.profit_center }}</p>
 		      	</div>
 		     </div>
 	      </div>
