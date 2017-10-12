@@ -1243,35 +1243,6 @@ export default {
         }
       }
     },
-    keyInt (e) {      
-      console.log(e.keyCode)
-      if(e.keyCode!=190){
-        if(e.keyCode!=9){
-          if(e.keyCode!=13){
-            if(e.keyCode!=8){
-              if(e.keyCode<46||e.keyCode>57){
-                e.returnValue = false
-              }
-            }
-          }
-        }
-      }
-      e.returnValue = true
-    },
-    keyNumber (e) {
-      if(e.keyCode!=190){
-        if(e.keyCode!=9){
-          if(e.keyCode!=13){
-            if(e.keyCode!=8){
-              if(e.keyCode<46||e.keyCode>57){
-                e.returnValue = false
-              }
-            }
-          }
-        }
-      }      
-      e.returnValue = true
-    },
     sendpriceDay_lessone_day (day) {
       if(day < 1) {    
         swal({

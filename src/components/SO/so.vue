@@ -117,13 +117,13 @@
                         		</select>
                         	</td>                       	
                         	<td style="padding:0;">
-                        		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                        		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" @keydown="keyNumber">
                         	</td>
                         	<td style="padding:0;">
-                        		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                        		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" @keydown="keyNumber">
                         	</td>
                         	<td style="padding:0;">
-                        		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                        		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" @keydown="keyNumber">
                         	</td>
                         	<td style="padding:0;">
                         		<input type="text" placeholder="0.00" :value="formatMoney(item_list.netAmountItem)" readonly>
@@ -164,7 +164,13 @@
 		    		ส่งของ
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ส่งของ..." style="text-align:left;" v-model="deliveryDay" readonly>
+		    		<input type="text" class="input" placeholder="ส่งของ..." style="text-align:right; padding-right: 5%;" v-model="deliveryDay" @blur="sendDay_lessone_day(deliveryDay)" min="1" :readonly="is_confirm==1||is_cancel==1" @keydown="keyInt">
+		    	</div>		    	
+		    	<div class="lb-l" style="width:40%">
+		    		เครดิต | วัน
+		    	</div>
+		    	<div class="lb-r" style="width:60%">
+		    		<input type="number" class="input" placeholder="เครดิต..." v-model="creditDay" readonly>
 		    	</div>
 		    	<div class="tarea">
 		    		หมายเหตุ 
@@ -179,31 +185,25 @@
 		    		อ้างใบสั่งซื้อ :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="เลขที่ใบสั่งซื้อ..." style="text-align:left;" v-model="poRefNo" readonly>
+		    		<input type="text" class="input" placeholder="เลขที่ใบสั่งซื้อ..." style="text-align:left;" v-model="poRefNo">
 		    	</div>
 		    	<div class="lb-l">
 		    		Job ID :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="Job ID..." style="text-align:left;" v-model="jobId" readonly>
-		    	</div>		    	
-		    	<div class="lb-l" style="width:40%">
-		    		เครดิต | วัน
-		    	</div>
-		    	<div class="lb-r" style="width:60%">
-		    		<input type="number" class="input" placeholder="เครดิต..." v-model="creditDay" readonly>
+		    		<input type="text" class="input" placeholder="Job ID..." style="text-align:left;" v-model="jobId">
 		    	</div>
 		    	<div class="lb-l" style="width:40%">
 		    		วันที่ส่งของ
 		    	</div>
 		    	<div class="lb-r" style="width:60%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calExpDay(ExpDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="deliveryDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowdocDate" :disabled-picker="is_confirm==1||is_cancel==1" @input="calDeliDay(deliveryDate)"></datepicker>
 		    	</div>
 		    	<div class="lb-l" style="width:40%">
 		    		วันที่ครบกำหนด
 		    	</div>
 		    	<div class="lb-r" style="width:60%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calcreditDay(dueDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowdocDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calcreditDay(dueDate)"></datepicker>
 		    	</div>
 		    </div>
 
@@ -222,19 +222,19 @@
 		    		ผู้รับสินค้า :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ผู้รับสินค้า..." style="text-align:left;" v-model="receiveName" readonly>
+		    		<input type="text" class="input" placeholder="ผู้รับสินค้า..." style="text-align:left;" v-model="receiveName">
 		    	</div>	
 		    	<div class="lb-l">
 		    		ทะเบียนรถ :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="ทะเบียนรถ..." style="text-align:left;" v-model="carLicense" readonly>
+		    		<input type="text" class="input" placeholder="ทะเบียนรถ..." style="text-align:left;" v-model="carLicense">
 		    	</div>	
 		    	<div class="lb-l">
 		    		เบอร์ผู้รับ :
 		    	</div>
 		    	<div class="lb-r">
-		    		<input type="text" class="input" placeholder="เบอร์ผู้รับ..." style="text-align:left;" v-model="receiveTel" readonly>
+		    		<input type="text" class="input" placeholder="เบอร์ผู้รับ..." style="text-align:left;" v-model="receiveTel">
 		    	</div>	
 		    </div>
 

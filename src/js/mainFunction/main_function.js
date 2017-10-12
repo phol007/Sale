@@ -102,6 +102,72 @@ Vue.mixin({
       } else {
         return false
       }
+    },
+    keyInt (e) {
+      if (e.keyCode !== 190) {
+        if (e.keyCode !== 9) {
+          if (e.keyCode !== 13) {
+            if (e.keyCode !== 8) {
+              if (e.keyCode < 46 || e.keyCode > 57) {
+                e.returnValue = false
+              }
+            }
+          }
+        }
+      }
+
+      if (e.keyCode === 8) {
+        e.returnValue = true
+      }
+
+      if (e.keyCode === 39) {
+        e.returnValue = true
+      }
+
+      if (e.keyCode === 37) {
+        e.returnValue = true
+      }
+
+      if (e.keyCode === 40) {
+        e.returnValue = true
+      }
+
+      if (e.keyCode === 16) {
+        e.returnValue = true
+      }
+    }
+  },
+  keyNumber (e) {
+    if (e.keyCode !== 190) {
+      if (e.keyCode !== 9) {
+        if (e.keyCode !== 13) {
+          if (e.keyCode !== 8) {
+            if (e.keyCode < 46 || e.keyCode > 57) {
+              e.returnValue = false
+            }
+          }
+        }
+      }
+    }
+
+    if (e.keyCode === 8) {
+      e.returnValue = true
+    }
+
+    if (e.keyCode === 39) {
+      e.returnValue = true
+    }
+
+    if (e.keyCode === 37) {
+      e.returnValue = true
+    }
+
+    if (e.keyCode === 40) {
+      e.returnValue = true
+    }
+
+    if (e.keyCode === 16) {
+      e.returnValue = true
     }
   }
 })

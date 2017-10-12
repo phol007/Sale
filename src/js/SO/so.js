@@ -1,4 +1,4 @@
-import api from '../../service/service1.js'
+import api from '../../service/services.js'
 import $ from 'jquery'
 import moment from 'moment'
 import Datepicker from 'vuejs-datepicker'
@@ -11,7 +11,7 @@ export default {
       docNo: '',
       docDate: '',
       nowDate: {},
-      nowDocDate: {},
+      nowdocDate: {},
       disabled: false,
       item_lists: [],
       count_list_items: 0,
@@ -57,8 +57,6 @@ export default {
       billDiscount: this.formatMoney(0),
       calVatnetAmount: this.formatMoney(0),
       netVatAmount: this.formatMoney(0),
-      keyNumber: '',
-      docType: 0,
       holdingStatus: 0,
       sumOfItemAmount: 0,
       discountWord: '',
@@ -78,7 +76,8 @@ export default {
       carLicense: '',
       receiveTel: '',
       stock_detail: '',
-      weight_all: 0
+      weight_all: 0,
+      keyNumber: ''
     }
   },
   components: {
@@ -88,19 +87,29 @@ export default {
     goTo(page) {
       this.$router.push(page)
     },
+    toDay() {
+      var day = new Date()
+      var d = day.getDate()
+      var m = day.getMonth()
+      var y = day.getFullYear()
+      this.toDate = new Date(y, m, d)
+
+      this.docDate = moment(this.toDate).format('MM/DD/YYYY')
+      this.nowDate = {
+        to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+      }
+      // this.calExpDate(this.expDay)
+      this.calDeliDate(this.deliveryDay)
+      this.deliveryDay = 1
+      this.calDueDate(1)
+    },
     genDocNo(tableName, billType) {
       $("#loading").addClass('is-active')
-      api.genDocNoAX(tableName, billType,
+      api.gen_docNOAX(tableName, billType,
         (result) => {
           $("#loading").removeClass('is-active')
           this.docNo = result.data.new_doc_no
-          this.docDate = moment(this.toDate).format('MM/DD/YYYY')
-          //alert(this.docNo)
-          // this.calExpDate(this.expDay)
-          // this.calDeliDate(this.sendDay)
-          this.nowDate = {
-            to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-          }
+          this.insert_saleorder()
         },
         (error) => {
           //$("#loading").removeClass('is-active')
@@ -108,7 +117,6 @@ export default {
           console.log(error)
         }
       )
-      this.calcDueDate(0, 0)
     },
     searchItem() {
       if (this.arCode) {
@@ -148,7 +156,7 @@ export default {
     },
     searchItems(keyword) {
       $("#loading").addClass('is-active')
-      api.searchItemAX(keyword, this.billType, this.arID, this.isConditionSend,
+      api.searchItemAX(keyword, this.billType-1, this.arID, this.isConditionSend, this.vatType-1,
         (result) => {
           $("#loading").removeClass('is-active')
           if (result.status == "success") {
@@ -310,6 +318,7 @@ export default {
       this.arCode = CusD.ar_code
       this.arDetail = CusD
       this.arName = CusD.ar_name
+      this.creditDay = CusD.credit_day
       this.calDueDate(CusD.credit_day)
     },
     closeSearchCustomer() {
@@ -322,7 +331,7 @@ export default {
     },
     searchSales(keyword) {
       $("#loading").addClass('is-active')
-      api.searchSaleAX(keyword, this.saleCode,
+      api.searchEmpAX(keyword,
         (result) => {
           if (result.status == "success") {
             this.sale_lists = result.data
@@ -346,7 +355,7 @@ export default {
       $('#mSearchSale').removeClass('is-active')
     },
     calDueDate(addDay) {
-      var d = new Date(this.DocDate)
+      var d = new Date(this.docDate)
       d.setDate(d.getDate() + parseInt(addDay))
       var mkMonth = d.getMonth()
       var mkMonth = new String(mkMonth)
@@ -585,6 +594,72 @@ export default {
       var y = date[2]
       return y + '/' + m + '/' + d
     },
+    calDeliDate(addDay) {
+      var d = new Date(this.docDate)
+      d.setDate(d.getDate() + parseInt(addDay))
+      var mkMonth = d.getMonth()
+      var mkMonth = new String(mkMonth)
+      if (mkMonth.length == 1) {
+        mkMonth = "0" + (mkMonth)
+      }
+      var mkDay = d.getDate();
+      mkDay = new String(mkDay)
+      if (mkDay.length == 1) {
+        mkDay = "0" + mkDay
+      }
+      var mkYear = d.getFullYear()
+      this.deliveryDate = moment(new Date(mkYear, mkMonth, mkDay)).format('MM/DD/YYYY')
+    },
+    calDueDate(addDay) {
+      var d = new Date(this.docDate)
+      d.setDate(d.getDate() + parseInt(addDay))
+      var mkMonth = d.getMonth()
+      var mkMonth = new String(mkMonth)
+      if (mkMonth.length == 1) {
+        mkMonth = "0" + (mkMonth)
+      }
+      var mkDay = d.getDate();
+      mkDay = new String(mkDay)
+      if (mkDay.length == 1) {
+        mkDay = "0" + mkDay
+      }
+      var mkYear = d.getFullYear()
+      this.dueDate = moment(new Date(mkYear, mkMonth, mkDay)).format('MM/DD/YYYY')
+    },
+    calDeliDay(date) {
+      var oneDay = 24 * 60 * 60 * 1000
+      var firstDate = new Date(this.docDate)
+      var secondDate = date
+      var difference = firstDate.getTime() - secondDate.getTime()
+      var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
+      console.log(this.docDate)
+      this.deliveryDay = Math.abs(daysDifference)
+    },
+    calcreditDay(date) {
+      var oneDay = 24 * 60 * 60 * 1000
+      var firstDate = new Date(this.docDate)
+      var secondDate = date
+      // var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)))
+      var difference = firstDate.getTime() - secondDate.getTime()
+      // แปลงเป็นวัน ชม. นาที วินาที
+      var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24)
+      this.creditDay = Math.abs(daysDifference)
+    },
+    sendDay_lessone_day (day) {
+      if(day < 1) {    
+        swal({
+          title: "แจ้งเตือน",
+          text: "จำนวนวันต้องไม่น้อยกว่า 1 วัน",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })
+        this.deliveryDay = 1
+        this.calDeliDate(1)
+      }else{
+        this.calDeliDate(day)
+      }
+    },
     insert_saleorder() {
       $("#loading").addClass('is-active')
       var sum_total_amount = 0
@@ -602,59 +677,63 @@ export default {
           item_name: val['item_name'],
           wh_code: val['stock_select']['wh_code'],
           shelf_code: val['stock_select']['shelf_code'],
-          qty: numeral(val['qty']).value(),
-          remain_qty: numeral(val['qty']).value(),
+          qty: this.numberInt(val['qty']),
+          remain_qty: this.numberInt(val['qty']),
           unit_code: val['unit_select']['unit_code'],
-          price: numeral(val['price']).value(),
+          price: this.numberInt(val['price']),
           discount_word_sub: val['discount_word_sub'],
-          discount_amount_sub: numeral(val['discount_amount_sub']).value(),
-          amount: numeral(val['amount']).value(),
-          net_amount: numeral(val['amount']).value(),
-          home_amount: numeral(val['amount']).value(),
+          discount_amount_sub: this.numberInt(val['discount_amount_sub']),
+          amount: this.numberInt(val['amount']),
+          net_amount: this.numberInt(val['amount']),
+          home_amount: this.numberInt(val['amount']),
           item_description: val['item_description'],
           ref_no: val['ref_no'],
           q_id: val['q_id'],
           is_cancel: val['is_cancel'],
           packing_rate1: val['unit_select']['packing_rate'],
           packing_rate2: val['unit_select']['packing_rate'],
-          ref_line_number: numeral(val['ref_line_number']).value(),
+          ref_line_number: this.numberInt(val['ref_line_number']),
           line_number: val['line_number']
         })
-      })
+      }.bind(this))
 
       var obj = {
         doc_no: this.docNo,
         doc_date: '',
         bill_type: this.billType,
         tax_type: this.taxType,
-        ar_id: this.arDetail.id,
-        ar_code: this.arDetail.ar_code,
-        ar_name: this.arDetail.ar_name,
-        ar_bill_address: this.arDetail.address,
-        ar_telephone: this.arDetail.ar_telephone,
-        sale_id: this.saleDetail.id,
-        sale_code: this.saleCode,
-        sale_name: this.saleName,
+        cust: {
+          ar_id: this.arDetail.id,
+          ar_code: this.arDetail.ar_code,
+          ar_name: this.arDetail.ar_name,
+          ar_bill_address: this.arDetail.address,
+          ar_telephone: this.arDetail.ar_telephone
+        },
+        sale: {
+          sale_id: this.saleDetail.id,
+          sale_code: this.saleCode,
+          sale_name: this.saleName
+        },
         depart_code: this.departCode,
         credit_day: this.numberInt(this.creditDay),
         due_date: this.dueDate,
         delivery_day: this.numberInt(this.deliveryDay),
         delivery_date: this.deliveryDate,
-        tax_rate: this.taxRate,
-        is_confirm: this.is_confirm,
+        tax_rate: this.taxRage,
+        is_confirm: 0,
         my_description: this.myDescription,
         bill_status: this.billStatus,
         so_status: this.docType,
         holding_status: this.holdingStatus,
         sum_of_item_amount: this.numberInt(this.totalItemAmount),
-        discount_word: this.discountWord,
-        discount_amount: this.numberInt(this.discountAmount),
-        after_discount: this.numberInt(this.afterDiscountAmount),
-        before_tax_amount: this.numberInt(this.sumBeforeTaxAmount),
-        tax_amount: this.numberInt(this.sumTaxAmount),
-        total_amount: this.numberInt(this.totalNetAmount),
-        net_amount: this.numberInt(this.totalNetAmount),
-        is_cancel: this.is_cancel,
+        discount_word: this.billDiscount,
+        discount_amount: this.numberInt(this.billDiscount),
+        after_discount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount),
+        before_tax_amount: this.beforeNetAmount,
+        tax_amount: this.numberInt(this.netVatAmount),
+        total_amount: this.billnetAmount,
+        net_amount: this.numberInt(this.billnetAmount),
+        is_cancel: 0,
         is_condition_send: this.isConditionSend,
         creator_id: this.creatorId,
         creator_code: this.creatorCode,
@@ -663,21 +742,21 @@ export default {
       }
       //alert(this.total_amount)
       console.log('insert =' + JSON.stringify(obj))
-      // if (this.saleCode != '' && this.detail_itemlists.length != 0) {
-      //   api.insertSaleOrderAX(obj,
-      //     (result) => {
-      //       //swal("แจ้งเตือน", "ันทึกเรียบร้อย เอกสารเลขที่ " + this.docNo + " เรียบร้อยแล้ว", "success")
-      //       //this.$rounter.push('/saleH')
-      //     },
-      //     (error) => {
-      //       $("#loading").removeClass('is-active')
-      //       //swal("Warning !!", "กรณาตรวจสอบเซิร์ฟเวอร์" + error, "warning")
-      //       console.log(error)
-      //     }
-      //   )
-      // }
+      if (this.saleCode != '' && this.detail_itemlists.length != 0) {
+        api.insertSaleOrderAX(obj,
+          (result) => {
+            swal("แจ้งเตือน", "บันทึกเรียบร้อย เอกสารเลขที่ " + this.docNo + " เรียบร้อยแล้ว", "success")
+            this.goTo("/Saleh")
+          },
+          (error) => {
+            $("#loading").removeClass('is-active')
+            swal("Warning !!", "กรณาตรวจสอบเซิร์ฟเวอร์" + error, "warning")
+            console.log(error)
+          }
+        )
+      }
     },
-    show_stock (index, item_detail) {
+    show_stock(index, item_detail) {
       this.item_selected = item_detail
       this.stock_detail = item_detail.stock_list
       var label_item = document.getElementsByClassName('item_list_label')
@@ -686,21 +765,21 @@ export default {
       var input2_item = document.getElementsByClassName('item_list_input2')
       var input3_item = document.getElementsByClassName('item_list_input3')
       var input4_item = document.getElementsByClassName('item_list_input4')
-      for(var i = 0; i < select_item.length; i++){
-        if(i == index){          
-          label_item[i].style.backgroundColor  = '#f7f8f9'
-          select_item[i].style.backgroundColor  = '#f7f8f9'
-          input1_item[i].style.backgroundColor  = '#f7f8f9'
-          input2_item[i].style.backgroundColor  = '#f7f8f9'
-          input3_item[i].style.backgroundColor  = '#f7f8f9'
-          input4_item[i].style.backgroundColor  = '#f7f8f9'
-        }else{
-          label_item[i].style.backgroundColor  = '#fff'
-          select_item[i].style.backgroundColor  = '#fff'
-          input1_item[i].style.backgroundColor  = '#fff'
-          input2_item[i].style.backgroundColor  = '#fff'
-          input3_item[i].style.backgroundColor  = '#fff'
-          input4_item[i].style.backgroundColor  = '#fff'
+      for (var i = 0; i < select_item.length; i++) {
+        if (i == index) {
+          label_item[i].style.backgroundColor = '#f7f8f9'
+          select_item[i].style.backgroundColor = '#f7f8f9'
+          input1_item[i].style.backgroundColor = '#f7f8f9'
+          input2_item[i].style.backgroundColor = '#f7f8f9'
+          input3_item[i].style.backgroundColor = '#f7f8f9'
+          input4_item[i].style.backgroundColor = '#f7f8f9'
+        } else {
+          label_item[i].style.backgroundColor = '#fff'
+          select_item[i].style.backgroundColor = '#fff'
+          input1_item[i].style.backgroundColor = '#fff'
+          input2_item[i].style.backgroundColor = '#fff'
+          input3_item[i].style.backgroundColor = '#fff'
+          input4_item[i].style.backgroundColor = '#fff'
         }
       }
     },
@@ -749,7 +828,7 @@ export default {
           break
         case 2:
           // alert(type)
-          this.insert_saleorder()
+          this.genDocNo('SO', 0)
           break
         case 3:
           // alert(type)
@@ -766,7 +845,7 @@ export default {
       // this.genDocNo('SO', 0)
       this.docNo = 'เอกสารใหม่'
       this.setMenuTool(0)
-      //this.toDay()
+      this.toDay()
     } else if (this.params.status == 1) {
       this.showDetail_QT(this.params.docno)
       this.disabled = true

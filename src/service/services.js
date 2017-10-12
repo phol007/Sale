@@ -134,5 +134,15 @@ export default {
         error(response)
       }
     )
+  },
+  insertSaleOrderAX (obj, success, error) {
+    Vue.axios.post(URL + ':3000/saleorder', JSON.stringify(obj)).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }
