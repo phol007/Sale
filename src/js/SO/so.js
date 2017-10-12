@@ -77,6 +77,7 @@ export default {
       receiveName: '',
       carLicense: '',
       receiveTel: '',
+      stock_detail: '',
       weight_all: 0
     }
   },
@@ -111,11 +112,35 @@ export default {
     },
     searchItem() {
       if (this.arCode) {
-        $('#mSearchItem').addClass('is-active')
-        this.moSitem = ''
-        this.searchItems(this.moSitem)
+        if (this.detail_itemlists.length == 0) {
+          swal({
+              title: "แจ้งเตือน !",
+              text: "กรุณาตรวจสอบประเภทภาษี, ประเภทการขายและลูกค้าให้เรียบร้อย เมื่อเพิ่มจำนวนสินค้าแล้วจะไม่สามารถเปลี่ยนแปลงข้อมูลขั้นต้นได้ ท่านต้องการดำเนินการต่อหรือไม่ >-<! ",
+              type: "info",
+              showCancelButton: true,
+              closeOnConfirm: true,
+              showLoaderOnConfirm: true,
+            },
+            function(isConfirm) {
+              if (isConfirm) {
+                $('#mSearchItem').addClass('is-active')
+                this.moSitem = ''
+                this.searchItems(this.moSitem)
+              }
+            }.bind(this))
+        } else {
+          $('#mSearchItem').addClass('is-active')
+          this.moSitem = ''
+          this.searchItems(this.moSitem)
+        }
       } else {
-        alert("กรุณาเลือกลูกค้าก่อน ค้นหาสินค้า")
+        swal({
+          title: "แจ้งเตือน",
+          text: "กรุณาเลือกลูกหนี้ให้เรียบร้อย",
+          timer: 1000,
+          type: "warning",
+          showConfirmButton: false
+        })
       }
     },
     closeSearchItem() {
@@ -417,7 +442,6 @@ export default {
               data[i].netAmountItem = this.numberInt(netAmountItem)
               data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
               data[i].stock_select = stock
-              data[i].weight = this.numberInt(cnt) * data[i].weight
             }
           }
           this.calcTotalNetAmount()
@@ -439,21 +463,21 @@ export default {
         if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
           for (var i = 0; i < this.detail_itemlists.length; i++) {
             if (i == lineNumber - 1) {
-                var data = this.detail_itemlists
-            if (discount.includes("%") === true) {
-              discount = numeral(this.numberInt(discount)).format('(0.0%)')
-            } else {
-              discount = this.formatMoney(discount)
-            }
-            if (parseInt(this.vatType) == 2) {
-              this.taxRage = 7
-              // console.log(true)
-              var netAmountItem = ((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
-              netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(data[i].units[0].price) - netAmountItem)
-            } else {
-              var netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(data[i].units[0].price))
-            }
-          
+              var data = this.detail_itemlists
+              if (discount.includes("%") === true) {
+                discount = numeral(this.numberInt(discount)).format('(0.0%)')
+              } else {
+                discount = this.formatMoney(discount)
+              }
+              if (parseInt(this.vatType) == 2) {
+                this.taxRage = 7
+                // console.log(true)
+                var netAmountItem = ((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
+                netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(data[i].units[0].price) - netAmountItem)
+              } else {
+                var netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(data[i].units[0].price))
+              }
+
               data[i].unit_select = data[i].units[0]
               data[i].qty = this.formatMoney(this.numberInt(cnt))
               data[i].price = this.formatMoney(this.numberInt(data[i].units[0].price))
@@ -462,7 +486,6 @@ export default {
               data[i].netAmountItem = this.numberInt(netAmountItem)
               data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount))
               data[i].stock_select = stock
-              data[i].weight = this.numberInt(cnt) * data[i].weight
             }
           }
           this.calcTotalNetAmount()
@@ -653,6 +676,33 @@ export default {
       //     }
       //   )
       // }
+    },
+    show_stock (index, item_detail) {
+      this.item_selected = item_detail
+      this.stock_detail = item_detail.stock_list
+      var label_item = document.getElementsByClassName('item_list_label')
+      var select_item = document.getElementsByClassName('item_list_select')
+      var input1_item = document.getElementsByClassName('item_list_input1')
+      var input2_item = document.getElementsByClassName('item_list_input2')
+      var input3_item = document.getElementsByClassName('item_list_input3')
+      var input4_item = document.getElementsByClassName('item_list_input4')
+      for(var i = 0; i < select_item.length; i++){
+        if(i == index){          
+          label_item[i].style.backgroundColor  = '#f7f8f9'
+          select_item[i].style.backgroundColor  = '#f7f8f9'
+          input1_item[i].style.backgroundColor  = '#f7f8f9'
+          input2_item[i].style.backgroundColor  = '#f7f8f9'
+          input3_item[i].style.backgroundColor  = '#f7f8f9'
+          input4_item[i].style.backgroundColor  = '#f7f8f9'
+        }else{
+          label_item[i].style.backgroundColor  = '#fff'
+          select_item[i].style.backgroundColor  = '#fff'
+          input1_item[i].style.backgroundColor  = '#fff'
+          input2_item[i].style.backgroundColor  = '#fff'
+          input3_item[i].style.backgroundColor  = '#fff'
+          input4_item[i].style.backgroundColor  = '#fff'
+        }
+      }
     },
     setMenuTool(status) {
       if (status == 0) {

@@ -102,7 +102,7 @@
 						</tr>
 					</thead>
 					<tbody>
-	                    <tr v-for="(item_list, index) in detail_itemlists">
+	                    <tr v-for="(item_list, index) in detail_itemlists" @dblclick="selectTR(item_list)" class="item_list_label" @click="show_stock(index, item_list)">
 	                    	<td style="width: 50px; text-align:center;">{{ item_list.no }}</td>
 	                    	<td style="width: 140px; text-align:left;">{{ item_list.item_code }}</td>
                             <td style="width: 400px; text-align:left;">{{ item_list.item_name }}</td>
@@ -138,10 +138,10 @@
 		</div>
 		  <div class="Dstock">
 	    	<div class="stItem">
-	    		ยอดคงเหลือ : <!-- <span style="font-weight:normal; font-size:12px;" v-for="(stock, sindex) in stock_detail"><span v-show="sindex!=0" style="font-weight:bold;"> ,&nbsp;&nbsp;</span>{{stock.qty}} &nbsp;({{stock.unit_code}} | {{stock.wh_code}})</span> -->
+	    		ยอดคงเหลือ : <span style="font-weight:normal; font-size:12px;" v-for="(stock, sindex) in stock_detail"><span v-show="sindex!=0" style="font-weight:bold;"> ,&nbsp;&nbsp;</span>{{stock.qty}} &nbsp;({{stock.unit_code}} | {{stock.wh_code}})</span>
 	    	</div>
 	    	<div class="weightItem">
-	    		น้ำหนักรวม :  <!-- {{ formatMoney(weight_all) }} -->
+	    		น้ำหนักรวม :  {{ formatMoney(weight_all) }}
 	    	</div>
 	    </div>
 
