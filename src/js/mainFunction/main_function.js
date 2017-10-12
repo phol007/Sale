@@ -95,9 +95,12 @@ Vue.mixin({
     formatMoney (int) {
       return numeral(int).format('0,0.00')
     },
-    checkStock (stock, qty) {
-      if (stock > qty) {
+    checkStock (stock, packingRate, qty) {
+      console.log(stock + ',' + (packingRate * qty))
+      if (stock >= (qty * packingRate)) {
         return true
+      } else {
+        return false
       }
     }
   }

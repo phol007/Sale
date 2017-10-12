@@ -144,53 +144,57 @@ export default {
     },
     detailItemList(item) {
       var copy = false
-      if(this.detail_itemlists.length != 0){
-        for(var k = 0; k < this.detail_itemlists.length; k++){
-          if(this.detail_itemlists[k].item_id == item.id){
+      if (this.detail_itemlists.length != 0) {
+        for (var k = 0; k < this.detail_itemlists.length; k++) {
+          if (this.detail_itemlists[k].item_id == item.id) {
             swal({
-              title: "เพิ่มสินค้า",
-              text: "สินค้านี้มีอยู่ในรายการแล้ว ท่านต้องการเพิ่มสินค้านี้ อีกหรือไม่ ?",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "ตกลง",
-              cancelButtonText: "ยกเลิก",
-              closeOnConfirm: true,
-              closeOnCancel: true
-            },
-            function(isConfirm) {
-              if (isConfirm) {      
-                if (parseInt(this.vatType) == 2) {
-                  this.taxRage = 7
-                  var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
+                title: "เพิ่มสินค้า",
+                text: "สินค้านี้มีอยู่ในรายการแล้ว ท่านต้องการเพิ่มสินค้านี้ อีกหรือไม่ ?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "ตกลง",
+                cancelButtonText: "ยกเลิก",
+                closeOnConfirm: true,
+                closeOnCancel: true
+              },
+              function(isConfirm) {
+                if (isConfirm) {
+                  if (parseInt(this.vatType) == 2) {
+                    this.taxRage = 7
+                    var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
+                  } else {
+                    var netAmountItem = this.formatMoney(1 * item.units[0].price)
+                  }
+                  if (this.checkStock(item.stock_list[0].qty, item.units[0].packing_rate, 1)) {
+                    this.detail_itemlists.push({
+                      no: this.detail_itemlists.length + 1,
+                      item_id: item.id,
+                      item_code: item.item_code,
+                      item_name: item.item_name,
+                      units: item.units,
+                      unit_select: item.units[0],
+                      stock_select: item.stock_list[0],
+                      qty: this.formatMoney(1),
+                      price: this.formatMoney(item.units[0].price),
+                      discount: this.formatMoney(0),
+                      amount: this.formatMoney(1 * item.units[0].price),
+                      netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
+                      home_amount: this.formatMoney(1 * item.units[0].price),
+                      stock_list: item.stock_list,
+                      ref_no: this.DocNo,
+                      weight: item.weight
+                    })
+                    this.calcTotalNetAmount()
+                  } else {
+                    swal("Warning !!", "สินค้าในสต๊อกมีไม่พอ", "warning")
+                  }
                 } else {
-                  var netAmountItem = this.formatMoney(1 * item.units[0].price)
-                }
-                  this.detail_itemlists.push({
-                    no: this.detail_itemlists.length + 1,
-                    item_id: item.id,
-                    item_code: item.item_code,
-                    item_name: item.item_name,
-                    units: item.units,
-                    unit_select: item.units[0],
-                    stock_select: item.stock_list[0],
-                    qty: this.formatMoney(1),
-                    price: this.formatMoney(item.units[0].price),
-                    discount: this.formatMoney(0),
-                    amount: this.formatMoney(1 * item.units[0].price),
-                    netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
-                    home_amount: this.formatMoney(1 * item.units[0].price),
-                    stock_list: item.stock_list,
-                    ref_no: this.DocNo,
-                    weight: item.weight
-                  })
-                  this.calcTotalNetAmount()
-              } else {
 
-              }
-            }.bind(this))
-          }else{
-            if(k == this.detail_itemlists.length-1){
+                }
+              }.bind(this))
+          } else {
+            if (k == this.detail_itemlists.length - 1) {
               // alert(true)
               if (parseInt(this.vatType) == 2) {
                 this.taxRage = 7
@@ -198,6 +202,7 @@ export default {
               } else {
                 var netAmountItem = this.formatMoney(1 * item.units[0].price)
               }
+              if (this.checkStock(item.stock_list[0].qty, item.units[0].packing_rate, 1)) {
                 this.detail_itemlists.push({
                   no: this.detail_itemlists.length + 1,
                   item_id: item.id,
@@ -218,17 +223,20 @@ export default {
                 })
                 this.calcTotalNetAmount()
                 k = this.detail_itemlists.length
+              } else {
+                swal("Warning !!", "สินค้าในสต๊อกมีไม่พอ", "warning")
+              }
             }
           }
         }
-      }else{
+      } else {
         if (parseInt(this.vatType) == 2) {
           this.taxRage = 7
           var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
         } else {
           var netAmountItem = this.formatMoney(1 * item.units[0].price)
         }
-
+        if (this.checkStock(item.stock_list[0].qty, item.units[0].packing_rate, 1)) {
           this.detail_itemlists.push({
             no: this.detail_itemlists.length + 1,
             item_id: item.id,
@@ -247,7 +255,10 @@ export default {
             ref_no: this.DocNo,
             weight: item.weight
           })
-        this.calcTotalNetAmount()
+          this.calcTotalNetAmount()
+        } else {
+          swal("Warning !!", "สินค้าในสต๊อกมีไม่พอ", "warning")
+        }
       }
     },
     searchCustomer() {
@@ -372,50 +383,90 @@ export default {
     },
     calcItemAmount(lineNumber, unit, cnt, price, discount, itemAmount, stock) {
       //alert('lineNumber = '+lineNumber+', unit = '+unit+', cnt = '+cnt+', price = '+price+', discount = '+discount)
-        if(this.checkStock(stock[0].qty, cnt)){
-          alert(true)
-        }else{
-          alert(false)
+      console.log(unit)
+      if (this.checkStock(stock.qty, unit.packing_rate, this.numberInt(cnt))) {
+        this.item_selected = ''
+        this.stock_detail = ''
+        if (price == '') {
+          price = unit.price
         }
-      this.item_selected = ''
-      this.stock_detail = ''
-      if (price == '') {
-        price = unit.price
-      }
-      console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
-      if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
-        var data = this.detail_itemlists
-        if (discount.includes("%") === true) {
-          discount = numeral(this.numberInt(discount)).format('(0.0%)')
+        // console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
+        if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
+          var data = this.detail_itemlists
+          if (discount.includes("%") === true) {
+            discount = numeral(this.numberInt(discount)).format('(0.0%)')
+          } else {
+            discount = this.formatMoney(discount)
+          }
+          if (parseInt(this.vatType) == 2) {
+            this.taxRage = 7
+            // console.log(true)
+            var netAmountItem = ((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
+            netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price) - netAmountItem)
+          } else {
+            var netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price))
+          }
+
+          for (var i = 0; i < this.detail_itemlists.length; i++) {
+            if (i == lineNumber - 1) {
+              data[i].unit_select = unit
+              data[i].qty = this.formatMoney(this.numberInt(cnt))
+              data[i].price = this.formatMoney(this.numberInt(price))
+              data[i].discount = discount
+              data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
+              data[i].netAmountItem = this.numberInt(netAmountItem)
+              data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
+              data[i].stock_select = stock
+              data[i].weight = this.numberInt(cnt) * data[i].weight
+            }
+          }
+          this.calcTotalNetAmount()
         } else {
-          discount = this.formatMoney(discount)
+          // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
+          swal("แจ้งเตือน", "ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า", "warning")
+          this.detail_itemlists[lineNumber - 1].discount = this.formatMoney(0)
         }
-        if (parseInt(this.vatType) == 2) {
-          this.taxRage = 7
-          // console.log(true)
-          var netAmountItem = ((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
-          netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price) - netAmountItem)
-        } else {
-          var netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(price))
+      } else {
+        swal("แจ้งเตือน", "ท่านไม่สามารถขายสินค้าเกินสต๊อกได้", "warning")
+        this.item_selected = ''
+        this.stock_detail = ''
+        if (price == '') {
+          price = unit.price
         }
 
-        for (var i = 0; i < this.detail_itemlists.length; i++) {
-          if (i == lineNumber - 1) {
-            data[i].unit = unit
-            data[i].qty = this.formatMoney(this.numberInt(cnt))
-            data[i].price = this.formatMoney(this.numberInt(price))
-            data[i].discount = discount
-            data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
-            data[i].netAmountItem = this.numberInt(netAmountItem)
-            data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
-            // data[i].weight = this.numberInt(cnt) * data[i].weight
+        cnt = 1
+        // console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
+        if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
+          for (var i = 0; i < this.detail_itemlists.length; i++) {
+            if (i == lineNumber - 1) {
+                var data = this.detail_itemlists
+            if (discount.includes("%") === true) {
+              discount = numeral(this.numberInt(discount)).format('(0.0%)')
+            } else {
+              discount = this.formatMoney(discount)
+            }
+            if (parseInt(this.vatType) == 2) {
+              this.taxRage = 7
+              // console.log(true)
+              var netAmountItem = ((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
+              netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(data[i].units[0].price) - netAmountItem)
+            } else {
+              var netAmountItem = this.formatMoney(this.numberInt(cnt) * this.numberInt(data[i].units[0].price))
+            }
+          
+              data[i].unit_select = data[i].units[0]
+              data[i].qty = this.formatMoney(this.numberInt(cnt))
+              data[i].price = this.formatMoney(this.numberInt(data[i].units[0].price))
+              data[i].discount = discount
+              data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount))
+              data[i].netAmountItem = this.numberInt(netAmountItem)
+              data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount))
+              data[i].stock_select = stock
+              data[i].weight = this.numberInt(cnt) * data[i].weight
+            }
           }
+          this.calcTotalNetAmount()
         }
-        this.calcTotalNetAmount()
-      } else {
-        // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
-        swal("แจ้งเตือน", "ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า", "warning")
-        this.detail_itemlists[lineNumber - 1].discount = this.formatMoney(0)
       }
     },
     return_price(units) {

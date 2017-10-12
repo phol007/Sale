@@ -107,23 +107,23 @@
 	                    	<td style="width: 140px; text-align:left;">{{ item_list.item_code }}</td>
                             <td style="width: 400px; text-align:left;">{{ item_list.item_name }}</td>
                         	<td style="width: 100px; padding:0 0.5%; text-align:center;">
-                    			<select v-bind="stock_list">
-                            		<option v-for="wh in item_list.stock_list" :value="wh.wh_code" :selected="wh.wh_code == item_list.wh ? 'selected' : ''" style="cursor: pointer;">{{ wh.wh_code +"/"+ wh.shelf_code }}</option>
+                    			<select v-model="stock_list = item_list.stock_select" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem, stock_list)">
+                            		<option v-for="wh in item_list.stock_list" :value="wh" style="cursor: pointer;">{{ wh.wh_code +"/"+ wh.shelf_code }}</option>
                             	</select>
                         	</td>
                         	<td style="width: 100px; padding:0 0.5%;">
-                        		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem, item_list.stock_list)">
+                        		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem, stock_list)">
                         			<option v-for="unit in item_list.units" :value="unit">{{ unit.unit_name }}</option>
                         		</select>
                         	</td>                       	
                         	<td style="padding:0;">
-                        		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, item_list.stock_list)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                        		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calcItemAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                         	</td>
                         	<td style="padding:0;">
-                        		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                        		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                         	</td>
                         	<td style="padding:0;">
-                        		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
+                        		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.netAmountItem, stock_list)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)">
                         	</td>
                         	<td style="padding:0;">
                         		<input type="text" placeholder="0.00" :value="formatMoney(item_list.netAmountItem)" readonly>
