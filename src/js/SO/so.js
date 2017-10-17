@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       msg: 'WelCome SO Nopadol from file so.js',
+      docID: 0,
       docNo: '',
       docDate: '',
       nowDate: {},
@@ -40,8 +41,7 @@ export default {
       billType: 0,
       billnetAmount: this.formatMoney(0),
       totalItemAmount: this.formatMoney(0),
-      sumBeforeTaxAmount: this.formatMoney(0),
-      sumTaxAmount: this.formatMoney(0),
+      beforeNetAmount: this.formatMoney(0),
       unit_list: '',
       stock_list: '',
       is_cancel: 0,
@@ -398,16 +398,16 @@ export default {
         }
         this.weight_all = this.calweight_all(this.detail_itemlists)
         var sumTotal = this.sumTotal_item(this.detail_itemlists)
-        this.netVatAmount = this.Case_netVatAmount(parseInt(this.vatType), sumTotal, this.billDiscount, this.taxRage)
+        this.netVatAmount = this.Case_netVatAmount(parseInt(this.vatType)+1, sumTotal, this.billDiscount, this.taxRage)
         this.totalItemAmount = this.formatMoney(sumTotal)
-        this.billnetAmount = this.Case_billnetAmount(parseInt(this.vatType), this.netVatAmount, sumTotal, this.billDiscount)
+        this.billnetAmount = this.Case_billnetAmount(parseInt(this.vatType)+1, this.netVatAmount, sumTotal, this.billDiscount)
         if (this.billDiscount.includes("%") === true) {
           this.billDiscount = this.billDiscount
         } else {
           this.billDiscount = this.formatMoney(this.billDiscount)
         }
-        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType), this.billnetAmount, this.netVatAmount, this.totalItemAmount)
-        var calDiscount = this.Case_checkbillDiscount(parseInt(this.vatType), this.billDiscount, this.billnetAmount, sumTotal)
+        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType)+1, this.billnetAmount, this.netVatAmount, this.totalItemAmount)
+        var calDiscount = this.Case_checkbillDiscount(parseInt(this.vatType)+1, this.billDiscount, this.billnetAmount, sumTotal)
         if (calDiscount == true) {
           swal('Warning !!', 'ท่านใส่ส่วนลดมากเกินไป', 'warning')
           this.billDiscount = this.formatMoney(0)
@@ -686,14 +686,14 @@ export default {
           amount: this.numberInt(val['amount']),
           net_amount: this.numberInt(val['amount']),
           home_amount: this.numberInt(val['amount']),
-          item_description: val['item_description'],
-          ref_no: val['ref_no'],
-          q_id: val['q_id'],
-          is_cancel: val['is_cancel'],
-          packing_rate1: val['unit_select']['packing_rate'],
-          packing_rate2: val['unit_select']['packing_rate'],
-          ref_line_number: this.numberInt(val['ref_line_number']),
-          line_number: val['line_number']
+          item_description: '',
+          ref_no: this.DocNo,
+          q_id: 0,
+          is_cancel: 0,
+          packing_rate_1: val['unit_select']['packing_rate'],
+          packing_rate_2: val['unit_select']['packing_rate'],
+          ref_line_number: this.numberInt(val['no']),
+          line_number: this.numberInt(val['no'])-1
         })
       }.bind(this))
 
@@ -701,7 +701,7 @@ export default {
         doc_no: this.docNo,
         doc_date: '',
         bill_type: this.billType,
-        tax_type: this.taxType,
+        tax_type: this.vatType,
         cust: {
           ar_id: this.arDetail.id,
           ar_code: this.arDetail.ar_code,
@@ -716,9 +716,9 @@ export default {
         },
         depart_code: this.departCode,
         credit_day: this.numberInt(this.creditDay),
-        due_date: this.dueDate,
+        due_date: this.return_date(this.dueDate),
         delivery_day: this.numberInt(this.deliveryDay),
-        delivery_date: this.deliveryDate,
+        delivery_date: this.return_date(this.deliveryDate),
         tax_rate: this.taxRage,
         is_confirm: 0,
         my_description: this.myDescription,
@@ -835,11 +835,127 @@ export default {
           alert("คู่มือใช้งานยังไม่ได้ทำครับ")
           break
       }
+    },
+    showDetail_SO (docno) {
+      $("#loading").addClass('is-active')
+      api.detailSOAX(docno,
+          (result) => {
+          console.log('Detail = '+JSON.stringify(result.data))
+          $("#loading").removeClass('is-active')
+          this.docID = result.data.id
+          this.docNo = result.data.doc_no
+          this.vatType = result.data.tax_type+1
+          this.billType = result.data.bill_type+1
+          this.arCode = result.data.cust.ar_code
+          this.arName = result.data.cust.ar_name
+          this.arDetail = result.data.cust
+          this.docDate = new Date(result.data.doc_date)
+          this.nowDate = {
+            to: new Date(result.data.doc_date)
+          }
+
+          this.saleId = result.data.sale.sale_id
+          this.saleCode = result.data.sale.sale_code
+          this.saleName = result.data.sale.sale_name
+          this.saleDetail = result.data.sale
+
+          this.myDescription = result.data.my_description
+
+          this.deliveryDay = result.data.delivery_day
+          this.creditDay = result.data.credit_day
+          this.isConditionSend = result.data.is_condition_send
+
+          this.calDeliDate(this.creditDay)
+          this.calDueDate(this.creditDay)
+
+          this.ref_no = result.data.ref_no
+          this.jobId = result.data.job_id
+
+          
+
+          this.totalItemAmount = this.formatMoney(result.data.sum_item_amount)
+          this.billDiscount = this.formatMoney(result.data.dis_count_word)
+          this.netVatAmount = this.formatMoney(result.data.tax_amount)
+          this.is_cancel = result.data.is_cancel
+          this.is_confirm = result.data.is_confirm
+
+          this.setMenuTool(1)     
+
+          result.data.subs.forEach(function(val, key) {
+            if (parseInt(this.vatType) == 2) {
+              this.taxRage = 7
+              var netAmountItem = this.formatMoney(((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) - ((((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) * 100) / (this.taxRage + 100)))
+            } else {
+              var netAmountItem = this.formatMoney(1 * val['price'])
+            }
+
+            var units = []
+            var unit_select = 0
+            var stock_select = 0
+            var stock = []
+
+            api.searchUnitAX(val['item_code'], this.billType, this.ArID, this.isConditionSend, this.vatType,
+              (result) => {
+                units = result.units
+                stock = result.stock_list
+                for (var r = 0; r < units.length; r++) {
+                  if (units[r].unit_code == val['unit_code']) {
+                    unit_select = units[r]
+                  }
+                }
+
+                for (var r = 0; r < stock.length; r++) {
+                  if (stock[r].wh_code == val['wh_code']) {
+                    stock_select = stock[r]
+                  }
+                }
+
+                if(val['discount_word_sub']==''){
+                  val['discount_word_sub'] = this.formatMoney(0)
+                }
+
+                this.detail_itemlists.push({
+                  no: val['line_number'],
+                  item_id: val['item_id'],
+                  item_code: val['item_code'],
+                  item_name: val['item_name'],
+                  units: units,
+                  unit_select: unit_select,
+                  stock_select: stock_select,
+                  qty: this.formatMoney(val['qty']),
+                  price: this.formatMoney(val['price']),
+                  discount: val['discount_word_sub'],
+                  amount: this.formatMoney(val['amount']),
+                  netAmountItem: val['net_amount'], // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
+                  home_amount: val['home_amount'],
+                  stock_list: stock,
+                  ref_no: this.DocNo,
+                  weight: result.weight
+                })
+              },
+              (error) => {
+                $("#loading").removeClass('is-active')
+                swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+                console.log(error)
+              }
+            )
+          }.bind(this))
+          setTimeout(function() {
+            this.calcTotalNetAmount()            
+            console.log(this.detail_itemlists.length)
+          }.bind(this), 1000)
+          },
+          (error) => {
+            $("#loading").removeClass('is-active')
+            swal("Warning !!", "กรณาตรวจสอบเซิร์ฟเวอร์" + error, "warning")
+            console.log(error)
+          }
+        )  
     }
   },
-  mounted() {
+  mounted () {
     this.params = this.$route.params
-    this.params.status = 0
+    // this.params.status = 0
     // alert(this.params.status)
     if (this.params.status == 0) {
       // this.genDocNo('SO', 0)
@@ -847,7 +963,7 @@ export default {
       this.setMenuTool(0)
       this.toDay()
     } else if (this.params.status == 1) {
-      this.showDetail_QT(this.params.docno)
+      this.showDetail_SO(this.params.docno)
       this.disabled = true
       this.setMenuTool(1)
     }

@@ -463,18 +463,46 @@ export default {
     },
     GenDocNo(tableName, billType) {
       $("#loading").addClass('is-active')
-      api.gen_docNOAX(tableName, billType,
-        (result) => {
+      if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
+        api.gen_docNOAX(tableName, billType,
+          (result) => {
+            $("#loading").removeClass('is-active')
+            this.DocNo = result.data.new_doc_no
+            this.insert_QT()
+          },
+          (error) => {
+            $("#loading").removeClass('is-active')
+            swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+            console.log(error)
+          }
+        )
+      } else {
+        if (this.EmpCode == '') {
+          swal({
+            title: "แจ้งเตือน",
+            text: "กรุณาเลือกพนักงานขาย",
+            timer: 1000,
+            type: "warning",
+            showConfirmButton: false
+          })
           $("#loading").removeClass('is-active')
-          this.DocNo = result.data.new_doc_no
-          this.insert_QT()
-        },
-        (error) => {
+          this.SearchEmplo()
+        } else {
           $("#loading").removeClass('is-active')
-          swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
-          console.log(error)
+          swal({
+              title: "แจ้งเตือน",
+              text: "เอกสารนี้ ไม่มีรายการสินค้า",
+              type: "warning",
+              showCancelButton: false,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "OK",
+              closeOnConfirm: false
+            },
+            function() {
+              this.SearchItem()
+            }.bind(this))
         }
-      )
+      }      
     },
     detailItemlist(item) {
       var copy = false
@@ -672,7 +700,7 @@ export default {
           unit_code: val['unit_select']['unit_code'],
           item_amount: numeral(val['amount']).value(),
           item_description: '',
-          line_number: val['no']
+          line_number: this.numberInt(val['no'])-1
         })
       })
 
@@ -722,8 +750,7 @@ export default {
       }
       // console.log(item_Sub)
       console.log('insert = '+JSON.stringify(obj))
-      if (this.EmpCode != '' && this.detail_itemlists.length != 0) {
-        api.insertQTAX(obj,
+       api.insertQTAX(obj,
           (result) => {
             // alert("บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว")
             swal("แจ้งเตือน", "บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว", "success")
@@ -735,33 +762,7 @@ export default {
             console.log(error)
           }
         )
-      } else {
-        if (this.EmpCode == '') {
-          swal({
-            title: "แจ้งเตือน",
-            text: "กรุณาเลือกพนักงานขาย",
-            timer: 1000,
-            type: "warning",
-            showConfirmButton: false
-          })
-          $("#loading").removeClass('is-active')
-          this.SearchEmplo()
-        } else {
-          $("#loading").removeClass('is-active')
-          swal({
-              title: "แจ้งเตือน",
-              text: "เอกสารนี้ ไม่มีรายการสินค้า",
-              type: "warning",
-              showCancelButton: false,
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "OK",
-              closeOnConfirm: false
-            },
-            function() {
-              this.SearchItem()
-            }.bind(this))
-        }
-      }
+      
     },
     update_QT() {
       $("#loading").addClass('is-active')

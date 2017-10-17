@@ -144,5 +144,15 @@ export default {
         error(response)
       }
     )
+  },
+  detailSOAX (docno, success, error) {
+    Vue.axios.get(URL + ':3000/saleorder?access_token=&doc_no=' + docno).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }

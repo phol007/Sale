@@ -8,7 +8,7 @@
 	      		<i class="fa fa-money" aria-hidden="true"></i>
     		</div>
     		<div class="Tr-r" style="font-size: 45px;">
-    			{{ billnetAmount }} ฿
+    			{{ formatMoney(billnetAmount) }} ฿
     		</div>   
 			<div class="status">
 		     	<b>Status : 
