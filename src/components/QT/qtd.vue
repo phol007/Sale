@@ -215,7 +215,7 @@
 		    		วันที่ครบกำหนด
 		    	</div>
 		    	<div class="lb-r" style="width:50%">
-		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" :disabled-picker="is_confirm==1||is_cancel==1" v-on:input="calcreditDay(dueDate)"></datepicker>
+		    		<datepicker format="dd/MM/yyyy" input-class="input date" v-model="dueDate" required language="th" calendar-button-icon="fa fa-calendar" calendar-button :disabled="nowDocDate" disabled-picker v-on:input="calcreditDay(dueDate)"></datepicker>
 		    	</div>
 	    	</div>
 	    	<div class="btt-block" style="border:0;">
@@ -223,7 +223,7 @@
 		    		รวมมูลค่าสินค้า
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า..." :readonly="is_confirm==1||is_cancel==1" v-model="totalItemAmount">
+		    		<input type="text" class="input" placeholder="รวมมูลค่าสินค้า..." readonly v-model="totalItemAmount">
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		ส่วนลด %, บาท

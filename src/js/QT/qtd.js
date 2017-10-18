@@ -419,7 +419,7 @@ export default {
       return y + '/' + m + '/' + d
     },
     calNetAmount(lineNumber, unit, cnt, price, discount, itemAmount) {
-      //alert ('lineNumber = '+lineNumber+', unit = '+unit+', cnt = '+cnt+', price = '+price+', discount = '+discount)
+      // alert ('lineNumber = '+lineNumber+', unit = '+unit+', cnt = '+cnt+', price = '+price+', discount = '+discount)
       this.item_selected = ''
       this.stock_detail = ''
       if (price == '') {
@@ -454,6 +454,7 @@ export default {
             // data[i].weight = this.numberInt(cnt) * data[i].weight
           }
         }
+        // alert(JSON.stringify(this.detail_itemlists))
         this.calVatnetAmount()
       } else {
         // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
@@ -670,7 +671,7 @@ export default {
         } else {
           this.billDiscount = this.formatMoney(this.billDiscount)
         }
-        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType), this.billnetAmount, this.netVatAmount, this.totalItemAmount)
+        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType), this.billDiscount, this.netVatAmount, this.totalItemAmount)
         var calDiscount = this.Case_checkbillDiscount(parseInt(this.vatType), this.billDiscount, this.billnetAmount, sumTotal)
         if(calDiscount == true){
           swal('Warning !!', 'ท่านใส่ส่วนลดมากเกินไป', 'warning')
@@ -702,7 +703,7 @@ export default {
           item_description: '',
           line_number: this.numberInt(val['no'])-1
         })
-      })
+      }.bind(this))
 
       var obj = {
         doc_no: this.DocNo,
@@ -971,7 +972,7 @@ export default {
                   }
                 }
                 this.detail_itemlists.push({
-                  no: val['line_number'],
+                  no: val['line_number']+1,
                   item_id: val['item_id'],
                   item_code: val['item_code'],
                   item_name: val['item_name'],

@@ -10,6 +10,12 @@ Vue.mixin({
       }
       return weight
     },
+    numberInt (str) {
+      return numeral(str).value()
+    },
+    formatMoney (int) {
+      return numeral(int).format('0,0.00')
+    },
     sumTotal_item (obj) {
       var sumTotal = 0
       for (var i = 0; i < obj.length; i++) {
@@ -47,17 +53,17 @@ Vue.mixin({
           console.log(vatType)
       }
     },
-    Case_beforNetAmount (vatType, billnetAmount, netVatAmount, totalItemAmount) {
+    Case_beforNetAmount (vatType, billDiscount, netVatAmount, totalItemAmount) {
       switch (vatType) {
         case 1: // แยกนอก
           console.log('แยกนอก Case_beforNetAmount' + totalItemAmount)
-          return totalItemAmount - billnetAmount
+          return totalItemAmount - billDiscount
         case 2: // รวมใน
           console.log('รวมใน Case_beforNetAmount' + totalItemAmount)
-          return this.numberInt(billnetAmount) - this.numberInt(netVatAmount)
+          return (this.numberInt(totalItemAmount) - this.numberInt(billDiscount)) - this.numberInt(netVatAmount)
         case 3: // อัตราศูนย์
           console.log('อัตราศูนย์ Case_beforNetAmount' + totalItemAmount)
-          return totalItemAmount - billnetAmount
+          return totalItemAmount - billDiscount
         default:
           console.log(vatType)
       }
@@ -88,12 +94,6 @@ Vue.mixin({
         default:
           console.log(vatType)
       }
-    },
-    numberInt (str) {
-      return numeral(str).value()
-    },
-    formatMoney (int) {
-      return numeral(int).format('0,0.00')
     },
     checkStock (stock, packingRate, qty) {
       console.log(stock + ',' + (packingRate * qty))
@@ -135,39 +135,39 @@ Vue.mixin({
       if (e.keyCode === 16) {
         e.returnValue = true
       }
-    }
-  },
-  keyNumber (e) {
-    if (e.keyCode !== 190) {
-      if (e.keyCode !== 9) {
-        if (e.keyCode !== 13) {
-          if (e.keyCode !== 8) {
-            if (e.keyCode < 46 || e.keyCode > 57) {
-              e.returnValue = false
+    },
+    keyNumber (e) {
+      if (e.keyCode !== 190) {
+        if (e.keyCode !== 9) {
+          if (e.keyCode !== 13) {
+            if (e.keyCode !== 8) {
+              if (e.keyCode < 46 || e.keyCode > 57) {
+                e.returnValue = false
+              }
             }
           }
         }
       }
-    }
 
-    if (e.keyCode === 8) {
-      e.returnValue = true
-    }
+      if (e.keyCode === 8) {
+        e.returnValue = true
+      }
 
-    if (e.keyCode === 39) {
-      e.returnValue = true
-    }
+      if (e.keyCode === 39) {
+        e.returnValue = true
+      }
 
-    if (e.keyCode === 37) {
-      e.returnValue = true
-    }
+      if (e.keyCode === 37) {
+        e.returnValue = true
+      }
 
-    if (e.keyCode === 40) {
-      e.returnValue = true
-    }
+      if (e.keyCode === 40) {
+        e.returnValue = true
+      }
 
-    if (e.keyCode === 16) {
-      e.returnValue = true
+      if (e.keyCode === 16) {
+        e.returnValue = true
+      }
     }
   }
 })
