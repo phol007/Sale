@@ -44,7 +44,7 @@ Vue.mixin({
           console.log('แยกนอก Case_billnetAmount' + sumTotal)
           return this.numberInt(netVatAmount) + (sumTotal - this.numberInt(billDiscount))
         case 2: // รวมใน
-          console.log('รวมใน Case_billnetAmount' + sumTotal)
+          console.log('รวมใน Case_billnetAmount' + this.numberInt(sumTotal - this.numberInt(billDiscount)))
           return this.numberInt(sumTotal - this.numberInt(billDiscount))
         case 3: // อัตราศูนย์
           console.log('อัตราศูนย์ Case_billnetAmount' + sumTotal)
@@ -54,15 +54,16 @@ Vue.mixin({
       }
     },
     Case_beforNetAmount (vatType, billDiscount, netVatAmount, totalItemAmount) {
+      // console.log(vatType + ',' + billDiscount + ',' + netVatAmount + ',' + totalItemAmount)
       switch (vatType) {
         case 1: // แยกนอก
-          console.log('แยกนอก Case_beforNetAmount' + totalItemAmount)
+          console.log('แยกนอก Case_beforNetAmount' + totalItemAmount - billDiscount)
           return totalItemAmount - billDiscount
         case 2: // รวมใน
-          console.log('รวมใน Case_beforNetAmount' + totalItemAmount)
+          console.log('รวมใน Case_beforNetAmount' + ((this.numberInt(totalItemAmount) - this.numberInt(billDiscount)) - this.numberInt(netVatAmount)))
           return (this.numberInt(totalItemAmount) - this.numberInt(billDiscount)) - this.numberInt(netVatAmount)
         case 3: // อัตราศูนย์
-          console.log('อัตราศูนย์ Case_beforNetAmount' + totalItemAmount)
+          console.log('อัตราศูนย์ Case_beforNetAmount' + totalItemAmount - billDiscount)
           return totalItemAmount - billDiscount
         default:
           console.log(vatType)
@@ -71,21 +72,21 @@ Vue.mixin({
     Case_checkbillDiscount (vatType, billDiscount, billnetAmount, sumTotal) {
       switch (vatType) {
         case 1: // แยกนอก
-          console.log('แยกนอก Case_beforNetAmount' + billnetAmount)
+          console.log('แยกนอก Case_checkbillDiscount' + billnetAmount)
           if (this.numberInt(this.billDiscount) > this.numberInt(this.billnetAmount)) {
             return true
           } else {
             return false
           }
         case 2: // รวมใน
-          console.log('รวมใน Case_beforNetAmount' + billnetAmount)
+          console.log('รวมใน Case_checkbillDiscount' + billnetAmount)
           if (this.numberInt(this.billDiscount) > this.numberInt(sumTotal)) {
             return true
           } else {
             return false
           }
         case 3: // อัตราศูนย์
-          console.log('อัตราศูนย์ Case_beforNetAmount' + billnetAmount)
+          console.log('อัตราศูนย์ Case_checkbillDiscount' + billnetAmount)
           if (this.numberInt(billDiscount) > this.numberInt(billnetAmount)) {
             return true
           } else {

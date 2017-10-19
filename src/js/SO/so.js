@@ -76,8 +76,7 @@ export default {
       carLicense: '',
       receiveTel: '',
       stock_detail: '',
-      weight_all: 0,
-      keyNumber: ''
+      weight_all: 0
     }
   },
   components: {
@@ -112,7 +111,7 @@ export default {
           this.insert_saleorder()
         },
         (error) => {
-          //$("#loading").removeClass('is-active')
+          $("#loading").removeClass('is-active')
           alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
           console.log(error)
         }
@@ -396,17 +395,20 @@ export default {
         } else {
           this.taxRage = 7
         }
-        this.weight_all = this.calweight_all(this.detail_itemlists)
-        var sumTotal = this.sumTotal_item(this.detail_itemlists)
-        this.netVatAmount = this.Case_netVatAmount(parseInt(this.vatType)+1, sumTotal, this.billDiscount, this.taxRage)
-        this.totalItemAmount = this.formatMoney(sumTotal)
-        this.billnetAmount = this.Case_billnetAmount(parseInt(this.vatType)+1, this.netVatAmount, sumTotal, this.billDiscount)
+
         if (this.billDiscount.includes("%") === true) {
           this.billDiscount = this.billDiscount
         } else {
           this.billDiscount = this.formatMoney(this.billDiscount)
         }
-        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType)+1, this.billnetAmount, this.netVatAmount, this.totalItemAmount)
+
+        this.weight_all = this.calweight_all(this.detail_itemlists)
+        var sumTotal = this.sumTotal_item(this.detail_itemlists)
+        this.netVatAmount = this.Case_netVatAmount(parseInt(this.vatType)+1, sumTotal, this.billDiscount, this.taxRage)
+        this.totalItemAmount = this.formatMoney(sumTotal)
+        this.billnetAmount = this.Case_billnetAmount(parseInt(this.vatType)+1, this.netVatAmount, sumTotal, this.billDiscount)
+       
+        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType)+1, this.billDiscount, this.netVatAmount, this.totalItemAmount)
         var calDiscount = this.Case_checkbillDiscount(parseInt(this.vatType)+1, this.billDiscount, this.billnetAmount, sumTotal)
         if (calDiscount == true) {
           swal('Warning !!', 'ท่านใส่ส่วนลดมากเกินไป', 'warning')
@@ -691,8 +693,8 @@ export default {
           q_id: 0,
           is_cancel: 0,
           packing_rate_1: val['unit_select']['packing_rate'],
-          packing_rate_2: val['unit_select']['packing_rate'],
-          ref_line_number: this.numberInt(val['no']),
+          packing_rate_2: 1,
+          ref_line_number: this.numberInt(val['no'])-1,
           line_number: this.numberInt(val['no'])-1
         })
       }.bind(this))
@@ -728,7 +730,7 @@ export default {
         sum_of_item_amount: this.numberInt(this.totalItemAmount),
         discount_word: this.billDiscount,
         discount_amount: this.numberInt(this.billDiscount),
-        after_discount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount),
+        after_discount_amount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount),
         before_tax_amount: this.beforeNetAmount,
         tax_amount: this.numberInt(this.netVatAmount),
         total_amount: this.billnetAmount,

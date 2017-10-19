@@ -249,7 +249,7 @@
 		    		ส่วนลด %, บาท
 		    	</div>
 		    	<div class="lb-r" style="width:55%">
-		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calVatnetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)" :readonly="is_confirm==1||is_cancel==1" @keydown="keyNumber">
+		    		<input type="text" class="input" placeholder="ส่วนลด, บาท.." v-model="billDiscount" @change="calcTotalNetAmount" @click="return_Int_Discount(billDiscount)" @focus="return_Int_Discount(billDiscount)" @blur="return_FM_Discount(billDiscount)" :readonly="is_confirm==1||is_cancel==1" @keydown="keyNumber">
 		    	</div>
 		    	<div class="lb-l" style="width:45%">
 		    		อัตราภาษีมูลค้าเพิ่ม

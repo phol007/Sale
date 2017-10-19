@@ -700,6 +700,8 @@ export default {
           dis_count_amount_sub: numeral(val['discount']).value(),
           unit_code: val['unit_select']['unit_code'],
           item_amount: numeral(val['amount']).value(),
+          packing_rate_1: val['unit_select']['packing_rate'],
+          packing_rate_2: 1,
           item_description: '',
           line_number: this.numberInt(val['no'])-1
         })
@@ -754,6 +756,7 @@ export default {
        api.insertQTAX(obj,
           (result) => {
             // alert("บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว")
+            $("#loading").removeClass('is-active')
             swal("แจ้งเตือน", "บันทึกเรียบร้อยเอกสารเลขที่ " + this.DocNo + " เรียบร้อยแล้ว", "success")
             this.$router.push('/Saleh')
           },
@@ -789,6 +792,8 @@ export default {
                 dis_count_amount_sub: numeral(val['discount']).value(),
                 unit_code: val['unit_select']['unit_code'],
                 item_amount: numeral(val['amount']).value(),
+                packing_rate_1: val['unit_select']['packing_rate'],
+                packing_rate_2: 1,
                 item_description: '',
                 line_number: val['no']
               })
