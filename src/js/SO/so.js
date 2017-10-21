@@ -838,6 +838,8 @@ export default {
           // alert(type)
           alert("คู่มือใช้งานยังไม่ได้ทำครับ")
           break
+        case 4: this.update_saleorder() 
+          break
       }
     },
     showDetail_SO (docno) {
@@ -955,6 +957,102 @@ export default {
             console.log(error)
           }
         )  
+    },
+    update_saleorder () {
+      $("#loading").addClass('is-active')
+      var sum_total_amount = 0
+      for (var i = 0; i < this.detail_itemlists.length; i++) {
+        sum_total_amount += this.numberInt(this.detail_itemlists[i].amount)
+      }
+      var item_sub = []
+      var DocNo = this.DocNo
+
+      this.detail_itemlists.forEach(function(val, key) {
+        item_sub.push({
+          item_id: val['item_id'],
+          item_code: val['item_code'],
+          bar_code: '',
+          item_name: val['item_name'],
+          wh_code: val['stock_select']['wh_code'],
+          shelf_code: val['stock_select']['shelf_code'],
+          qty: this.numberInt(val['qty']),
+          remain_qty: this.numberInt(val['qty']),
+          unit_code: val['unit_select']['unit_code'],
+          price: this.numberInt(val['price']),
+          discount_word_sub: val['discount_word_sub'],
+          discount_amount_sub: this.numberInt(val['discount_amount_sub']),
+          amount: this.numberInt(val['amount']),
+          net_amount: this.numberInt(val['amount']),
+          home_amount: this.numberInt(val['amount']),
+          item_description: '',
+          ref_no: this.DocNo,
+          q_id: 0,
+          is_cancel: 0,
+          packing_rate_1: val['unit_select']['packing_rate'],
+          packing_rate_2: 1,
+          ref_line_number: this.numberInt(val['no'])-1,
+          line_number: this.numberInt(val['no'])-1
+        })
+      }.bind(this))
+
+      var obj = {
+        doc_no: this.docNo,
+        doc_date: '',
+        bill_type: this.billType,
+        tax_type: this.vatType,
+        cust: {
+          ar_id: this.arDetail.id,
+          ar_code: this.arDetail.ar_code,
+          ar_name: this.arDetail.ar_name,
+          ar_bill_address: this.arDetail.address,
+          ar_telephone: this.arDetail.ar_telephone
+        },
+        sale: {
+          sale_id: this.saleDetail.id,
+          sale_code: this.saleCode,
+          sale_name: this.saleName
+        },
+        depart_code: this.departCode,
+        credit_day: this.numberInt(this.creditDay),
+        due_date: this.return_date(this.dueDate),
+        delivery_day: this.numberInt(this.deliveryDay),
+        delivery_date: this.return_date(this.deliveryDate),
+        tax_rate: this.taxRage,
+        is_confirm: 0,
+        my_description: this.myDescription,
+        bill_status: this.billStatus,
+        so_status: this.docType,
+        holding_status: this.holdingStatus,
+        sum_of_item_amount: this.numberInt(this.totalItemAmount),
+        discount_word: this.billDiscount,
+        discount_amount: this.numberInt(this.billDiscount),
+        after_discount_amount: this.numberInt(this.totalItemAmount) - this.numberInt(this.billDiscount),
+        before_tax_amount: this.beforeNetAmount,
+        tax_amount: this.numberInt(this.netVatAmount),
+        total_amount: this.billnetAmount,
+        net_amount: this.numberInt(this.billnetAmount),
+        is_cancel: 0,
+        is_condition_send: this.isConditionSend,
+        creator_id: this.creatorId,
+        creator_code: this.creatorCode,
+        creator_date_time: this.createDateTime,
+        subs: item_sub
+      }
+      //alert(this.total_amount)
+      console.log('update =' + JSON.stringify(obj))
+      // if (this.saleCode != '' && this.detail_itemlists.length != 0) {
+      //   api.insertSaleOrderAX(obj,
+      //     (result) => {
+      //       swal("แจ้งเตือน", "บันทึกเรียบร้อย เอกสารเลขที่ " + this.docNo + " เรียบร้อยแล้ว", "success")
+      //       this.goTo("/Saleh")
+      //     },
+      //     (error) => {
+      //       $("#loading").removeClass('is-active')
+      //       swal("Warning !!", "กรณาตรวจสอบเซิร์ฟเวอร์" + error, "warning")
+      //       console.log(error)
+      //     }
+      //   )
+      // }
     }
   },
   mounted () {

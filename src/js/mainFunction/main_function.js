@@ -54,17 +54,17 @@ Vue.mixin({
       }
     },
     Case_beforNetAmount (vatType, billDiscount, netVatAmount, totalItemAmount) {
-      // console.log(vatType + ',' + billDiscount + ',' + netVatAmount + ',' + totalItemAmount)
+      alert(vatType + ',' + billDiscount + ',' + netVatAmount + ',' + totalItemAmount)
       switch (vatType) {
         case 1: // แยกนอก
-          console.log('แยกนอก Case_beforNetAmount' + totalItemAmount - billDiscount)
-          return totalItemAmount - billDiscount
+          console.log('แยกนอก Case_beforNetAmount' + this.numberInt(totalItemAmount) - this.numberInt(billDiscount))
+          return this.numberInt(totalItemAmount) - this.numberInt(billDiscount)
         case 2: // รวมใน
           console.log('รวมใน Case_beforNetAmount' + ((this.numberInt(totalItemAmount) - this.numberInt(billDiscount)) - this.numberInt(netVatAmount)))
           return (this.numberInt(totalItemAmount) - this.numberInt(billDiscount)) - this.numberInt(netVatAmount)
         case 3: // อัตราศูนย์
-          console.log('อัตราศูนย์ Case_beforNetAmount' + totalItemAmount - billDiscount)
-          return totalItemAmount - billDiscount
+          console.log('อัตราศูนย์ Case_beforNetAmount' + this.numberInt(totalItemAmount) - this.numberInt(billDiscount))
+          return this.numberInt(totalItemAmount) - this.numberInt(billDiscount)
         default:
           console.log(vatType)
       }
