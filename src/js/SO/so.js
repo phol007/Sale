@@ -42,8 +42,8 @@ export default {
       billnetAmount: this.formatMoney(0),
       totalItemAmount: this.formatMoney(0),
       beforeNetAmount: this.formatMoney(0),
-      unit_list: '',
-      stock_list: '',
+      unit_list: [],
+      stocks: [],
       is_cancel: 0,
       is_confirm: 0,
       departCode: '',
@@ -292,6 +292,7 @@ export default {
           swal("Warning !!", "สินค้าในสต๊อกมีไม่พอ", "warning")
         }
       }
+      // alert(JSON.stringify(this.detail_itemlists))
     },
     searchCustomer() {
       $('#mSearchCustomer').addClass('is-active')
@@ -418,13 +419,13 @@ export default {
       }
     },
     calcItemAmount(lineNumber, unit, cnt, price, discount, itemAmount, stock) {
-      //alert('lineNumber = '+lineNumber+', unit = '+unit+', cnt = '+cnt+', price = '+price+', discount = '+discount)
-      console.log(unit)
-      if (this.checkStock(stock.qty, unit.packing_rate, this.numberInt(cnt))) {
+      // alert('lineNumber = '+lineNumber+', unit = '+JSON.stringify(unit)+', cnt = '+cnt+', price = '+price+', discount = '+discount+',stock = '+JSON.stringify(stock))
+     // alert(lineNumber + ',' + JSON.stringify(unit) + ',' + JSON.stringify(stock))
+      if (this.checkStock(stock[lineNumber].qty, unit[lineNumber].packing_rate, this.numberInt(cnt))) {
         this.item_selected = ''
         this.stock_detail = ''
         if (price == '') {
-          price = unit.price
+          price = unit[lineNumber].price
         }
         // console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
         if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
@@ -444,22 +445,22 @@ export default {
           }
 
           for (var i = 0; i < this.detail_itemlists.length; i++) {
-            if (i == lineNumber - 1) {
-              data[i].unit_select = unit
+            if (i == lineNumber) {
+              data[i].unit_select = unit[i]
               data[i].qty = this.formatMoney(this.numberInt(cnt))
               data[i].price = this.formatMoney(this.numberInt(price))
               data[i].discount = discount
               data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
               data[i].netAmountItem = this.numberInt(netAmountItem)
               data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
-              data[i].stock_select = stock
+              data[i].stock_select = stock[i]
             }
           }
           this.calcTotalNetAmount()
         } else {
           // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
           swal("แจ้งเตือน", "ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า", "warning")
-          this.detail_itemlists[lineNumber - 1].discount = this.formatMoney(0)
+          this.detail_itemlists[lineNumber].discount = this.formatMoney(0)
         }
       } else {
         swal("แจ้งเตือน", "ท่านไม่สามารถขายสินค้าเกินสต๊อกได้", "warning")
@@ -473,7 +474,7 @@ export default {
         // console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
         if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
           for (var i = 0; i < this.detail_itemlists.length; i++) {
-            if (i == lineNumber - 1) {
+            if (i == lineNumber) {
               var data = this.detail_itemlists
               if (discount.includes("%") === true) {
                 discount = numeral(this.numberInt(discount)).format('(0.0%)')
@@ -496,12 +497,13 @@ export default {
               data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount))
               data[i].netAmountItem = this.numberInt(netAmountItem)
               data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount))
-              data[i].stock_select = stock
+              data[i].stock_select = data[i].stock_list[0]
             }
           }
           this.calcTotalNetAmount()
         }
       }
+      // alert(JSON.stringify(this.detail_itemlists))
     },
     return_price(units) {
       if (units == null) {

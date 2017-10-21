@@ -97,7 +97,7 @@ Vue.mixin({
       }
     },
     checkStock (stock, packingRate, qty) {
-      console.log(stock + ',' + (packingRate * qty))
+      // alert('stock = ' + stock + ',' + packingRate + ',' + (packingRate * qty))
       if (stock >= (qty * packingRate)) {
         return true
       } else {
