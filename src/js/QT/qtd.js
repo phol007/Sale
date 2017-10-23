@@ -13,8 +13,8 @@ export default {
       params: [],
       DocID: 0,
       DocNo: '',
-      vatType: 2,
-      billType: 1,
+      vatType: 1,
+      billType: 0,
       isConditionSend: 0,
       DocDate: '',
       nowDate: {},
@@ -65,7 +65,12 @@ export default {
       item_selected: '',
       stock_detail: '',
       weight_all: 0,
-      permission: []
+      permission: [],
+      tranfer_list: [],
+      transfer_title: '',
+      tranfer_type: 0,
+      check_all: 'เลือกทั้งหมด',
+      check_all_status: 0
     }
   },
   components: {
@@ -141,7 +146,10 @@ export default {
       if (this.detail_itemlists.length == 0) {
         this.$router.push(page)
       } else {
-        swal({
+        if(this.is_cancel == 1 || this.is_confirm == 1 || this.params.status == 1){
+          this.$router.push(page)
+        }else{
+          swal({
             title: "แจ้งเตือน",
             text: "เอกสารนี้มีสินค้าอยู่ ท่านต้องการดำเนินการต่อหรือไม่",
             type: "warning",
@@ -153,6 +161,7 @@ export default {
           function() {
             this.$router.push(page)
           }.bind(this))
+        }
       }
     },
     toDay() {
@@ -530,7 +539,7 @@ export default {
                   var netAmountItem = this.formatMoney(1 * item.units[0].price)
                 }
                   this.detail_itemlists.push({
-                    no: this.detail_itemlists.length + 1,
+                    no: this.detail_itemlists.length,
                     item_id: item.id,
                     item_code: item.item_code,
                     item_name: item.item_name,
@@ -562,7 +571,7 @@ export default {
                 var netAmountItem = this.formatMoney(1 * item.units[0].price)
               }
                 this.detail_itemlists.push({
-                  no: this.detail_itemlists.length + 1,
+                  no: this.detail_itemlists.length,
                   item_id: item.id,
                   item_code: item.item_code,
                   item_name: item.item_name,
@@ -592,7 +601,7 @@ export default {
           var netAmountItem = this.formatMoney(1 * item.units[0].price)
         }
           this.detail_itemlists.push({
-            no: this.detail_itemlists.length + 1,
+            no: this.detail_itemlists.length,
             item_id: item.id,
             item_code: item.item_code,
             item_name: item.item_name,
@@ -631,7 +640,7 @@ export default {
             if (isConfirm) {
               this.detail_itemlists.splice(index, 1)
               for (var i = 0; i < this.detail_itemlists.length; i++) {
-                this.detail_itemlists[i].no = i + 1
+                this.detail_itemlists[i].no = i
               }
               this.hold = 0
               this.calVatnetAmount()
@@ -703,7 +712,7 @@ export default {
           packing_rate_1: val['unit_select']['packing_rate'],
           packing_rate_2: 1,
           item_description: '',
-          line_number: this.numberInt(val['no'])-1
+          line_number: this.numberInt(val['no'])
         })
       }.bind(this))
 
@@ -723,7 +732,7 @@ export default {
           sale_name: this.EmpName
         },
         ref_no: '',
-        tax_type: this.vatType-1,
+        tax_type: this.vatType,
         tax_rate: this.taxRage,
         credit_day: this.numberInt(this.creditDay),
         due_date: this.return_date(this.dueDate),
@@ -746,7 +755,7 @@ export default {
         allocate_id: 0,
         creator_code: this.usercode,
         create_date_time: '',
-        bill_type: this.billType-1,
+        bill_type: this.billType,
         validity: this.numberInt(this.sendpriceDay),
         customer_assert: this.numberInt(this.custo_assert),
         subs: item_Sub
@@ -823,7 +832,7 @@ export default {
                 sale_name: this.EmpName
               },
               ref_no: '',
-              tax_type: this.vatType-1,
+              tax_type: parseInt(this.vatType),
               tax_rate: this.taxRage,
               credit_day: this.creditDay,
               due_date: moment(this.dueDate).format("YYYY/MM/DD"),
@@ -846,7 +855,7 @@ export default {
               allocate_id: 0,
               creator_code: this.usercode,
               create_date_time: '',
-              bill_type: this.billType-1,
+              bill_type: parseInt(this.billType),
               validity: this.sendpriceDay,
               customer_assert: this.numberInt(this.custo_assert),
               subs: item_Sub
@@ -914,8 +923,8 @@ export default {
           $("#loading").removeClass('is-active')
           this.DocID = result.data.id
           this.DocNo = result.data.doc_no
-          this.vatType = result.data.tax_type+1
-          this.billType = result.data.bill_type+1
+          this.vatType = result.data.tax_type
+          this.billType = result.data.bill_type
           this.ArCode = result.data.cust.ar_code
           this.ArName = result.data.cust.ar_name
           this.ArDetail = result.data.cust
@@ -956,7 +965,7 @@ export default {
           this.setMenuTool(1)     
 
           result.data.subs.forEach(function(val, key) {
-            if (parseInt(this.vatType) == 2) {
+            if (parseInt(this.vatType) == 1) {
               this.taxRage = 7
               var netAmountItem = this.formatMoney(((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) - ((((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) * 100) / (this.taxRage + 100)))
             } else {
@@ -977,7 +986,7 @@ export default {
                   }
                 }
                 this.detail_itemlists.push({
-                  no: val['line_number']+1,
+                  no: val['line_number'],
                   item_id: val['item_id'],
                   item_code: val['item_code'],
                   item_name: val['item_name'],
@@ -1013,6 +1022,45 @@ export default {
           console.log(error)
         }
       )
+    },
+    transfer_modal (type) {      
+     $("#tranfer").addClass('is-active')    
+     switch (type) {
+        case 0: this.tranfer_SO()
+          break
+        case 1:  //BO
+          break
+        case 2:  //RO
+          break
+      }
+    },
+    close_transfer_modal () {
+      $("#tranfer").removeClass('is-active')
+    },
+    tranfer_SO () {         
+      this.transfer_title = 'โอนข้อมูลที่เลือกเป็นใบสั่งขาย'
+      this.tranfer_type = 0
+    },
+    tranfer_data () {
+      switch (this.tranfer_type) {
+        case 0: alert('ข้อมูลโอนไปเป็นใบสั่งขาย = ' + JSON.stringify(this.tranfer_list))
+          break
+        case 1:
+          break
+        case 2:
+          break
+      }
+    },
+    checkbox_all () {
+      if(this.check_all_status==0){
+        this.check_all = 'ยกเลิก'
+        this.check_all_status = 1
+        this.tranfer_list = this.detail_itemlists
+      }else{
+        this.check_all = 'เลือกทั้งหมด'
+        this.check_all_status = 0
+        this.tranfer_list = []
+      }
     },
     setMenuTool (status) {
       if(status==0){
@@ -1114,10 +1162,12 @@ export default {
         case 5: this.approve ()
           break
         case 6: alert('ไม่เปิดให้บริการครับ')// BO 
+                // this.transfer_modal(2)
           break
-        case 7: alert('ไม่เปิดให้บริการครับ')// SO
+        case 7: this.transfer_modal(0)// SO
           break
         case 8: alert('ไม่เปิดให้บริการครับ')// RO
+                // this.transfer_modal(1)
           break
       }
     },

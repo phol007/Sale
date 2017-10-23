@@ -64,6 +64,7 @@ export default {
       //   }
       // }.bind(this), 500);
       //this.preventDefualt()
+      // alert(true)
       this.tool = true
     },
     holdover () {

@@ -30,8 +30,8 @@
     		</div>
     		<div class="lb-r">
     			<select v-model="billType" @change="" style="font-size: 12px;">
-    			<option value=0> ขายสินค้าเงินสด </option>
-			    <option value=1> ขายสินค้าเงินเชื่อ </option>
+    			<option value="0"> ขายสินค้าเงินสด </option>
+			    <option value="1"> ขายสินค้าเงินเชื่อ </option>
 			   </select>
     		</div>
     		<div class="lb-l" style="font-size: 12px;">
@@ -103,7 +103,7 @@
 					</thead>
 					<tbody>
 	                    <tr v-for="(item_list, index) in detail_itemlists" @dblclick="selectTR(item_list)" class="item_list_label" @click="show_stock(index, item_list)">
-	                    	<td style="width: 50px; text-align:center;">{{ item_list.no }}</td>
+	                    	<td style="width: 50px; text-align:center;">{{ index+1 }}</td>
 	                    	<td style="width: 140px; text-align:left;">{{ item_list.item_code }}</td>
                             <td style="width: 400px; text-align:left;">{{ item_list.item_name }}</td>
                         	<td style="width: 100px; padding:0 0.5%; text-align:center;">

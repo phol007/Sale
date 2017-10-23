@@ -154,5 +154,15 @@ export default {
         error(response)
       }
     )
+  },
+  updateSOAX (obj, success, error) {
+    Vue.axios.put(URL + ':3000/saleorder', JSON.stringify(obj)).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }

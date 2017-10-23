@@ -104,18 +104,46 @@ export default {
     },
     genDocNo(tableName, billType) {
       $("#loading").addClass('is-active')
-      api.gen_docNOAX(tableName, billType,
-        (result) => {
+      if (this.saleCode != '' && this.detail_itemlists.length != 0) {
+        api.gen_docNOAX(tableName, billType,
+          (result) => {
+            $("#loading").removeClass('is-active')
+            this.docNo = result.data.new_doc_no
+            this.insert_saleorder()
+          },
+          (error) => {
+            $("#loading").removeClass('is-active')
+            alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
+            console.log(error)
+          }
+        )
+      }else{
+        if (this.saleCode == '') {
+          swal({
+            title: "แจ้งเตือน",
+            text: "กรุณาเลือกพนักงานขาย",
+            timer: 1000,
+            type: "warning",
+            showConfirmButton: false
+          })
           $("#loading").removeClass('is-active')
-          this.docNo = result.data.new_doc_no
-          this.insert_saleorder()
-        },
-        (error) => {
+          this.searchSale()
+        } else {
           $("#loading").removeClass('is-active')
-          alert('กรุณาตรวจสอบเซิร์ฟเวอร์ ' + error)
-          console.log(error)
+          swal({
+              title: "แจ้งเตือน",
+              text: "เอกสารนี้ ไม่มีรายการสินค้า",
+              type: "warning",
+              showCancelButton: false,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "OK",
+              closeOnConfirm: false
+            },
+            function() {
+              this.searchItem()
+            }.bind(this))
         }
-      )
+      }
     },
     searchItem() {
       if (this.arCode) {
@@ -155,7 +183,7 @@ export default {
     },
     searchItems(keyword) {
       $("#loading").addClass('is-active')
-      api.searchItemAX(keyword, this.billType-1, this.arID, this.isConditionSend, this.vatType-1,
+      api.searchItemAX(keyword, this.billType-1, this.arID, this.isConditionSend, this.vatType,
         (result) => {
           $("#loading").removeClass('is-active')
           if (result.status == "success") {
@@ -192,7 +220,7 @@ export default {
               },
               function(isConfirm) {
                 if (isConfirm) {
-                  if (parseInt(this.vatType) == 2) {
+                  if (parseInt(this.vatType) == 1) {
                     this.taxRage = 7
                     var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
                   } else {
@@ -200,7 +228,7 @@ export default {
                   }
                   if (this.checkStock(item.stock_list[0].qty, item.units[0].packing_rate, 1)) {
                     this.detail_itemlists.push({
-                      no: this.detail_itemlists.length + 1,
+                      no: this.detail_itemlists.length,
                       item_id: item.id,
                       item_code: item.item_code,
                       item_name: item.item_name,
@@ -228,7 +256,7 @@ export default {
           } else {
             if (k == this.detail_itemlists.length - 1) {
               // alert(true)
-              if (parseInt(this.vatType) == 2) {
+              if (parseInt(this.vatType) == 1) {
                 this.taxRage = 7
                 var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
               } else {
@@ -236,7 +264,7 @@ export default {
               }
               if (this.checkStock(item.stock_list[0].qty, item.units[0].packing_rate, 1)) {
                 this.detail_itemlists.push({
-                  no: this.detail_itemlists.length + 1,
+                  no: this.detail_itemlists.length,
                   item_id: item.id,
                   item_code: item.item_code,
                   item_name: item.item_name,
@@ -262,7 +290,7 @@ export default {
           }
         }
       } else {
-        if (parseInt(this.vatType) == 2) {
+        if (parseInt(this.vatType) == 1) {
           this.taxRage = 7
           var netAmountItem = this.formatMoney(((1 * item.units[0].price) - this.numberInt(0)) - ((((1 * item.units[0].price) - this.numberInt(0)) * 100) / (this.taxRage + 100)))
         } else {
@@ -270,7 +298,7 @@ export default {
         }
         if (this.checkStock(item.stock_list[0].qty, item.units[0].packing_rate, 1)) {
           this.detail_itemlists.push({
-            no: this.detail_itemlists.length + 1,
+            no: this.detail_itemlists.length,
             item_id: item.id,
             item_code: item.item_code,
             item_name: item.item_name,
@@ -391,7 +419,7 @@ export default {
         this.billDiscount = this.formatMoney(0)
         this.calcTotalNetAmount()
       } else {
-        if (this.vatType == 3) {
+        if (this.vatType == 2) {
           this.taxRage = 0
         } else {
           this.taxRage = 7
@@ -405,12 +433,12 @@ export default {
 
         this.weight_all = this.calweight_all(this.detail_itemlists)
         var sumTotal = this.sumTotal_item(this.detail_itemlists)
-        this.netVatAmount = this.Case_netVatAmount(parseInt(this.vatType)+1, sumTotal, this.billDiscount, this.taxRage)
+        this.netVatAmount = this.Case_netVatAmount(parseInt(this.vatType), sumTotal, this.billDiscount, this.taxRage)
         this.totalItemAmount = this.formatMoney(sumTotal)
-        this.billnetAmount = this.Case_billnetAmount(parseInt(this.vatType)+1, this.netVatAmount, sumTotal, this.billDiscount)
+        this.billnetAmount = this.Case_billnetAmount(parseInt(this.vatType), this.netVatAmount, sumTotal, this.billDiscount)
        
-        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType)+1, this.billDiscount, this.netVatAmount, this.totalItemAmount)
-        var calDiscount = this.Case_checkbillDiscount(parseInt(this.vatType)+1, this.billDiscount, this.billnetAmount, sumTotal)
+        this.beforeNetAmount = this.Case_beforNetAmount(parseInt(this.vatType), this.billDiscount, this.netVatAmount, this.totalItemAmount)
+        var calDiscount = this.Case_checkbillDiscount(parseInt(this.vatType), this.billDiscount, this.billnetAmount, sumTotal)
         if (calDiscount == true) {
           swal('Warning !!', 'ท่านใส่ส่วนลดมากเกินไป', 'warning')
           this.billDiscount = this.formatMoney(0)
@@ -435,7 +463,7 @@ export default {
           } else {
             discount = this.formatMoney(discount)
           }
-          if (parseInt(this.vatType) == 2) {
+          if (parseInt(this.vatType) == 1) {
             this.taxRage = 7
             // console.log(true)
             var netAmountItem = ((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
@@ -481,7 +509,7 @@ export default {
               } else {
                 discount = this.formatMoney(discount)
               }
-              if (parseInt(this.vatType) == 2) {
+              if (parseInt(this.vatType) == 1) {
                 this.taxRage = 7
                 // console.log(true)
                 var netAmountItem = ((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(data[i].units[0].price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
@@ -746,7 +774,7 @@ export default {
       }
       //alert(this.total_amount)
       console.log('insert =' + JSON.stringify(obj))
-      if (this.saleCode != '' && this.detail_itemlists.length != 0) {
+      // if (this.saleCode != '' && this.detail_itemlists.length != 0) {
         api.insertSaleOrderAX(obj,
           (result) => {
             swal("แจ้งเตือน", "บันทึกเรียบร้อย เอกสารเลขที่ " + this.docNo + " เรียบร้อยแล้ว", "success")
@@ -758,7 +786,7 @@ export default {
             console.log(error)
           }
         )
-      }
+      // }
     },
     show_stock(index, item_detail) {
       this.item_selected = item_detail
@@ -850,8 +878,8 @@ export default {
           $("#loading").removeClass('is-active')
           this.docID = result.data.id
           this.docNo = result.data.doc_no
-          this.vatType = result.data.tax_type+1
-          this.billType = result.data.bill_type+1
+          this.vatType = result.data.tax_type
+          this.billType = result.data.bill_type
           this.arCode = result.data.cust.ar_code
           this.arName = result.data.cust.ar_name
           this.arDetail = result.data.cust
@@ -880,7 +908,7 @@ export default {
           
 
           this.totalItemAmount = this.formatMoney(result.data.sum_item_amount)
-          this.billDiscount = this.formatMoney(result.data.dis_count_word)
+          this.billDiscount = this.formatMoney(result.data.discount_word)
           this.netVatAmount = this.formatMoney(result.data.tax_amount)
           this.is_cancel = result.data.is_cancel
           this.is_confirm = result.data.is_confirm
@@ -888,7 +916,7 @@ export default {
           this.setMenuTool(1)     
 
           result.data.subs.forEach(function(val, key) {
-            if (parseInt(this.vatType) == 2) {
+            if (parseInt(this.vatType) == 1) {
               this.taxRage = 7
               var netAmountItem = this.formatMoney(((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) - ((((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) * 100) / (this.taxRage + 100)))
             } else {
@@ -990,14 +1018,15 @@ export default {
           is_cancel: 0,
           packing_rate_1: val['unit_select']['packing_rate'],
           packing_rate_2: 1,
-          ref_line_number: this.numberInt(val['no'])-1,
-          line_number: this.numberInt(val['no'])-1
+          ref_line_number: this.numberInt(val['no']),
+          line_number: this.numberInt(val['no'])
         })
       }.bind(this))
 
       var obj = {
+        id: this.docID,
         doc_no: this.docNo,
-        doc_date: '',
+        doc_date: this.docDate,
         bill_type: this.billType,
         tax_type: this.vatType,
         cust: {
@@ -1040,19 +1069,19 @@ export default {
       }
       //alert(this.total_amount)
       console.log('update =' + JSON.stringify(obj))
-      // if (this.saleCode != '' && this.detail_itemlists.length != 0) {
-      //   api.insertSaleOrderAX(obj,
-      //     (result) => {
-      //       swal("แจ้งเตือน", "บันทึกเรียบร้อย เอกสารเลขที่ " + this.docNo + " เรียบร้อยแล้ว", "success")
-      //       this.goTo("/Saleh")
-      //     },
-      //     (error) => {
-      //       $("#loading").removeClass('is-active')
-      //       swal("Warning !!", "กรณาตรวจสอบเซิร์ฟเวอร์" + error, "warning")
-      //       console.log(error)
-      //     }
-      //   )
-      // }
+      if (this.saleCode != '' && this.detail_itemlists.length != 0) {
+        api.updateSOAX(obj,
+          (result) => {
+            swal("แจ้งเตือน", "ปรับปรุง เอกสารเลขที่ " + this.docNo + " เรียบร้อยแล้ว", "success")
+            this.goTo("/Saleh")
+          },
+          (error) => {
+            $("#loading").removeClass('is-active')
+            swal("Warning !!", "กรณาตรวจสอบเซิร์ฟเวอร์" + error, "warning")
+            console.log(error)
+          }
+        )
+      }
     }
   },
   mounted () {

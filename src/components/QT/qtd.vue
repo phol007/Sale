@@ -29,9 +29,9 @@
 	    	</div>
 	    	<div class="lb-r">
 	    		<select v-model="vatType" @change="calVatnetAmount()" :disabled="detail_itemlists.length!=0">
-	    			<option value="1">แยกนอก</option>
-	    			<option value="2">รวมใน</option>
-	    			<option value="3">อัตราศูนย์</option>
+	    			<option value="0">แยกนอก</option>
+	    			<option value="1">รวมใน</option>
+	    			<option value="2">อัตราศูนย์</option>
 	    		</select>
 	    	</div>
 	    	<div class="lb-l">
@@ -39,8 +39,8 @@
 	    	</div>
 	    	<div class="lb-r">
 	    		<select v-model="billType" :disabled="detail_itemlists.length!=0">
-	    			<option value="1">ขายสด</option>
-	    			<option value="2">ขายเชื่อ</option>
+	    			<option value="0">ขายสด</option>
+	    			<option value="1">ขายเชื่อ</option>
 	    		</select>
 	    	</div>
 	    </div>
@@ -83,7 +83,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(item_list, index) in sortedList" @dblclick="selectTR(item_list)" class="item_list_label" @click="show_stock(index, item_list)">
-                            	<td style="width: 50px; text-align:center;" v-touch @hold.preventDefualt="delete_item(index)" >{{ item_list.no }}</td>
+                            	<td style="width: 50px; text-align:center;" v-touch @hold.preventDefualt="delete_item(index)" >{{ index+1 }}</td>
                             	<td style="width: 200px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_code }}</td>
                             	<td style="width: 290px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_name }}</td>
                             	<td style="width: 150px; padding:0 0.5%;">
@@ -429,6 +429,46 @@
 	  </div>
 	</div>
 <!-- modal Price item -->
+
+<!-- modal tranfer item -->
+    <div class="modal" id="tranfer">
+	  <div class="modal-background"></div>
+	  <div class="modal-content">
+	    <header class="modal-card-head" style="position: fixed; width: 80%;">
+	      <p class="modal-card-title">ใบเสนอราคาเลขที่ {{ DocNo }}</p>
+	      <button class="delete" aria-label="close" @click="close_transfer_modal"></button>
+	    </header>
+	    <section class="modal-card-body" style="overflow: auto; margin-top: 7%; height: 75%;">
+	      <table class="table">
+	      	<tr>
+	      		<th>
+	      			<span style="cursor: pointer;" @click="checkbox_all" v-show="tranfer_list == detail_itemlists">{{ check_all }}</span>
+	      			<span style="cursor: pointer;" @click="checkbox_all" v-show="tranfer_list != detail_itemlists"> เลือกทั้งหมด </span>
+	      		</th>
+	      		<th>รายการสินค้า</th>
+	      		<th>หน่วยนับ</th>
+	      		<th>จำนวน</th>
+	      		<th>ราคา / หน่วย</th>
+	      		<th>ส่วนลด</th>
+	      		<th>ราคารวม</th>
+	      	</tr>
+	      	<tr v-for="(items, index) in sortedList">
+	      		<td style="text-align:center;"><input type="checkbox" :value="items" v-model="tranfer_list"></td>
+	      		<td style="text-align:left;">{{ items.item_code }} : {{ items.item_name }}</td>
+	      		<td style="text-align:center;"> {{ items.unit_select.unit_code }} </td>
+	      		<td>{{ items.qty }}</td>
+	      		<td>{{ items.price }}</td>
+	      		<td>{{ items.discount }}</td>
+	      		<td>{{ items.amount }}</td>
+	      	</tr>
+	      </table>
+	    </section>
+	    <footer class="modal-card-foot" style="padding-left: 35%;">
+	      <button class="button is-info" @click="tranfer_data"> {{ transfer_title }}</button>
+	    </footer>	
+	  </div>
+	</div>
+<!-- modal tranfer item -->
 
   </div>
 </template>
