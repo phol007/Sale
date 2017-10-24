@@ -478,9 +478,9 @@ export default {
               data[i].qty = this.formatMoney(this.numberInt(cnt))
               data[i].price = this.formatMoney(this.numberInt(price))
               data[i].discount = discount
-              data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
+              data[i].amount = this.formatMoney(this.numberInt(cnt) * (this.numberInt(price) - this.numberInt(discount)))
               data[i].netAmountItem = this.numberInt(netAmountItem)
-              data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
+              data[i].home_amount = this.formatMoney(this.numberInt(cnt) * (this.numberInt(price) - this.numberInt(discount)))
               data[i].stock_select = stock[i]
             }
           }

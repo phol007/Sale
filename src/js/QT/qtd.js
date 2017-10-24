@@ -442,7 +442,7 @@ export default {
         } else {
           discount = this.formatMoney(discount)
         }
-        if (parseInt(this.vatType) == 2) {
+        if (parseInt(this.vatType) == 1) {
           this.taxRage = 7
           // console.log(true)
           var netAmountItem = ((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) - (((((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount)) * 100) / (this.taxRage + 100)))
@@ -452,14 +452,14 @@ export default {
         }
 
         for (var i = 0; i < this.detail_itemlists.length; i++) {
-          if (i == lineNumber - 1) {
+          if (i == lineNumber) {
             data[i].unit = unit
             data[i].qty = this.formatMoney(this.numberInt(cnt))
             data[i].price = this.formatMoney(this.numberInt(price))
             data[i].discount = discount
-            data[i].amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
+            data[i].amount = this.formatMoney(this.numberInt(cnt) * (this.numberInt(price) - this.numberInt(discount)))
             data[i].netAmountItem = this.numberInt(netAmountItem)
-            data[i].home_amount = this.formatMoney((this.numberInt(cnt) * this.numberInt(price)) - this.numberInt(discount))
+            data[i].home_amount = this.formatMoney(this.numberInt(cnt) * (this.numberInt(price) - this.numberInt(discount)))
             // data[i].weight = this.numberInt(cnt) * data[i].weight
           }
         }
@@ -468,7 +468,7 @@ export default {
       } else {
         // alert("ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า")
         swal("แจ้งเตือน", "ส่วนลดต้องไม่มากกว่ายอดรายการสินค้า", "warning")
-        this.detail_itemlists[lineNumber - 1].discount = this.formatMoney(0)
+        this.detail_itemlists[lineNumber].discount = this.formatMoney(0)
       }
     },
     GenDocNo(tableName, billType) {

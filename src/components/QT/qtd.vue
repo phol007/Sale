@@ -87,18 +87,18 @@
                             	<td style="width: 200px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_code }}</td>
                             	<td style="width: 290px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_name }}</td>
                             	<td style="width: 150px; padding:0 0.5%;">
-                            		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calNetAmount(item_list.no, unit_list, item_list.qty, '', item_list.discount, item_list.netAmountItem)" class="item_list_select">
+                            		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calNetAmount(index, unit_list, item_list.qty, '', item_list.discount, item_list.amount)" class="item_list_select">
                             			<option v-for="unit in item_list.units" :value="unit">{{ unit.unit_name }}</option>
                             		</select>
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input1" @keydown="keyNumber">
+                            		<input type="text" v-model="item_list.qty" placeholder="0.00" @change="calNetAmount(index, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, item_list.qty, '', '')" @focus="return_Int_Item(index, item_list.qty, '', '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input1" @keydown="keyNumber">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input2" @keydown="keyNumber">
+                            		<input type="text" placeholder="0.00" v-model="item_list.price" @change="calNetAmount(index, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', item_list.price, '')" @focus="return_Int_Item(index, '', item_list.price, '')" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1" class="item_list_input2" @keydown="keyNumber">
                             	</td>
                             	<td style="padding:0;">
-                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(item_list.no, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1"  class="item_list_input3" @keydown="keyNumber">
+                            		<input type="text" placeholder="0%, 0.00" v-model="item_list.discount" @change="calNetAmount(index, unit_list, item_list.qty, item_list.price, item_list.discount, item_list.amount)" @click="return_Int_Item(index, '', '', item_list.discount)" @focus="return_Int_Item(index, '', '', item_list.discount)" @blur="return_FM_Item(index, item_list.qty, item_list.price, item_list.discount)" :readonly="is_confirm==1||is_cancel==1"  class="item_list_input3" @keydown="keyNumber">
                             	</td>
                             	<td style="padding:0;">
                             		<input type="text" placeholder="0.00" v-model="item_list.amount" readonly  class="item_list_input4">
