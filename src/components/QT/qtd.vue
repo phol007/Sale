@@ -71,14 +71,15 @@
 	    		 <table class="tableSection">
                         <thead>
                             <tr>
-                                <th style="width: 50px; text-align: center;"></th>
-                                <th style="width: 200px; text-align: center;">รหัสสินค้า</th>
-                                <th style="width: 290px; text-align: center;">ชื่อสินค้า</th>
-                                <th style="width: 150px; text-align: center;">หน่วยนับ</th>
-                                <th style="width: 145px; text-align: center;" class="text">จำนวน</th>
-                                <th style="width: 150px; text-align: center;" class="text">ราคา/หน่วย</th>
-                                <th style="width: 150px; text-align: center;" class="text">ส่วนลด % ,บาท</th>
-                                <th style="width: 150px; text-align: center;" class="text">จำนวนเงิน</th>
+                                <th style="width: 60px; text-align: center;">ลำดับ</th>
+	                            <th style="width: 140px; text-align: center;">รหัสสินค้า</th>
+	                            <th style="width: 370px; text-align: center;">ชื่อสินค้า</th>
+	                            <th style="width: 100px; text-align: center;">คลัง/ชั้นเก็บ</th>
+	                            <th style="width: 100px; text-align: center;">หน่วยนับ</th>
+	                            <th style="width: 120px; text-align: center;" class="text">จำนวน</th>
+	                            <th style="width: 120px; text-align: center;" class="text">ราคา/หน่วย</th>
+	                            <th style="width: 120px; text-align: center;" class="text">ส่วนลด % ,บาท</th>
+	                            <th style="width: 120px; text-align: center;" class="text">จำนวนเงิน</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,6 +87,11 @@
                             	<td style="width: 50px; text-align:center;" v-touch @hold.preventDefualt="delete_item(index)" >{{ index+1 }}</td>
                             	<td style="width: 200px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_code }}</td>
                             	<td style="width: 290px; text-align:left;" v-touch @hold.preventDefualt="delete_item(index)">{{ item_list.item_name }}</td>
+                            	<td style="width: 100px; padding:0 0.5%; text-align:center;">
+                    			<select v-model="stocks[index] = item_list.stock_select" @change="calcItemAmount(index, unit_list, item_list.qty, '', item_list.discount, item_list.amount, stocks)" class="item_list_select_wh">
+                            		<option v-for="wh in item_list.stock_list" :value="wh" style="cursor: pointer;">{{ wh.wh_code +"/"+ wh.shelf_code }}</option>
+                            	</select>
+                        		</td>
                             	<td style="width: 150px; padding:0 0.5%;">
                             		<select v-model="unit_list = item_list.unit_select"  style="cursor: pointer;" @change="calNetAmount(index, unit_list, item_list.qty, '', item_list.discount, item_list.amount)" class="item_list_select">
                             			<option v-for="unit in item_list.units" :value="unit">{{ unit.unit_name }}</option>
@@ -441,10 +447,10 @@
 	    <section class="modal-card-body" style="overflow: auto; margin-top: 7%; height: 75%;">
 	      <table class="table">
 	      	<tr>
-	      		<th>
+	      		<!-- <th>
 	      			<span style="cursor: pointer;" @click="checkbox_all" v-show="tranfer_list == detail_itemlists">{{ check_all }}</span>
 	      			<span style="cursor: pointer;" @click="checkbox_all" v-show="tranfer_list != detail_itemlists"> เลือกทั้งหมด </span>
-	      		</th>
+	      		</th> -->
 	      		<th>รายการสินค้า</th>
 	      		<th>หน่วยนับ</th>
 	      		<th>จำนวน</th>
@@ -453,10 +459,10 @@
 	      		<th>ราคารวม</th>
 	      	</tr>
 	      	<tr v-for="(items, index) in sortedList">
-	      		<td style="text-align:center;"><input type="checkbox" :value="items" v-model="tranfer_list"></td>
+	      		<!-- <td style="text-align:center;"><input type="checkbox" :value="items" v-model="tranfer_list"></td> -->
 	      		<td style="text-align:left;">{{ items.item_code }} : {{ items.item_name }}</td>
 	      		<td style="text-align:center;"> {{ items.unit_select.unit_code }} </td>
-	      		<td>{{ items.qty }}</td>
+	      		<td>{{ items.remain_qty }}</td>
 	      		<td>{{ items.price }}</td>
 	      		<td>{{ items.discount }}</td>
 	      		<td>{{ items.amount }}</td>

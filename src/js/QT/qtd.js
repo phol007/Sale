@@ -44,6 +44,7 @@ export default {
       moSitem: '',
       detail_itemlists: [],
       unit_list: '',
+      stocks: '',
       qty: '',
       hold: 0,
       billDiscount: this.formatMoney(0),
@@ -189,6 +190,13 @@ export default {
           $("#loading").removeClass('is-active')
           console.log(error)
         })
+      setTimeout(function() {
+        if(document.getElementById("loading").style.visibility=="visible"){
+          $('#SCusto').removeClass('is-active')
+          $("#loading").removeClass('is-active')
+          swal("Warning !!", "ใช้เวลาดึงข้อมูลนานเกินกำหนด")
+        }
+      }, 5000)
     },
     selectCus(CusD) {
       this.CSCusto()
@@ -210,6 +218,13 @@ export default {
           $("#loading").removeClass('is-active')
           console.log(error)
         })
+      setTimeout(function() {
+        if(document.getElementById("loading").style.visibility=="visible"){
+          $('#SEmplo').removeClass('is-active')
+          $("#loading").removeClass('is-active')
+          swal("Warning !!", "ใช้เวลาดึงข้อมูลนานเกินกำหนด")
+        }
+      }, 5000)
     },
     selectEmp(EmpD) {
       this.CSEmplo()
@@ -236,6 +251,13 @@ export default {
           console.log(error)
         }
       )
+      setTimeout(function() {
+        if(document.getElementById("loading").style.visibility=="visible"){
+          $('#SItem').removeClass('is-active')
+          $("#loading").removeClass('is-active')
+          swal("Warning !!", "ใช้เวลาดึงข้อมูลนานเกินกำหนด")
+        }
+      }, 5000)
     },
     return_price(units) {
       if (units == null) {
@@ -547,6 +569,7 @@ export default {
                     unit_select: item.units[0],
                     stock_select: item.stock_list[0],
                     qty: this.formatMoney(1),
+                    remain_qty: 0,
                     price: this.formatMoney(item.units[0].price),
                     discount: this.formatMoney(0),
                     amount: this.formatMoney(1 * item.units[0].price),
@@ -579,6 +602,7 @@ export default {
                   unit_select: item.units[0],
                   stock_select: item.stock_list[0],
                   qty: this.formatMoney(1),
+                  remain_qty: 0,
                   price: this.formatMoney(item.units[0].price),
                   discount: this.formatMoney(0),
                   amount: this.formatMoney(1 * item.units[0].price),
@@ -609,6 +633,7 @@ export default {
             unit_select: item.units[0],
             stock_select: item.stock_list[0],
             qty: this.formatMoney(1),
+            remain_qty: 0,
             price: this.formatMoney(item.units[0].price),
             discount: this.formatMoney(0),
             amount: this.formatMoney(1 * item.units[0].price),
@@ -703,6 +728,8 @@ export default {
           item_id: val['item_id'],
           item_code: val['item_code'],
           item_name: val['item_name'],
+          wh_code: val['stock_select']['wh_code'],
+          shelf_code: val['stock_select']['shelf_code'],
           qty: numeral(val['qty']).value(),
           price: numeral(val['price']).value(),
           dis_count_word_sub: val['discount'],
@@ -795,6 +822,8 @@ export default {
                 item_id: val['item_id'],
                 item_code: val['item_code'],
                 item_name: val['item_name'],
+                wh_code: val['stock_select']['wh_code'],
+                shelf_code: val['stock_select']['shelf_code'],
                 qty: numeral(val['qty']).value(),
                 price: numeral(val['price']).value(),
                 dis_count_word_sub: val['discount'],
@@ -963,58 +992,69 @@ export default {
           this.is_confirm = result.data.is_confirm
 
           this.setMenuTool(1)     
-
-          result.data.subs.forEach(function(val, key) {
-            if (parseInt(this.vatType) == 1) {
-              this.taxRage = 7
-              var netAmountItem = this.formatMoney(((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) - ((((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) * 100) / (this.taxRage + 100)))
-            } else {
-              var netAmountItem = this.formatMoney(1 * val['price'])
-            }
-
-            var units = []
-            var unit_select = 0
-            var stock = []
-
-            api.searchUnitAX(val['item_code'], this.billType, this.ArID, this.isConditionSend, this.vatType,
-              (result) => {
-                units = result.units
-                stock = result.stock_list
-                for (var r = 0; r < units.length; r++) {
-                  if (units[r].unit_code == val['unit_code']) {
-                    unit_select = units[r]
-                  }
-                }
-                this.detail_itemlists.push({
-                  no: val['line_number'],
-                  item_id: val['item_id'],
-                  item_code: val['item_code'],
-                  item_name: val['item_name'],
-                  units: units,
-                  unit_select: unit_select,
-                  stock_select: '',
-                  qty: this.formatMoney(val['qty']),
-                  price: this.formatMoney(val['price']),
-                  discount: val['dis_count_word_sub'],
-                  amount: this.formatMoney(val['item_amount']),
-                  netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
-                  home_amount: val['item_amount'],
-                  stock_list: stock,
-                  ref_no: this.DocNo,
-                  weight: result.weight
-                })
-              },
-              (error) => {
-                $("#loading").removeClass('is-active')
-                swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
-                console.log(error)
+          if (result.data.subs !== null) {
+            result.data.subs.forEach(function(val, key) {
+              if (parseInt(this.vatType) == 1) {
+                this.taxRage = 7
+                var netAmountItem = this.formatMoney(((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) - ((((1 * val['price']) - this.numberInt(val['dis_count_word_sub'])) * 100) / (this.taxRage + 100)))
+              } else {
+                var netAmountItem = this.formatMoney(1 * val['price'])
               }
-            )
-          }.bind(this))
-          setTimeout(function() {
-            this.calVatnetAmount()            
-            console.log(this.detail_itemlists.length)
-          }.bind(this), 1000)
+
+              var units = []
+              var unit_select = 0  
+              var stock_select = 0
+              var stock = []
+
+
+              api.searchUnitAX(val['item_code'], this.billType, this.ArID, this.isConditionSend, this.vatType,
+                (result) => {
+                  units = result.units
+                  stock = result.stock_list
+                  for (var r = 0; r < units.length; r++) {
+                    if (units[r].unit_code == val['unit_code']) {
+                      unit_select = units[r]
+                    }
+                  }
+
+                  for (var r = 0; r < stock.length; r++) {
+                    if (stock[r].wh_code == val['wh_code']) {
+                      stock_select = stock[r]
+                    }
+                  }
+
+                  this.detail_itemlists.push({
+                    no: val['line_number'],
+                    item_id: val['item_id'],
+                    item_code: val['item_code'],
+                    item_name: val['item_name'],
+                    units: units,
+                    unit_select: unit_select,
+                    stock_select: stock_select,
+                    qty: this.formatMoney(val['qty']),
+                    remain_qty: this.formatMoney(val['remain_qty']),
+                    price: this.formatMoney(val['price']),
+                    discount: val['dis_count_word_sub'],
+                    amount: this.formatMoney(val['item_amount']),
+                    netAmountItem: netAmountItem, // ลบอัตราภาษีมูลค่าเพิ่มของสินค้า
+                    home_amount: val['item_amount'],
+                    stock_list: stock,
+                    ref_no: this.DocNo,
+                    weight: result.weight
+                  })
+                },
+                (error) => {
+                  $("#loading").removeClass('is-active')
+                  swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+                  console.log(error)
+                }
+              )
+            }.bind(this))
+            setTimeout(function() {
+              this.calVatnetAmount()            
+              console.log(this.detail_itemlists.length)
+            }.bind(this), 1000)
+          }
         },
         (error) => {
           $("#loading").removeClass('is-active')
@@ -1043,13 +1083,27 @@ export default {
     },
     tranfer_data () {
       switch (this.tranfer_type) {
-        case 0: alert('ข้อมูลโอนไปเป็นใบสั่งขาย = ' + JSON.stringify(this.tranfer_list))
+        case 0: this.send_transfer(this.DocNo)// alert('ข้อมูลโอนไปเป็นใบสั่งขาย = ' + JSON.stringify(this.tranfer_list))
           break
         case 1:
           break
         case 2:
           break
       }
+    },
+    send_transfer (docno) {
+      $("#loading").removeClass('is-active')
+      api.transferAX(docno, 1,
+        (result) => {
+          $("#loading").removeClass('is-active')
+          alert(JSON.stringify(result.data))
+        },
+        (error) => {
+          $("#loading").removeClass('is-active')
+          swal("Warning !!", "กรุณาตรวจสอบเซิร์ฟเวอร์ " + error, "warning")
+          console.log(error)
+        }
+      )
     },
     checkbox_all () {
       if(this.check_all_status==0){
@@ -1278,6 +1332,7 @@ export default {
       this.stock_detail = item_detail.stock_list
       var label_item = document.getElementsByClassName('item_list_label')
       var select_item = document.getElementsByClassName('item_list_select')
+      var select_item_wh = document.getElementsByClassName('item_list_select_wh')
       var input1_item = document.getElementsByClassName('item_list_input1')
       var input2_item = document.getElementsByClassName('item_list_input2')
       var input3_item = document.getElementsByClassName('item_list_input3')
@@ -1286,6 +1341,7 @@ export default {
         if(i == index){          
           label_item[i].style.backgroundColor  = '#f7f8f9'
           select_item[i].style.backgroundColor  = '#f7f8f9'
+          select_item_wh[i].style.backgroundColor  = '#f7f8f9'
           input1_item[i].style.backgroundColor  = '#f7f8f9'
           input2_item[i].style.backgroundColor  = '#f7f8f9'
           input3_item[i].style.backgroundColor  = '#f7f8f9'
@@ -1293,6 +1349,7 @@ export default {
         }else{
           label_item[i].style.backgroundColor  = '#fff'
           select_item[i].style.backgroundColor  = '#fff'
+          select_item_wh[i].style.backgroundColor  = '#fff'
           input1_item[i].style.backgroundColor  = '#fff'
           input2_item[i].style.backgroundColor  = '#fff'
           input3_item[i].style.backgroundColor  = '#fff'

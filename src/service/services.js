@@ -164,5 +164,15 @@ export default {
         error(response)
       }
     )
+  },
+  transferAX (docno, type, success, error) {
+    Vue.axios.get(URL + ':3000/quotation/genso?access_token=&so_status=' + type + '&doc_no=' + docno).then(
+      (response) => {
+        success(response.data)
+      },
+      (response) => {
+        error(response)
+      }
+    )
   }
 }
