@@ -12,9 +12,10 @@
 	    	<div class="status">
 	    		Status : 
 	    		<span style="color: blue; font-size: 20px; line-height:40px;" v-show="this.params.status == 0"> ** เอกสารใหม่</span>
-	    		<span style="color: green; font-size: 20px; line-height:40px;" v-show="is_confirm==1">อนุมัติแล้ว</span>
+	    		<span style="color: green; font-size: 20px; line-height:40px;" v-show="is_confirm==1&&bill_status==0">อนุมัติแล้ว</span>
 	    		<span style="color: red; font-size: 20px; line-height:40px;" v-show="is_cancel == 1">ยกเลิกแล้ว</span>
-	    		<span style="color: #000; font-size: 20px; line-height:40px;" v-show="this.params.status==1&&is_confirm==0&&is_cancel==0"> ** เปลี่ยนแปลงข้อมูลบางส่วนได้</span>
+	    		<span style="color: #000; font-size: 20px; line-height:40px;" v-show="this.params.status==1&&is_confirm==0&&is_cancel==0&&bill_status==0"> ** เปลี่ยนแปลงข้อมูลบางส่วนได้</span>
+	    		<span style="color: gray; font-size: 20px; line-height:40px;" v-show="this.params.status==1&&is_confirm==1&&bill_status==1"> ** ใบเสนอราคานี้ได้ทำการโอนเป็นใบสั่งขายแล้ว</span>
 	    	</div>
 	    </div>
 	    <div class="T-l">

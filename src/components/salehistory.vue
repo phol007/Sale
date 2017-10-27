@@ -29,12 +29,12 @@
 			</div>
 			<div @scroll="addList" id="dataList">
 				<!-- <div class="H-list" v-for="lists in sortedList" @mousedown="show_tool" @mouseup="holdover" @mouseout="holdover" v-show="history_lists!=0" @click="toDo('Qtd', lists.doc_no)"> -->
-				<div class="H-list" v-for="lists in history_lists" v-touch:hold.prevenDefualt="show_tool" v-show="lists.bill_status !== 1">
+				<div class="H-list" v-for="lists in history_lists" v-touch:hold.prevenDefualt="show_tool">
 					<div class="H-list-img" @tap="toDo('Qtd', lists.doc_no)">
 						<img src="../assets/logo.png">
 					</div>
-					<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm}" @tap="toDo(lists.doc_no)">
-						<p class="H-list-dtitle" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm}">{{ lists.doc_no }}</p>
+					<div class="H-list-detail" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm, 'transfer_full': lists.bill_status}" @tap="toDo(lists.doc_no)">
+						<p class="H-list-dtitle" :class="{'cancel_doc': lists.is_cancel, 'approve_doc': lists.is_confirm, 'transfer_full': lists.bill_status}">{{ lists.doc_no }}</p>
 						<p>{{ lists.cust.ar_code }} | {{ lists.cust.ar_name }}</p>
 						<p>ยอดเงินสุทธิ {{ money_format(lists.total_amount) }} บาท</p>
 						<p>พนง.ขาย {{ lists.sale.sale_code }} | {{ lists.sale.sale_name }}</p>

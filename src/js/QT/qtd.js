@@ -71,7 +71,8 @@ export default {
       transfer_title: '',
       tranfer_type: 0,
       check_all: 'เลือกทั้งหมด',
-      check_all_status: 0
+      check_all_status: 0,
+      bill_status: 0
     }
   },
   components: {
@@ -128,17 +129,25 @@ export default {
       $('#SItem').removeClass('is-active')
     },
     SearchCusto() {
-      $('#SCusto').addClass('is-active')
-      this.moScus = ''
-      this.searchCus(this.moScus)
+      if(this.detail_itemlists.length!=0 || this.is_cancel == 1 || this.is_confirm == 1){
+
+      }else{
+        $('#SCusto').addClass('is-active')
+        this.moScus = ''
+        this.searchCus(this.moScus)
+      }
     },
     CSCusto() {
       $('#SCusto').removeClass('is-active')
     },
     SearchEmplo() {
-      $('#SEmplo').addClass('is-active')
-      this.moSemp = ''
-      this.searchEmp(this.moSemp)
+      if(this.detail_itemlists.length!=0 || this.is_cancel == 1 || this.is_confirm == 1){
+
+      }else{
+        $('#SEmplo').addClass('is-active')
+        this.moSemp = ''
+        this.searchEmp(this.moSemp)
+      }
     },
     CSEmplo() {
       $('#SEmplo').removeClass('is-active')
@@ -990,6 +999,7 @@ export default {
           this.netVatAmount = this.formatMoney(result.data.tax_amount)
           this.is_cancel = result.data.is_cancel
           this.is_confirm = result.data.is_confirm
+          this.bill_status = result.data.bill_status
 
           this.setMenuTool(1)     
           if (result.data.subs !== null) {
@@ -1092,11 +1102,12 @@ export default {
       }
     },
     send_transfer (docno) {
-      $("#loading").removeClass('is-active')
+      $("#loading").addClass('is-active')
       api.transferAX(docno, 1,
         (result) => {
           $("#loading").removeClass('is-active')
-          alert(JSON.stringify(result.data))
+          swal("แจ้งเตือน", "โอนเอกสารเรียบร้อยแล้ว ได้ใบสั่งขายเลขที่ " + result.data + " เรียบร้อยแล้ว", "success")
+          this.$router.push({ name: 'so', params: { status: 1, docno: result.data }})
         },
         (error) => {
           $("#loading").removeClass('is-active')
@@ -1159,7 +1170,7 @@ export default {
                               func: 2
                             }
                           ]
-        }else if(this.is_confirm==1){
+        }else if(this.is_confirm==1 && this.bill_status==0){
           this.tool_menu = [
                             {
                               text: 'ย้อนกลับ',

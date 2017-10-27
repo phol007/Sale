@@ -170,5 +170,11 @@ Vue.mixin({
         e.returnValue = true
       }
     }
+  },
+  created () {
+    document.addEventListener('keyup', this.keyNumber)
+  },
+  destroyed () {
+    document.removeEventListener('keyup', this.keyNumber)
   }
 })

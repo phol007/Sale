@@ -37,7 +37,7 @@ export default {
       moScus: '',
       moSsale: '',
       vatType: 1,
-      docType: 0,
+      docType: 1,
       billType: 0,
       billnetAmount: this.formatMoney(0),
       totalItemAmount: this.formatMoney(0),
