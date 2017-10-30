@@ -464,8 +464,12 @@ export default {
       this.stock_detail = ''
       if (price == '') {
         price = unit.price
+      }else if(price < unit.price){
+        swal("แจ้งเตือน", "ท่านไม่สามารถเปลี่ยนแปลงราคาให้น้อยกว่าราคาต้นได้", "warning")
+        price = unit.price
       }
-      console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
+      
+      // console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
       if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
         var data = this.detail_itemlists
         if (discount.includes("%") === true) {
@@ -1425,6 +1429,8 @@ export default {
     this.usercode = this.user.usercode
     this.permission = this.user.menu
     moment.locale()
+
+    // console.log(this.user.roleid)
 
     if (this.params.status == 0) {
       // this.GenDocNo('QT', 0)  

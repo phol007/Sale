@@ -454,6 +454,9 @@ export default {
         this.stock_detail = ''
         if (price == '') {
           price = unit[lineNumber].price
+        } else if(price < unit[lineNumber].price){
+          swal("แจ้งเตือน", "ท่านไม่สามารถเปลี่ยนแปลงราคาให้น้อยกว่าราคาต้นได้", "warning")
+          price = unit[lineNumber].price
         }
         // console.log(this.numberInt(discount) + ", " + this.numberInt(itemAmount))
         if (this.numberInt(discount) <= this.numberInt(itemAmount)) {
